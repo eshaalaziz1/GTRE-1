@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getWixServerClient } from "@/lib/wix-client";
-import { COLLECTIONS } from "@/lib/constants";
 
 const ALLOWED_ORIGINS = [
   "https://www.reatgt.org",
@@ -36,18 +34,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const client = getWixServerClient();
+    const siteId = process.env.WIX_SITE_ID!;
+    const apiKey = process.env.WIX_API_KEY!;
 
-    await client.items.insert(COLLECTIONS.jobApplications, {
-      applicantName: name,
-      applicantEmail: email,
-      resumeUrl: resumeUrl || "",
-      jobId,
-      jobTitle,
-      company: company || "",
-      appliedAt: new Date().toISOString(),
-      status: "Applied",
-    });
+    const res = await fetch(
+      "https://www.wixapis.com/wix-data/v2/items",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: apiKey,
+          "wix-site-id": siteId,
+        },
+        body: JSON.stringify({
+          dataCollectionId: "JobApplications",
+          dataItem: {
+            data: {
+              applicantName: name,
+              applicantEmail: email,
+              resumeUrl: resumeUrl || "",
+              jobId,
+              jobTitle,
+              company: company || "",
+              appliedAt: new Date().toISOString(),
+              status: "Applied",
+            },
+          },
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const errBody = await res.text();
+      console.error("Wix API error:", res.status, errBody);
+      return NextResponse.json(
+        { error: "Failed to submit application" },
+        { status: 500, headers }
+      );
+    }
 
     return NextResponse.json(
       { success: true, message: "Application tracked successfully" },
