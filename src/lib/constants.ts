@@ -14,7 +14,6 @@ export const COLORS = {
 
 // CMS Collection IDs
 export const COLLECTIONS = {
-  jobs: "JobOpportunities",
   members: "Members",
   attendance: "Attendance",
   alumni: "AlumniOnboarding",
@@ -22,25 +21,3 @@ export const COLLECTIONS = {
   jobApplications: "JobApplications",
 } as const;
 
-// Job type options
-export const JOB_TYPES = [
-  "Internship",
-  "Full-Time",
-  "Part-Time",
-  "Co-op",
-  "Fellowship",
-] as const;
-
-// Real estate sectors
-export const SECTORS = [
-  "Development",
-  "Investment",
-  "Brokerage",
-  "Property Management",
-  "REIT",
-  "Private Equity",
-  "Debt/Lending",
-  "Consulting",
-  "Appraisal",
-  "Other",
-] as const;

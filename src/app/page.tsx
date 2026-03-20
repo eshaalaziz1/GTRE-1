@@ -17,12 +17,6 @@ export default function Home() {
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link
-            href="/jobs"
-            className="px-6 py-3 bg-gold text-white font-semibold rounded-lg hover:bg-gold-hover transition-colors"
-          >
-            Browse Jobs
-          </Link>
-          <Link
             href="/alumni"
             className="px-6 py-3 bg-navy text-white font-semibold rounded-lg hover:bg-navy/90 transition-colors"
           >
