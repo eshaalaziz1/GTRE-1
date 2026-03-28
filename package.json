@@ -13,6 +13,7 @@
     "@wix/media": "^1.0.237",
     "@wix/members": "^1.0.432",
     "@wix/sdk": "^1.21.4",
+    "exceljs": "^4.4.0",
     "next": "16.1.7",
     "react": "19.2.3",
     "react-dom": "19.2.3"
