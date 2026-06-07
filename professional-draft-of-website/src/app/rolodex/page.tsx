@@ -144,6 +144,7 @@ export default function RolodexGateway() {
                     <Field label="Work email" type="email" placeholder="you@firm.com" />
                     <Field label="Company" type="text" placeholder="Firm name" />
                     <Field label="Affiliation" type="text" placeholder="GT alum, recruiter, etc." />
+                    <Field label="LinkedIn URL" type="url" placeholder="https://www.linkedin.com/in/you" />
                     <button className="w-full px-6 py-3 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors">
                       Request access
                     </button>
