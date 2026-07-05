@@ -1,20 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useGtre } from "@/lib/store/GtreStore";
+import { Button, Field, Notice } from "@/components/ui";
 
 /**
  * Analyst Rolodex GATEWAY (not the directory itself).
  *
- * Explains what the Rolodex is and gates entry behind a sign-in / request-access
- * flow so only verified alumni and recruiters get through. On success it sends
- * the visitor to the actual Analyst Rolodex application.
- *
- * The auth here is a lightweight client-side demo. Real vetting (approved-user
- * store, email verification, an approval queue) swaps in at the marked spot.
+ * Explains what the Rolodex is and gates entry behind the real account system:
+ * approved industry professionals and alumni sign in; new visitors request
+ * access (which routes to the industry sign-up + admin approval flow). On a
+ * successful sign-in the visitor continues to the vetted directory.
  */
-
-// The gated Analyst Directory lives at this route.
 const ROLODEX_URL = "/rolodex/directory";
 
 const STEPS = [
@@ -36,9 +35,19 @@ const STEPS = [
 ];
 
 export default function RolodexGateway() {
-  const [mode, setMode] = useState<"signin" | "request">("signin");
-  const [submitted, setSubmitted] = useState(false);
-  const [authed, setAuthed] = useState(false);
+  const router = useRouter();
+  const { currentAccount, login } = useGtre();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    const res = login(email, password);
+    if (!res.ok) return setError(res.error);
+    router.push(ROLODEX_URL);
+  }
 
   return (
     <>
@@ -47,14 +56,13 @@ export default function RolodexGateway() {
         <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-20 grid lg:grid-cols-2 gap-14 items-center">
           <div>
             <div className="text-gold text-[12px] font-semibold uppercase tracking-[0.22em] mb-4">
-              For alumni & recruiters
+              For alumni &amp; recruiters
             </div>
             <h1 className="display text-5xl text-white">The Analyst Rolodex</h1>
             <p className="mt-5 text-lg text-white/80 max-w-xl leading-relaxed">
-              A private, vetted directory of Georgia Tech&apos;s strongest real
-              estate students, backed by what the club tracks all semester:
-              academics, attendance, graded case-study work, and experience.
-              Built so you can find and hire the next analyst before anyone else.
+              A private, vetted directory of Georgia Tech&apos;s strongest real estate students, backed by what the club
+              tracks all semester: academics, attendance, graded case-study work, and experience. Built so you can find
+              and hire the next analyst before anyone else.
             </p>
             <div className="mt-8 flex flex-wrap gap-6 text-sm text-white/70">
               <span>Vetted access only</span>
@@ -65,91 +73,37 @@ export default function RolodexGateway() {
 
           {/* Auth card */}
           <div className="bg-white rounded-2xl shadow-xl p-7 text-text">
-            {authed ? (
+            {currentAccount ? (
               <div className="text-center py-6">
                 <div className="text-2xl display text-navy">You&apos;re in.</div>
                 <p className="text-sm text-secondary mt-3 mb-6">
-                  Welcome back. Continue to the Analyst Rolodex.
+                  Welcome back, {currentAccount.name.split(" ")[0]}. Continue to the Analyst Rolodex.
                 </p>
-                <Link
-                  href={ROLODEX_URL}
-                  className="inline-block w-full px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors"
-                >
+                <Link href={ROLODEX_URL} className="inline-block w-full px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors">
                   Enter the Analyst Rolodex →
                 </Link>
               </div>
-            ) : submitted ? (
-              <div className="text-center py-6">
-                <div className="text-2xl display text-navy">Request received.</div>
-                <p className="text-sm text-secondary mt-3">
-                  We verify every account by hand. Once a club officer confirms
-                  you&apos;re a Georgia Tech alum or an approved recruiting
-                  partner, we&apos;ll email your login.
-                </p>
-                <button
-                  onClick={() => { setSubmitted(false); setMode("signin"); }}
-                  className="mt-6 text-sm font-semibold text-gold-hover hover:text-navy"
-                >
-                  Back to sign in
-                </button>
-              </div>
             ) : (
               <>
-                <div className="flex gap-1 p-1 bg-surface rounded-lg mb-6">
-                  <button
-                    onClick={() => setMode("signin")}
-                    className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${
-                      mode === "signin" ? "bg-white text-navy shadow-sm" : "text-secondary"
-                    }`}
-                  >
+                <h2 className="text-lg font-semibold text-navy mb-1">Sign in to continue</h2>
+                <p className="text-[13px] text-secondary mb-5">Approved alumni and recruiting partners only.</p>
+                <form onSubmit={onSubmit} className="space-y-4">
+                  {error && <Notice tone="error">{error}</Notice>}
+                  <Field label="Email" type="email" value={email} onChange={setEmail} placeholder="you@firm.com" required />
+                  <Field label="Password" type="password" value={password} onChange={setPassword} placeholder="••••••••" required />
+                  <Button type="submit" className="w-full">
                     Sign in
-                  </button>
-                  <button
-                    onClick={() => setMode("request")}
-                    className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${
-                      mode === "request" ? "bg-white text-navy shadow-sm" : "text-secondary"
-                    }`}
-                  >
-                    Request access
-                  </button>
-                </div>
-
-                {mode === "signin" ? (
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      // TODO: replace with real authentication against approved users.
-                      setAuthed(true);
-                    }}
-                    className="space-y-4"
-                  >
-                    <Field label="Email" type="email" placeholder="you@firm.com" />
-                    <Field label="Password" type="password" placeholder="••••••••" />
-                    <button className="w-full px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors">
-                      Sign in
-                    </button>
-                    <p className="text-[12px] text-secondary text-center">
-                      Access is limited to verified alumni and recruiters.
-                    </p>
-                  </form>
-                ) : (
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      setSubmitted(true);
-                    }}
-                    className="space-y-4"
-                  >
-                    <Field label="Full name" type="text" placeholder="Jane Doe" />
-                    <Field label="Work email" type="email" placeholder="you@firm.com" />
-                    <Field label="Company" type="text" placeholder="Firm name" />
-                    <Field label="Affiliation" type="text" placeholder="GT alum, recruiter, etc." />
-                    <Field label="LinkedIn URL" type="url" placeholder="https://www.linkedin.com/in/you" />
-                    <button className="w-full px-6 py-3 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors">
+                  </Button>
+                </form>
+                <div className="mt-5 pt-5 border-t border-border text-center">
+                  <p className="text-sm text-secondary">
+                    New here?{" "}
+                    <Link href="/signup" className="font-semibold text-gold-hover hover:text-navy">
                       Request access
-                    </button>
-                  </form>
-                )}
+                    </Link>{" "}
+                    — every account is approved by hand.
+                  </p>
+                </div>
               </>
             )}
           </div>
@@ -179,36 +133,11 @@ export default function RolodexGateway() {
               The Rolodex is open to Georgia Tech alumni and recruiting partners the club has verified.
             </p>
           </div>
-          <Link
-            href="/contact"
-            className="shrink-0 px-6 py-3 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-white transition-colors"
-          >
+          <Link href="/contact" className="shrink-0 px-6 py-3 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-white transition-colors">
             Contact the club
           </Link>
         </div>
       </section>
     </>
-  );
-}
-
-function Field({
-  label,
-  type,
-  placeholder,
-}: {
-  label: string;
-  type: string;
-  placeholder: string;
-}) {
-  return (
-    <label className="block">
-      <span className="text-[12px] font-semibold text-navy uppercase tracking-wide">{label}</span>
-      <input
-        required
-        type={type}
-        placeholder={placeholder}
-        className="mt-1.5 w-full px-3.5 py-2.5 border border-border rounded-lg text-sm outline-none focus:border-navy"
-      />
-    </label>
   );
 }

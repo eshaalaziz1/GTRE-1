@@ -1,0 +1,218 @@
+-- ===========================================================================
+-- GTRE website — Supabase schema
+--
+-- Run this in the Supabase SQL editor (or via the CLI) to provision the tables
+-- the portals need. Table + column names mirror src/lib/store/types.ts so the
+-- Supabase data adapter maps 1:1 to the current mock store.
+--
+-- Auth model:
+--   * Supabase Auth owns credentials (email/password). Remove any Google/OAuth
+--     provider in Authentication → Providers (email/password only).
+--   * `profiles` extends auth.users with role + approval status + club fields.
+--   * A new sign-up creates a profile with status = 'pending'. Admins approve.
+--   * Enforce the "@gatech.edu for students" rule in the sign-up server action
+--     (see SETUP.md) AND/OR with the trigger + check below.
+-- ===========================================================================
+
+-- Extend auth.users -----------------------------------------------------------
+create type account_role   as enum ('student', 'industry', 'admin');
+create type account_status as enum ('pending', 'approved', 'rejected');
+
+create table public.profiles (
+  id           uuid primary key references auth.users on delete cascade,
+  role         account_role   not null default 'student',
+  status       account_status not null default 'pending',
+  name         text not null,
+  email        text not null unique,
+  company      text,
+  linkedin     text,
+  title        text,
+  grad_year    int,
+  major        text,
+  is_alumni    boolean not null default false,
+  created_at   timestamptz not null default now(),
+  approved_at  timestamptz,
+  approved_by  uuid references auth.users
+);
+
+-- Students must use a Georgia Tech email (belt-and-suspenders with app logic).
+alter table public.profiles
+  add constraint student_gt_email
+  check (role <> 'student' or email ~* '@([a-z0-9-]+\.)*gatech\.edu$');
+
+-- Content tables --------------------------------------------------------------
+create table public.announcements (
+  id          uuid primary key default gen_random_uuid(),
+  title       text not null,
+  body        text not null,
+  category    text not null default 'General',
+  pinned      boolean not null default false,
+  author_id   uuid references public.profiles,
+  author_name text,
+  created_at  timestamptz not null default now()
+);
+
+create table public.events (
+  id            uuid primary key default gen_random_uuid(),
+  title         text not null,
+  type          text not null default 'Meeting',
+  date          date not null,
+  time          text,
+  location      text,
+  description   text,
+  check_in_code text,
+  check_in_open boolean not null default false,
+  created_at    timestamptz not null default now()
+);
+
+create table public.check_ins (
+  id           uuid primary key default gen_random_uuid(),
+  event_id     uuid references public.events on delete cascade,
+  event_title  text,
+  account_id   uuid references public.profiles on delete cascade,
+  member_name  text,
+  member_email text,
+  checked_in_at timestamptz not null default now(),
+  unique (event_id, account_id)
+);
+
+create table public.assignments (
+  id          uuid primary key default gen_random_uuid(),
+  title       text not null,
+  description text,
+  week        int,
+  due_date    date not null,
+  points      int not null default 0,
+  category    text not null default 'Assignment',
+  published   boolean not null default true,
+  created_at  timestamptz not null default now()
+);
+
+create table public.submissions (
+  id            uuid primary key default gen_random_uuid(),
+  assignment_id uuid references public.assignments on delete cascade,
+  account_id    uuid references public.profiles on delete cascade,
+  member_name   text,
+  member_email  text,
+  type          text not null,
+  content       text not null,
+  comments      text,
+  submitted_at  timestamptz not null default now(),
+  grade         int,
+  feedback      text,
+  graded_at     timestamptz,
+  graded_by     text,
+  unique (assignment_id, account_id)
+);
+
+create table public.questions (
+  id          uuid primary key default gen_random_uuid(),
+  account_id  uuid references public.profiles on delete cascade,
+  member_name text,
+  subject     text not null,
+  body        text not null,
+  status      text not null default 'open',
+  answer      text,
+  answered_by text,
+  created_at  timestamptz not null default now(),
+  answered_at timestamptz
+);
+
+create table public.meeting_notes (
+  id          uuid primary key default gen_random_uuid(),
+  title       text not null,
+  date        date not null,
+  body        text,
+  author_name text,
+  created_at  timestamptz not null default now()
+);
+
+create table public.resources (
+  id          uuid primary key default gen_random_uuid(),
+  title       text not null,
+  description text,
+  url         text not null,
+  category    text not null default 'Link',
+  created_at  timestamptz not null default now()
+);
+
+-- Single-row editable site info.
+create table public.site_info (
+  id                       int primary key default 1,
+  meeting_time             text,
+  meeting_location         text,
+  contact_email            text,
+  analyst_program_intro    text,
+  syllabus_embed_url       text default '',
+  google_calendar_embed_url text default '',
+  check (id = 1)
+);
+insert into public.site_info (id) values (1) on conflict do nothing;
+
+-- ===========================================================================
+-- Row-Level Security (RLS) — sketch. Tighten before production.
+-- ===========================================================================
+alter table public.profiles      enable row level security;
+alter table public.announcements enable row level security;
+alter table public.events        enable row level security;
+alter table public.check_ins     enable row level security;
+alter table public.assignments   enable row level security;
+alter table public.submissions   enable row level security;
+alter table public.questions     enable row level security;
+alter table public.meeting_notes enable row level security;
+alter table public.resources     enable row level security;
+alter table public.site_info     enable row level security;
+
+-- Helper: is the current user an approved admin?
+create or replace function public.is_admin() returns boolean language sql stable as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and role = 'admin' and status = 'approved'
+  );
+$$;
+
+-- Helper: is the current user approved (any role)?
+create or replace function public.is_approved() returns boolean language sql stable as $$
+  select exists (
+    select 1 from public.profiles where id = auth.uid() and status = 'approved'
+  );
+$$;
+
+-- Profiles: you can read/update your own row; admins do everything.
+create policy "own profile read"   on public.profiles for select using (id = auth.uid() or public.is_admin());
+create policy "own profile update" on public.profiles for update using (id = auth.uid());
+create policy "admin manage profiles" on public.profiles for all using (public.is_admin()) with check (public.is_admin());
+
+-- Approved members read club content; admins write it.
+create policy "members read announcements" on public.announcements for select using (public.is_approved());
+create policy "admin write announcements"  on public.announcements for all using (public.is_admin()) with check (public.is_admin());
+
+create policy "members read events" on public.events for select using (public.is_approved());
+create policy "admin write events"  on public.events for all using (public.is_admin()) with check (public.is_admin());
+
+create policy "members read assignments" on public.assignments for select using (public.is_approved());
+create policy "admin write assignments"  on public.assignments for all using (public.is_admin()) with check (public.is_admin());
+
+create policy "members read resources" on public.resources for select using (public.is_approved());
+create policy "admin write resources"  on public.resources for all using (public.is_admin()) with check (public.is_admin());
+
+-- Submissions: a member manages their own; admins read/grade all.
+create policy "own submissions"     on public.submissions for all using (account_id = auth.uid()) with check (account_id = auth.uid());
+create policy "admin read submissions" on public.submissions for select using (public.is_admin());
+create policy "admin grade submissions" on public.submissions for update using (public.is_admin());
+
+-- Check-ins: a member creates/reads their own; admins read all.
+create policy "own check-ins"       on public.check_ins for all using (account_id = auth.uid()) with check (account_id = auth.uid());
+create policy "admin read check-ins" on public.check_ins for select using (public.is_admin());
+
+-- Questions: a member creates/reads their own + answered ones; admins manage all.
+create policy "member questions" on public.questions for select using (account_id = auth.uid() or status = 'answered' or public.is_admin());
+create policy "member ask"        on public.questions for insert with check (account_id = auth.uid());
+create policy "admin answer"      on public.questions for all using (public.is_admin()) with check (public.is_admin());
+
+-- Meeting notes: admins only.
+create policy "admin notes" on public.meeting_notes for all using (public.is_admin()) with check (public.is_admin());
+
+-- Site info: anyone can read (public pages use it); admins edit.
+create policy "public read site info" on public.site_info for select using (true);
+create policy "admin edit site info"  on public.site_info for all using (public.is_admin()) with check (public.is_admin());

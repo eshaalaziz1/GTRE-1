@@ -5,16 +5,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { MAIN_NAV, UTILITY_NAV } from "@/lib/nav";
+import { useGtre } from "@/lib/store/GtreStore";
 
 /**
  * Two-row institutional header, faithful to the Wisconsin / Graaskamp pattern:
- *  Row 1 (white): logo lockup left · utility links + search right
+ *  Row 1 (white): logo lockup left · utility links + member area + search right
  *  Row 2 (white, ruled): brand label left · section nav right
  * Re-skinned to Georgia Tech (navy / gold). Collapses to a toggle on mobile.
  */
 export default function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { currentAccount, logout } = useGtre();
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -46,6 +48,34 @@ export default function SiteHeader() {
                 </Link>
               ))}
             </nav>
+
+            {/* Member area */}
+            <div className="hidden md:flex items-center gap-3">
+              {currentAccount ? (
+                <>
+                  <Link
+                    href={currentAccount.role === "admin" ? "/admin" : "/portal"}
+                    className="text-[15px] font-semibold text-navy hover:text-navy-deep whitespace-nowrap"
+                  >
+                    {currentAccount.role === "admin" ? "Admin" : "My Portal"}
+                  </Link>
+                  <button
+                    onClick={logout}
+                    className="text-[13px] font-semibold text-secondary hover:text-navy whitespace-nowrap"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className="px-4 py-2 rounded-md bg-navy text-white text-[14px] font-semibold hover:bg-navy-deep transition-colors whitespace-nowrap"
+                >
+                  Member Login
+                </Link>
+              )}
+            </div>
+
             <button aria-label="Search" className="text-gold-hover hover:text-navy transition-colors">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <circle cx="11" cy="11" r="7" />
@@ -90,7 +120,7 @@ export default function SiteHeader() {
       {/* Mobile menu */}
       {open && (
         <nav className="lg:hidden border-t border-border bg-white">
-          {[...UTILITY_NAV, ...MAIN_NAV].map((item) => (
+          {[...MAIN_NAV, ...UTILITY_NAV].map((item) => (
             <Link
               key={item.label}
               href={item.href}
@@ -102,6 +132,34 @@ export default function SiteHeader() {
               {item.label}
             </Link>
           ))}
+          {currentAccount ? (
+            <>
+              <Link
+                href={currentAccount.role === "admin" ? "/admin" : "/portal"}
+                onClick={() => setOpen(false)}
+                className="block px-6 py-3 text-sm font-semibold border-b border-border text-navy bg-surface"
+              >
+                {currentAccount.role === "admin" ? "Admin Portal" : "My Portal"}
+              </Link>
+              <button
+                onClick={() => {
+                  logout();
+                  setOpen(false);
+                }}
+                className="block w-full text-left px-6 py-3 text-sm font-semibold border-b border-border text-secondary"
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="block px-6 py-3 text-sm font-semibold border-b border-border text-navy bg-surface"
+            >
+              Member Login
+            </Link>
+          )}
         </nav>
       )}
     </header>

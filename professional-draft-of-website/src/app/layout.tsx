@@ -3,6 +3,7 @@ import { Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
+import { GtreProvider } from "@/lib/store/GtreStore";
 
 const sourceSans = Source_Sans_3({
   variable: "--font-source-sans",
@@ -23,9 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sourceSans.variable} antialiased`}>
-        <SiteHeader />
-        <main>{children}</main>
-        <Footer />
+        <GtreProvider>
+          <SiteHeader />
+          <main>{children}</main>
+          <Footer />
+        </GtreProvider>
       </body>
     </html>
   );
