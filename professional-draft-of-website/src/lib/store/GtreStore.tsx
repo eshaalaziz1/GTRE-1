@@ -38,7 +38,11 @@ import type {
   Submission,
 } from "./types";
 
-const STORAGE_KEY = "gtre-store-v1";
+const STORAGE_KEY = "gtre-store";
+// Bump this whenever the seed's SHAPE or baseline content changes (e.g. the
+// real schedule). Persisted data tagged with an older version is discarded on
+// load so everyone picks up the new seed instead of being stuck on stale data.
+const SEED_VERSION = 2;
 
 function uid(prefix: string): string {
   const rand =
@@ -143,9 +147,14 @@ export function GtreProvider({ children }: { children: ReactNode }) {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        const parsed = JSON.parse(raw) as GtreState;
-        // Merge in any new seed keys so older stored state stays valid.
-        setState({ ...SEED, ...parsed, siteInfo: { ...SEED.siteInfo, ...parsed.siteInfo } });
+        const payload = JSON.parse(raw) as { v?: number; state?: GtreState };
+        // Only restore data written by the current seed version. Older data
+        // (e.g. before the real schedule was added) is discarded so the new
+        // seed loads instead of leaving the user stuck on stale content.
+        if (payload && payload.v === SEED_VERSION && payload.state) {
+          const parsed = payload.state;
+          setState({ ...SEED, ...parsed, siteInfo: { ...SEED.siteInfo, ...parsed.siteInfo } });
+        }
       }
     } catch {
       /* ignore corrupt storage */
@@ -153,11 +162,11 @@ export function GtreProvider({ children }: { children: ReactNode }) {
     setHydrated(true);
   }, []);
 
-  // Persist on every change (once hydrated).
+  // Persist on every change (once hydrated), tagged with the seed version.
   useEffect(() => {
     if (!hydrated) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: SEED_VERSION, state }));
     } catch {
       /* ignore quota errors */
     }
