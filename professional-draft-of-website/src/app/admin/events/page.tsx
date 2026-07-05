@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { useGtre } from "@/lib/store/GtreStore";
-import { Badge, Button, Card, ConfirmDelete, EmptyState, Field, Notice, Select, TextArea } from "@/components/ui";
-import type { ClubEvent } from "@/lib/store/types";
+import { Badge, Button, Card, ConfirmDelete, EmptyState, Field, Notice, Select, Tabs, TextArea } from "@/components/ui";
+import type { ClubEvent, EventTrack } from "@/lib/store/types";
 
 const TYPES: ClubEvent["type"][] = ["Meeting", "Event", "Workshop", "Deadline", "Social", "Case Study"];
+const TRACKS: EventTrack[] = ["Analyst Program", "Industry Events", "General"];
 
 export default function AdminEvents() {
   const { state, addEvent } = useGtre();
+  const [track, setTrack] = useState<EventTrack>("Analyst Program");
   const [form, setForm] = useState({
     title: "",
     type: "Meeting" as ClubEvent["type"],
@@ -19,16 +21,14 @@ export default function AdminEvents() {
     checkInCode: "",
   });
   const [added, setAdded] = useState(false);
-
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
-
-  const events = [...state.events].sort((a, b) => a.date.localeCompare(b.date));
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.title.trim() || !form.date) return;
     addEvent({
       title: form.title,
+      track,
       type: form.type,
       date: form.date,
       time: form.time || undefined,
@@ -46,64 +46,99 @@ export default function AdminEvents() {
       <div>
         <h2 className="display text-3xl text-navy">Events &amp; Check-Ins</h2>
         <p className="text-secondary mt-1">
-          Add meetings, events, and deadlines (they feed the public calendar), set check-in codes, and view attendance.
+          Add meetings and events (they feed the calendar and portal schedule), set check-in codes, reorder within a
+          track, edit, delete, and view attendance.
         </p>
       </div>
 
       <Card>
         <h3 className="font-semibold text-navy mb-4">New event</h3>
         <form onSubmit={onSubmit} className="space-y-4">
-          {added && <Notice tone="success">Event added to the calendar.</Notice>}
+          {added && <Notice tone="success">Event added to the schedule.</Notice>}
+          <div className="grid sm:grid-cols-2 gap-3">
+            <Select label="Track" value={track} onChange={(v) => setTrack(v as EventTrack)} options={TRACKS.map((t) => ({ value: t, label: t }))} />
+            <Select label="Type" value={form.type} onChange={(v) => set("type", v)} options={TYPES.map((t) => ({ value: t, label: t }))} />
+          </div>
           <Field label="Title" value={form.title} onChange={(v) => set("title", v)} required />
           <div className="grid sm:grid-cols-3 gap-3">
-            <Select label="Type" value={form.type} onChange={(v) => set("type", v)} options={TYPES.map((t) => ({ value: t, label: t }))} />
             <Field label="Date" type="date" value={form.date} onChange={(v) => set("date", v)} required />
             <Field label="Time" value={form.time} onChange={(v) => set("time", v)} placeholder="6:00 PM" />
+            <Field label="Location" value={form.location} onChange={(v) => set("location", v)} placeholder="Caddell" />
           </div>
-          <Field label="Location" value={form.location} onChange={(v) => set("location", v)} placeholder="Scheller 200" />
           <TextArea label="Description" value={form.description} onChange={(v) => set("description", v)} rows={2} />
-          <Field
-            label="Check-in code (optional)"
-            value={form.checkInCode}
-            onChange={(v) => set("checkInCode", v.toUpperCase())}
-            placeholder="e.g. GTRE27"
-          />
+          <Field label="Check-in code (optional)" value={form.checkInCode} onChange={(v) => set("checkInCode", v.toUpperCase())} placeholder="e.g. INTRO" />
           <Button type="submit">Add event</Button>
         </form>
       </Card>
 
-      <section>
-        <h3 className="text-sm font-semibold text-navy uppercase tracking-wide mb-3">Events ({events.length})</h3>
-        {events.length === 0 ? (
-          <EmptyState title="No events yet." />
-        ) : (
-          <div className="space-y-3">
-            {events.map((e) => (
-              <EventRow key={e.id} event={e} />
-            ))}
-          </div>
-        )}
-      </section>
+      <TrackedEventList />
     </div>
   );
 }
 
-function EventRow({ event: e }: { event: ClubEvent }) {
-  const { state, updateEvent, deleteEvent } = useGtre();
+function TrackedEventList() {
+  const { state } = useGtre();
+  const [track, setTrack] = useState<EventTrack>("Analyst Program");
+
+  const counts = Object.fromEntries(TRACKS.map((t) => [t, state.events.filter((e) => e.track === t).length])) as Record<EventTrack, number>;
+  const events = state.events.filter((e) => e.track === track).sort((a, b) => a.order - b.order || a.date.localeCompare(b.date));
+
+  return (
+    <section className="space-y-4">
+      <Tabs active={track} onChange={(k) => setTrack(k as EventTrack)} tabs={TRACKS.map((t) => ({ key: t, label: `${t} (${counts[t]})` }))} />
+      {events.length === 0 ? (
+        <EmptyState title="No events in this track yet." />
+      ) : (
+        <div className="space-y-3">
+          {events.map((e, i) => (
+            <EventRow key={e.id} event={e} isFirst={i === 0} isLast={i === events.length - 1} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function EventRow({ event: e, isFirst, isLast }: { event: ClubEvent; isFirst: boolean; isLast: boolean }) {
+  const { state, updateEvent, deleteEvent, moveEvent } = useGtre();
   const [showAttendees, setShowAttendees] = useState(false);
+  const [editing, setEditing] = useState(false);
   const attendees = state.checkIns.filter((c) => c.eventId === e.id);
+
+  if (editing) return <EventEditForm event={e} onDone={() => setEditing(false)} />;
 
   return (
     <Card>
       <div className="flex flex-wrap items-start gap-4">
+        {/* Reorder controls */}
+        <div className="flex flex-col gap-1 shrink-0">
+          <button
+            onClick={() => moveEvent(e.id, "up")}
+            disabled={isFirst}
+            className="w-7 h-7 rounded border border-border text-navy hover:bg-surface disabled:opacity-30"
+            aria-label="Move up"
+          >
+            ↑
+          </button>
+          <button
+            onClick={() => moveEvent(e.id, "down")}
+            disabled={isLast}
+            className="w-7 h-7 rounded border border-border text-navy hover:bg-surface disabled:opacity-30"
+            aria-label="Move down"
+          >
+            ↓
+          </button>
+        </div>
+
         <div className="text-center w-14 shrink-0">
           <div className="text-[11px] uppercase text-gold-hover font-semibold">
             {new Date(e.date + "T12:00:00").toLocaleDateString("en-US", { month: "short" })}
           </div>
           <div className="text-2xl text-navy display leading-none">{new Date(e.date + "T12:00:00").getDate()}</div>
         </div>
+
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Badge tone="navy">{e.type}</Badge>
             {e.checkInCode && (
               <Badge tone={e.checkInOpen ? "green" : "gray"}>
@@ -116,11 +151,11 @@ function EventRow({ event: e }: { event: ClubEvent }) {
           {e.description && <p className="text-[13px] text-secondary mt-1">{e.description}</p>}
 
           <div className="flex flex-wrap items-center gap-4 mt-3 text-[13px]">
+            <button onClick={() => setEditing(true)} className="font-semibold text-gold-hover hover:text-navy">
+              Edit
+            </button>
             {e.checkInCode && (
-              <button
-                onClick={() => updateEvent(e.id, { checkInOpen: !e.checkInOpen })}
-                className="font-semibold text-gold-hover hover:text-navy"
-              >
+              <button onClick={() => updateEvent(e.id, { checkInOpen: !e.checkInOpen })} className="font-semibold text-gold-hover hover:text-navy">
                 {e.checkInOpen ? "Close check-in" : "Open check-in"}
               </button>
             )}
@@ -147,6 +182,64 @@ function EventRow({ event: e }: { event: ClubEvent }) {
           )}
         </div>
       </div>
+    </Card>
+  );
+}
+
+function EventEditForm({ event: e, onDone }: { event: ClubEvent; onDone: () => void }) {
+  const { updateEvent } = useGtre();
+  const [form, setForm] = useState({
+    title: e.title,
+    track: e.track,
+    type: e.type,
+    date: e.date,
+    time: e.time ?? "",
+    location: e.location ?? "",
+    description: e.description ?? "",
+    checkInCode: e.checkInCode ?? "",
+  });
+  const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
+
+  function save(ev: React.FormEvent) {
+    ev.preventDefault();
+    updateEvent(e.id, {
+      title: form.title,
+      track: form.track,
+      type: form.type,
+      date: form.date,
+      time: form.time || undefined,
+      location: form.location || undefined,
+      description: form.description || undefined,
+      checkInCode: form.checkInCode.trim().toUpperCase() || undefined,
+    });
+    onDone();
+  }
+
+  return (
+    <Card>
+      <form onSubmit={save} className="space-y-4">
+        <h3 className="font-semibold text-navy">Edit event</h3>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Select label="Track" value={form.track} onChange={(v) => set("track", v)} options={TRACKS.map((t) => ({ value: t, label: t }))} />
+          <Select label="Type" value={form.type} onChange={(v) => set("type", v)} options={TYPES.map((t) => ({ value: t, label: t }))} />
+        </div>
+        <Field label="Title" value={form.title} onChange={(v) => set("title", v)} required />
+        <div className="grid sm:grid-cols-3 gap-3">
+          <Field label="Date" type="date" value={form.date} onChange={(v) => set("date", v)} required />
+          <Field label="Time" value={form.time} onChange={(v) => set("time", v)} />
+          <Field label="Location" value={form.location} onChange={(v) => set("location", v)} />
+        </div>
+        <TextArea label="Description" value={form.description} onChange={(v) => set("description", v)} rows={2} />
+        <Field label="Check-in code" value={form.checkInCode} onChange={(v) => set("checkInCode", v.toUpperCase())} />
+        <div className="flex gap-2">
+          <Button type="submit" variant="gold">
+            Save changes
+          </Button>
+          <Button type="button" variant="outline" onClick={onDone}>
+            Cancel
+          </Button>
+        </div>
+      </form>
     </Card>
   );
 }

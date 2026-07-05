@@ -92,9 +92,10 @@ type GtreContextValue = {
   deleteAnnouncement: (id: string) => void;
 
   // Events / calendar
-  addEvent: (e: Omit<ClubEvent, "id">) => void;
+  addEvent: (e: Omit<ClubEvent, "id" | "order">) => void;
   updateEvent: (id: string, patch: Partial<ClubEvent>) => void;
   deleteEvent: (id: string) => void;
+  moveEvent: (id: string, direction: "up" | "down") => void;
 
   // Check-in
   checkIn: (code: string) => { ok: boolean; message: string };
@@ -297,7 +298,13 @@ export function GtreProvider({ children }: { children: ReactNode }) {
 
       // ---- Events -------------------------------------------------------
       addEvent(e) {
-        setState((s) => ({ ...s, events: [...s.events, { ...e, id: uid("evt") }] }));
+        setState((s) => {
+          // New events append to the end of their track's manual order.
+          const maxOrder = s.events
+            .filter((ev) => ev.track === e.track)
+            .reduce((m, ev) => Math.max(m, ev.order), -1);
+          return { ...s, events: [...s.events, { ...e, id: uid("evt"), order: maxOrder + 1 }] };
+        });
       },
       updateEvent(id, patch) {
         setState((s) => ({
@@ -307,6 +314,29 @@ export function GtreProvider({ children }: { children: ReactNode }) {
       },
       deleteEvent(id) {
         setState((s) => ({ ...s, events: s.events.filter((e) => e.id !== id) }));
+      },
+      moveEvent(id, direction) {
+        setState((s) => {
+          const target = s.events.find((e) => e.id === id);
+          if (!target) return s;
+          // Reorder only within the same track, using the manual order value.
+          const siblings = s.events
+            .filter((e) => e.track === target.track)
+            .sort((a, b) => a.order - b.order);
+          const idx = siblings.findIndex((e) => e.id === id);
+          const swapWith = direction === "up" ? idx - 1 : idx + 1;
+          if (swapWith < 0 || swapWith >= siblings.length) return s;
+          const a = siblings[idx];
+          const b = siblings[swapWith];
+          return {
+            ...s,
+            events: s.events.map((e) => {
+              if (e.id === a.id) return { ...e, order: b.order };
+              if (e.id === b.id) return { ...e, order: a.order };
+              return e;
+            }),
+          };
+        });
       },
 
       // ---- Check-in -----------------------------------------------------

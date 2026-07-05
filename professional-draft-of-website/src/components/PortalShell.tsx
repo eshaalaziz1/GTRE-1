@@ -14,6 +14,7 @@ import Avatar from "@/components/Avatar";
 
 const TABS = [
   { href: "/portal", label: "Home", exact: true },
+  { href: "/portal/calendar", label: "Schedule" },
   { href: "/portal/assignments", label: "Assignments" },
   { href: "/portal/grades", label: "Grades" },
   { href: "/portal/check-in", label: "Check-In" },

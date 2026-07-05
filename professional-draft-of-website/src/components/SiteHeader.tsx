@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { MAIN_NAV, UTILITY_NAV } from "@/lib/nav";
 import { useGtre } from "@/lib/store/GtreStore";
@@ -15,8 +15,19 @@ import { useGtre } from "@/lib/store/GtreStore";
  */
 export default function SiteHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQ, setSearchQ] = useState("");
   const { currentAccount, logout } = useGtre();
+
+  function submitSearch(e: React.FormEvent) {
+    e.preventDefault();
+    const q = searchQ.trim();
+    router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search");
+    setSearchOpen(false);
+    setSearchQ("");
+  }
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -76,12 +87,29 @@ export default function SiteHeader() {
               )}
             </div>
 
-            <button aria-label="Search" className="text-gold-hover hover:text-navy transition-colors">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <circle cx="11" cy="11" r="7" />
-                <line x1="21" y1="21" x2="16.5" y2="16.5" />
-              </svg>
-            </button>
+            {searchOpen ? (
+              <form onSubmit={submitSearch} className="hidden sm:flex items-center">
+                <input
+                  autoFocus
+                  value={searchQ}
+                  onChange={(e) => setSearchQ(e.target.value)}
+                  onBlur={() => !searchQ && setSearchOpen(false)}
+                  placeholder="Search…"
+                  className="w-44 px-3 py-1.5 border border-border rounded-md text-sm outline-none focus:border-navy"
+                />
+                <button type="submit" aria-label="Search" className="ml-1 text-gold-hover hover:text-navy">
+                  <SearchIcon />
+                </button>
+              </form>
+            ) : (
+              <button
+                aria-label="Search"
+                onClick={() => setSearchOpen(true)}
+                className="text-gold-hover hover:text-navy transition-colors"
+              >
+                <SearchIcon />
+              </button>
+            )}
             <button
               onClick={() => setOpen((v) => !v)}
               className="lg:hidden flex flex-col gap-1.5 p-1"
@@ -120,6 +148,14 @@ export default function SiteHeader() {
       {/* Mobile menu */}
       {open && (
         <nav className="lg:hidden border-t border-border bg-white">
+          <form onSubmit={submitSearch} className="p-3 border-b border-border">
+            <input
+              value={searchQ}
+              onChange={(e) => setSearchQ(e.target.value)}
+              placeholder="Search the site…"
+              className="w-full px-3 py-2 border border-border rounded-md text-sm outline-none focus:border-navy"
+            />
+          </form>
           {[...MAIN_NAV, ...UTILITY_NAV].map((item) => (
             <Link
               key={item.label}
@@ -163,5 +199,14 @@ export default function SiteHeader() {
         </nav>
       )}
     </header>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+      <circle cx="11" cy="11" r="7" />
+      <line x1="21" y1="21" x2="16.5" y2="16.5" />
+    </svg>
   );
 }

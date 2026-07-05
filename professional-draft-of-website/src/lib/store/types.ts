@@ -53,14 +53,22 @@ export type Announcement = {
 };
 
 /** A calendar entry: meeting, event, or deadline. Feeds the calendar + check-in. */
+export type EventTrack = "Analyst Program" | "Industry Events" | "General";
+
 export type ClubEvent = {
   id: string;
   title: string;
   type: "Meeting" | "Event" | "Workshop" | "Deadline" | "Social" | "Case Study";
+  // Which schedule track this belongs to (mirrors the club's two-column schedule).
+  track: EventTrack;
   date: string; // ISO yyyy-mm-dd
   time?: string;
   location?: string;
   description?: string;
+  // Manual display order within a track (lower = earlier). Admins reorder with
+  // up/down controls; new events append to the end. The calendar grid still
+  // sorts by date — order only drives the schedule list view.
+  order: number;
   // Check-in: members enter this code during the event to record attendance.
   checkInCode?: string;
   checkInOpen?: boolean;
