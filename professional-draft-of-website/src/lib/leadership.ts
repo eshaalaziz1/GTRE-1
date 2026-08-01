@@ -2,16 +2,20 @@
 // own sections (matching the club's year-by-year leadership layout). The newest
 // term goes first.
 //
-// HEADSHOTS: each member's `photo` points at /public/exec/<slug>.jpg. Drop a
-// square headshot there named by slug (e.g. public/exec/rustin-jalali.jpg) and
-// it appears automatically; until then a clean initials avatar shows instead.
+// HEADSHOTS: each member's `photo` points at /public/exec/<slug>.jpg|png. Drop a
+// square headshot there named by slug and it appears automatically; until then a
+// clean initials avatar shows instead. `focus` (CSS object-position) and `zoom`
+// tune how each photo is cropped into the circle so every face is centered,
+// regardless of whether the original is a portrait, square, or landscape.
 
 export type ExecMember = {
   slug: string;
   name: string;
   role: string;
   bio: string;
-  photo: string; // /exec/<slug>.jpg — falls back to initials if the file is absent
+  photo: string;
+  focus?: string; // object-position / transform-origin, e.g. "50% 30%"
+  zoom?: number; // >1 tightens the crop on the face
 };
 
 export type ExecTerm = {
@@ -26,6 +30,8 @@ const fall2026: ExecMember[] = [
     role: "President",
     bio: "Rustin is a third-year Business major with a concentration in Finance and is pursuing two minors in Real Estate and Spanish. He has past experience with Third and Urban as a mixed-use development intern and with Brasfield & Gorrie as a pre-construction intern.",
     photo: "/exec/rustin-jalali.jpg",
+    focus: "50% 24%",
+    zoom: 1.0,
   },
   {
     slug: "adam-stadelmeier",
@@ -33,6 +39,8 @@ const fall2026: ExecMember[] = [
     role: "Managing Director of Fund",
     bio: "Adam is a third-year Business Administration major with a concentration in Finance and is pursuing a minor in Real Estate Development and Finance. He has past experience with Cousins Properties as an analyst, Creek Dog Capital as a deal origination intern, and The Whiting-Turner Contracting Company as a project management intern.",
     photo: "/exec/adam-stadelmeier.jpg",
+    focus: "50% 33%",
+    zoom: 1.08,
   },
   {
     slug: "neal-shah",
@@ -40,6 +48,8 @@ const fall2026: ExecMember[] = [
     role: "Portfolio Manager of Fund",
     bio: "Neal is a third-year Business Administration major with a concentration in Finance and a minor in FinTech. He has past experience with Stockbridge as a real estate private equity summer analyst and with Newmark as a business development intern.",
     photo: "/exec/neal-shah.jpg",
+    focus: "50% 32%",
+    zoom: 1.22,
   },
   {
     slug: "sree-hariharan",
@@ -47,6 +57,8 @@ const fall2026: ExecMember[] = [
     role: "Undergraduate VP",
     bio: "Sree is a third-year Civil Engineering major. She has past experience with Kimley-Horn's development team, RBMT as a real estate capital allocations intern, and Sotheby's International Realty as a real estate intern.",
     photo: "/exec/sree-hariharan.jpg",
+    focus: "50% 28%",
+    zoom: 1.05,
   },
   {
     slug: "tanish-patel",
@@ -54,6 +66,8 @@ const fall2026: ExecMember[] = [
     role: "VP of Development",
     bio: "Tanish is a fourth-year Business Administration major with a concentration in Finance, a minor in Economics, and certificates in Accounting and Business Analytics. He has past experience with Grant Thornton as an operations and performance consulting intern and with Reunitus as a corporate strategy and financial planning intern.",
     photo: "/exec/tanish-patel.png",
+    focus: "54% 34%",
+    zoom: 1.32,
   },
   {
     slug: "josh-craig",
@@ -61,6 +75,8 @@ const fall2026: ExecMember[] = [
     role: "VP of Industry Relations",
     bio: "Josh is a Building Construction major at Georgia Tech with a focus on real estate and development.",
     photo: "/exec/josh-craig.png",
+    focus: "50% 30%",
+    zoom: 1.18,
   },
   {
     slug: "evan-mamun",
@@ -68,6 +84,8 @@ const fall2026: ExecMember[] = [
     role: "Director of Mentorship",
     bio: "Evan is a third-year Business major with a concentration in Finance. He has past experience with Octave Holdings and Investments as a summer analyst and with TWO Capital Partners as a real estate private equity summer analyst.",
     photo: "/exec/evan-mamun.jpg",
+    focus: "50% 36%",
+    zoom: 1.08,
   },
   {
     slug: "suvan-gumadavalli",
@@ -75,6 +93,8 @@ const fall2026: ExecMember[] = [
     role: "Director of Alumni Relations",
     bio: "Suvan is a second-year Mechanical Engineering major.",
     photo: "/exec/suvan-gumadavalli.jpg",
+    focus: "48% 40%",
+    zoom: 1.08,
   },
   {
     slug: "emmie-adams",
@@ -82,6 +102,8 @@ const fall2026: ExecMember[] = [
     role: "Director of Marketing",
     bio: "Emmie is a third-year Construction Science and Management major. She has past experience with Reeves Young as an industrial preconstruction intern.",
     photo: "/exec/emmie-adams.jpg",
+    focus: "46% 34%",
+    zoom: 1.12,
   },
   {
     slug: "olivia-brown",
@@ -89,6 +111,8 @@ const fall2026: ExecMember[] = [
     role: "Director of Marketing",
     bio: "Olivia is a second-year Construction Science and Management major and a Stamps President's Scholar. She has contributed as a student researcher in Georgia Tech's Building for Communities VIP program.",
     photo: "/exec/olivia-brown.jpg",
+    focus: "48% 33%",
+    zoom: 1.06,
   },
   {
     slug: "eshaal-aziz",
@@ -96,6 +120,8 @@ const fall2026: ExecMember[] = [
     role: "Director of IT",
     bio: "Eshaal is a second-year Computer Science major with a focus in FinTech. She has past experience with Mubadala Capital as a finance and strategy intern and with Cleveland Clinic Abu Dhabi as a data science and business intelligence intern.",
     photo: "/exec/eshaal-aziz.jpg",
+    focus: "50% 33%",
+    zoom: 1.18,
   },
   {
     slug: "leonid-shteynblik",
@@ -103,6 +129,8 @@ const fall2026: ExecMember[] = [
     role: "Treasurer",
     bio: "Leonid is a second-year Civil Engineering major pursuing a minor in French. He has past experience with Gabriel Fuentes Jr. Construction as an engineering intern and with PharmLogic International as a development intern.",
     photo: "/exec/leonid-shteynblik.png",
+    focus: "50% 38%",
+    zoom: 1.08,
   },
 ];
 

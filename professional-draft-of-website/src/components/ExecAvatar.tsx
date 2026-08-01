@@ -3,19 +3,24 @@
 import { useState } from "react";
 
 /**
- * Headshot with a graceful fallback: tries to load the image at `src`, and if
- * the file isn't there yet (404), shows a clean initials avatar instead. This
- * lets us wire every exec member to /exec/<slug>.jpg up front — the photos
- * appear automatically the moment the files are added to /public/exec.
+ * Circular headshot that centers each person's face regardless of how their
+ * photo was framed (portrait, square, or landscape). `focus` sets the crop's
+ * focal point (CSS object-position / transform-origin) and `zoom` tightens the
+ * crop, so a face that sits high or off-center is pulled to the middle of the
+ * circle. Falls back to an initials avatar if the image file is missing.
  */
 export default function ExecAvatar({
   src,
   name,
   size = 150,
+  focus = "50% 30%",
+  zoom = 1,
 }: {
   src: string;
   name: string;
   size?: number;
+  focus?: string;
+  zoom?: number;
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -38,15 +43,18 @@ export default function ExecAvatar({
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt={name}
-      width={size}
-      height={size}
-      onError={() => setFailed(true)}
-      className="rounded-full object-cover shrink-0"
+    <div
+      className="rounded-full overflow-hidden bg-gold-soft shrink-0"
       style={{ width: size, height: size }}
-    />
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={name}
+        onError={() => setFailed(true)}
+        className="w-full h-full object-cover"
+        style={{ objectPosition: focus, transform: `scale(${zoom})`, transformOrigin: focus }}
+      />
+    </div>
   );
 }

@@ -49,7 +49,7 @@ export default function LeadershipPage() {
 function PresidentCard({ member }: { member: ExecMember }) {
   return (
     <div className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-7 flex flex-col sm:flex-row items-center sm:items-start gap-7">
-      <ExecAvatar src={member.photo} name={member.name} size={168} />
+      <ExecAvatar src={member.photo} name={member.name} size={168} focus={member.focus} zoom={member.zoom} />
       <div className="text-center sm:text-left">
         <div className="text-[12px] font-semibold uppercase tracking-[0.2em] text-gold-hover mb-1">
           {member.role}
@@ -64,7 +64,7 @@ function PresidentCard({ member }: { member: ExecMember }) {
 function ExecCard({ member }: { member: ExecMember }) {
   return (
     <div className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-6 flex flex-col items-center text-center">
-      <ExecAvatar src={member.photo} name={member.name} size={132} />
+      <ExecAvatar src={member.photo} name={member.name} size={132} focus={member.focus} zoom={member.zoom} />
       <h3 className="mt-4 text-[17px] font-bold text-navy">{member.name}</h3>
       <div className="text-[14px] italic text-gold-hover mt-0.5">{member.role}</div>
       <p className="text-[14px] text-secondary leading-relaxed mt-3">{member.bio}</p>
