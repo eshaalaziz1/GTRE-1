@@ -19,7 +19,7 @@ export default function AboutPage() {
             playsInline
             preload="auto"
             poster="/about-hero-poster.jpg"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-[center_38%]"
           >
             <source src="/about-hero.mp4" type="video/mp4" />
           </video>
@@ -31,7 +31,7 @@ export default function AboutPage() {
           <div className="text-gold-hover uppercase tracking-[0.3em] text-[11px] sm:text-[12px] font-semibold mb-4">
             Georgia Institute of Technology
           </div>
-          <h1 className="font-bold uppercase tracking-tight leading-[0.86] text-navy text-[11vw] sm:text-6xl lg:text-7xl">
+          <h1 className="font-[family-name:var(--font-source-serif)] font-bold uppercase tracking-tight leading-[0.9] text-navy text-[10vw] sm:text-6xl lg:text-7xl">
             Georgia Tech
             <span className="block text-gold">Real Estate Club</span>
           </h1>
