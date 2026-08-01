@@ -45,10 +45,10 @@ export const STATIC_INDEX: SearchItem[] = [
   })),
   ...BOARD.map((m) => ({
     title: m.name,
-    description: `${m.position}, ${m.organization}`,
-    href: `/advisory-board/${m.slug}`,
+    description: m.role,
+    href: "/advisory-board",
     category: "Advisory Board",
-    keywords: `${m.group} ${m.focus.join(" ")}`,
+    keywords: `advisory board advisor ${m.role}`,
   })),
   ...ANALYSTS.map((a) => ({
     title: a.name,
