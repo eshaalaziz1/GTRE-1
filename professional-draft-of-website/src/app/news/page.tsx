@@ -1,5 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
-import { LINKEDIN_URL, LINKEDIN_POSTS } from "@/lib/linkedin";
+import LinkedInFeed from "@/components/LinkedInFeed";
+import { LINKEDIN_URL, LINKEDIN_POSTS, SOCIABLEKIT_EMBED_ID } from "@/lib/linkedin";
 
 export const metadata = { title: "News | GT Real Estate Club" };
 
@@ -28,7 +29,9 @@ export default function NewsPage() {
           </a>
         </div>
 
-        {LINKEDIN_POSTS.length === 0 ? (
+        {SOCIABLEKIT_EMBED_ID ? (
+          <LinkedInFeed embedId={SOCIABLEKIT_EMBED_ID} />
+        ) : LINKEDIN_POSTS.length === 0 ? (
           <FollowPanel />
         ) : (
           // Masonry-style columns so variable-height post embeds pack cleanly.
