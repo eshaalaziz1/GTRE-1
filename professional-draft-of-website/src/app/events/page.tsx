@@ -45,7 +45,7 @@ export default function EventsPage() {
                 </span>
                 <div className="text-lg font-semibold text-navy">{e.title}</div>
                 <div className="text-[14px] text-secondary mt-0.5">
-                  {e.time} · {e.location}
+                  {[e.time, e.location].filter(Boolean).join(" · ")}
                 </div>
               </div>
               <button className="shrink-0 px-5 py-2.5 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-surface transition-colors">

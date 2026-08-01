@@ -143,7 +143,7 @@ export default function AboutPage() {
                 </div>
                 <div className="border-l border-border pl-4">
                   <div className="font-semibold text-navy text-[15px]">{e.title}</div>
-                  <div className="text-[13px] text-secondary">{e.time} · {e.location}</div>
+                  <div className="text-[13px] text-secondary">{[e.time, e.location].filter(Boolean).join(" · ")}</div>
                 </div>
               </div>
             ))}

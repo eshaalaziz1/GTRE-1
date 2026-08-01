@@ -153,34 +153,17 @@ export type EventItem = {
   type: string;
 };
 
+// The club's real 2026 Industry Events series (from the program schedule).
+// Times are set per-event closer to the date; location is fixed here.
 export const EVENTS: EventItem[] = [
-  {
-    title: "Industry Panel: Careers in Development",
-    date: "Sep 18, 2026",
-    time: "6:00 PM",
-    location: "Scheller College of Business, Room 200",
-    type: "Panel",
-  },
-  {
-    title: "Financial Modeling Workshop",
-    date: "Sep 25, 2026",
-    time: "6:00 PM",
-    location: "Scheller College of Business, Room 200",
-    type: "Workshop",
-  },
-  {
-    title: "Fall Case Study Kickoff",
-    date: "Oct 2, 2026",
-    time: "6:00 PM",
-    location: "Scheller College of Business, Room 200",
-    type: "Case Study",
-  },
-  {
-    title: "Alumni Networking Night",
-    date: "Oct 16, 2026",
-    time: "7:00 PM",
-    location: "Ponce City Market",
-    type: "Networking",
-  },
+  { title: "Kickoff Event", date: "Sep 10, 2026", time: "", location: "Scheller Tower", type: "Kickoff" },
+  { title: "Careers in RE", date: "Sep 17, 2026", time: "", location: "Caddell", type: "Panel" },
+  { title: "JOINT Private Equity Panel", date: "Sep 24, 2026", time: "", location: "Biltmore", type: "Panel" },
+  { title: "Development Panel", date: "Oct 15, 2026", time: "", location: "Caddell", type: "Panel" },
+  { title: "Capital Markets Panel", date: "Oct 22, 2026", time: "", location: "Caddell", type: "Panel" },
+  { title: "Site Tour", date: "Oct 29, 2026", time: "", location: "Caddell", type: "Site Tour" },
+  { title: "Affordable Housing Panel", date: "Nov 5, 2026", time: "", location: "Caddell", type: "Panel" },
+  { title: "Site Tour", date: "Nov 12, 2026", time: "", location: "Caddell", type: "Site Tour" },
+  { title: "Entrepreneurship Panel", date: "Nov 19, 2026", time: "", location: "Caddell", type: "Panel" },
 ];
 
