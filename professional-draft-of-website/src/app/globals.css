@@ -38,3 +38,22 @@ body {
   letter-spacing: -0.01em;
   line-height: 1.08;
 }
+
+/* Scroll-reveal: content rises and fades in the first time it enters view. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

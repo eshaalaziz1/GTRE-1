@@ -287,7 +287,11 @@ export const SEED: GtreState = {
     contactEmail: "realestate@gatech.edu",
     analystProgramIntro:
       "The Analyst Program is a semester-long, hands-on curriculum that takes members from real estate fundamentals to a full underwriting case study. Members build models, present to alumni judges, and earn a place in the vetted Analyst Rolodex.",
-    syllabusEmbedUrl: "",
+    // Live-embedded syllabus (SharePoint/Word). `action=embedview` renders a
+    // read-only, scrollable viewer that reflects edits to the source document.
+    // Update this URL any time in Admin → Site Info.
+    syllabusEmbedUrl:
+      "https://gtvault-my.sharepoint.com/:w:/g/personal/jjohnson709_gatech_edu/IQAG5DhZ_CAYQ7Q0i30SEXYpARL_4OXuRyBX9ByaarWpyJ8?e=AKhQmr&action=embedview",
     googleCalendarEmbedUrl: "",
   },
 };

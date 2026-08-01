@@ -34,6 +34,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sourceSans.variable} ${sourceSerif.variable} antialiased`}>
+        {/* Without JS, show scroll-reveal content immediately instead of hidden. */}
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important;}`}</style>
+        </noscript>
         <GtreProvider>
           <SiteHeader />
           <main>{children}</main>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PhotoSlot from "@/components/PhotoSlot";
+import Reveal from "@/components/Reveal";
 import { VALUES, ENGAGEMENT, EVENTS, NEWS } from "@/lib/content";
 
 export const metadata = { title: "Georgia Tech Real Estate Club" };
@@ -36,8 +37,8 @@ export default function AboutPage() {
             <span className="block text-gold">Real Estate Club</span>
           </h1>
           <p className="mt-5 text-secondary text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Bridging the classroom and the industry — preparing Georgia Tech
-            students to become the most prepared analysts in the room.
+            Bridging the classroom and the industry to make Georgia Tech
+            students the most prepared analysts in the room.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <Link
@@ -57,6 +58,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission */}
+      <Reveal>
       <section className="bg-surface border-y border-border">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16">
           <div className="max-w-3xl">
@@ -80,8 +82,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      </Reveal>
 
       {/* Values */}
+      <Reveal>
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16">
         <div className="grid md:grid-cols-3 gap-5">
           {VALUES.map((v) => (
@@ -96,8 +100,10 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
+      </Reveal>
 
       {/* Get involved */}
+      <Reveal>
       <section id="get-involved" className="bg-surface border-y border-border scroll-mt-24">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16">
           <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-gold-hover mb-3">
@@ -118,8 +124,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      </Reveal>
 
       {/* Upcoming Events + Latest News (last three) */}
+      <Reveal>
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16 grid lg:grid-cols-2 gap-14">
         <div>
           <div className="flex items-end justify-between mb-7">
@@ -157,6 +165,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      </Reveal>
     </>
   );
 }
