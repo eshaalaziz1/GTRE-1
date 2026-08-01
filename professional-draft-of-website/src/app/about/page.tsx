@@ -1,59 +1,79 @@
 import Link from "next/link";
-import Breadcrumb from "@/components/Breadcrumb";
 import PhotoSlot from "@/components/PhotoSlot";
 import { VALUES, ENGAGEMENT, EVENTS, NEWS } from "@/lib/content";
 
-export const metadata = { title: "About | GT Real Estate Club" };
+export const metadata = { title: "Georgia Tech Real Estate Club" };
 
 export default function AboutPage() {
   return (
     <>
-      <Breadcrumb trail={[{ label: "About" }]} />
-
-      {/* Mission split hero with CTAs */}
-      <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-gold-hover mb-3">
-            Our Mission
-          </div>
-          <h1 className="display text-4xl lg:text-5xl text-navy">
-            Preparing Georgia Tech students to lead in real estate.
-          </h1>
-          <p className="mt-5 text-[15px] text-secondary leading-relaxed">
-            The Georgia Tech Real Estate Club bridges the gap between the
-            classroom and the industry, giving members the technical skills,
-            relationships, and real-world reps they need to launch careers in
-            acquisitions, development, debt, brokerage, and beyond. Everything we
-            do is built around one goal: helping Georgia Tech students become the
-            most prepared analysts in the room.
-          </p>
-          <div className="border-t border-gold mt-7" />
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link
-              href="/contact"
-              className="px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors"
-            >
-              Join the Club
-            </Link>
-            <Link
-              href="/rolodex"
-              className="px-6 py-3 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-surface transition-colors"
-            >
-              Hiring? View the Analyst Rolodex
-            </Link>
-          </div>
-        </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-br-[2rem] bg-navy">
+      {/* Home hero: full-color building loop (undimmed) above the club wordmark */}
+      <section className="w-full">
+        <div className="relative w-full h-[40vh] min-h-[260px] max-h-[520px] overflow-hidden bg-navy">
           <video
             autoPlay
             muted
             loop
             playsInline
+            preload="auto"
             poster="/about-hero-poster.jpg"
             className="absolute inset-0 w-full h-full object-cover"
           >
             <source src="/about-hero.mp4" type="video/mp4" />
           </video>
+        </div>
+        <div className="h-1 w-full bg-gold" />
+
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-12 text-center">
+          <div className="text-gold-hover uppercase tracking-[0.28em] text-[11px] sm:text-[13px] font-semibold mb-4">
+            Georgia Institute of Technology
+          </div>
+          <h1 className="display text-navy leading-[0.95] text-5xl sm:text-6xl lg:text-7xl">
+            Georgia Tech <span className="text-gold-hover">Real Estate Club</span>
+          </h1>
+          <p className="mt-6 text-secondary text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Bridging the classroom and the industry — preparing Georgia Tech
+            students to become the most prepared analysts in the room.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/contact"
+              className="px-7 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors"
+            >
+              Join the Club
+            </Link>
+            <Link
+              href="/analyst-program"
+              className="px-7 py-3 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-surface transition-colors"
+            >
+              Explore the Analyst Program
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission */}
+      <section className="bg-surface border-y border-border">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16">
+          <div className="max-w-3xl">
+            <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-gold-hover mb-3">
+              Our Mission
+            </div>
+            <h2 className="display text-3xl lg:text-4xl text-navy">
+              Preparing Georgia Tech students to lead in real estate.
+            </h2>
+            <p className="mt-5 text-[15px] text-secondary leading-relaxed">
+              The Georgia Tech Real Estate Club bridges the gap between the
+              classroom and the industry, giving members the technical skills,
+              relationships, and real-world reps they need to launch careers in
+              acquisitions, development, debt, brokerage, and beyond. Everything we
+              do is built around one goal: helping Georgia Tech students become the
+              most prepared analysts in the room.
+            </p>
+            <Link href="/rolodex" className="inline-block mt-6 text-sm font-semibold text-gold-hover hover:text-navy">
+              Hiring? View the Analyst Rolodex →
+            </Link>
+          </div>
         </div>
       </section>
 
