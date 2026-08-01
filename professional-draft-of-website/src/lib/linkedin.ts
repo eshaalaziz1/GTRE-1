@@ -15,7 +15,7 @@ export const LINKEDIN_URL = "https://www.linkedin.com/company/georgiatechrealest
 // (<div class="sk-ww-linkedin-page-post" data-embed-id="XXXXXXX">). When set, the
 // News page shows the live auto-updating feed; when empty it falls back to the
 // manual embeds below, then to the Follow panel.
-export const SOCIABLEKIT_EMBED_ID = "";
+export const SOCIABLEKIT_EMBED_ID = "25701946";
 
 export type LinkedInPost = { url: string; tall?: boolean };
 
