@@ -34,7 +34,7 @@ export const VALUES = [
 ];
 
 // "Get involved" cards (industry & alumni engagement).
-export type EngagementCard = { title: string; body: string; href: string; image?: string };
+export type EngagementCard = { title: string; body: string; href: string; image?: string; imgClassName?: string };
 
 export const ENGAGEMENT: EngagementCard[] = [
   {
@@ -53,6 +53,8 @@ export const ENGAGEMENT: EngagementCard[] = [
     title: "Alumni & Friends",
     body: "Once a member, always part of the network. Stay involved through mentorship, recruiting, and events.",
     href: "/alumni",
+    image: "/photos/women-panel.jpg",
+    imgClassName: "scale-[1.15]",
   },
 ];
 

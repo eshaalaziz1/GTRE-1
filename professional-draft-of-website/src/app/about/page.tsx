@@ -119,7 +119,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 gap-7 mt-10">
             {ENGAGEMENT.map((e) => (
               <Link key={e.title} href={e.href} className="group bg-white border border-border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
-                <PhotoSlot src={e.image ?? null} alt={e.title} ratio="aspect-[16/9]" className="rounded-none" />
+                <PhotoSlot src={e.image ?? null} alt={e.title} ratio="aspect-[16/9]" className="rounded-none" imgClassName={e.imgClassName} />
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-navy group-hover:text-gold-hover transition-colors">{e.title}</h3>
                   <p className="text-[14px] text-secondary mt-2 leading-relaxed">{e.body}</p>

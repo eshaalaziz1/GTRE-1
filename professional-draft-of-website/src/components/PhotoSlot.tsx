@@ -10,16 +10,20 @@ export default function PhotoSlot({
   alt,
   className = "",
   ratio = "aspect-[3/2]",
+  imgClassName = "",
 }: {
   src?: string | null;
   alt: string;
   className?: string;
   ratio?: string;
+  // Extra classes on the <Image> itself, e.g. "scale-110" to zoom, or an
+  // object-position utility to shift the crop.
+  imgClassName?: string;
 }) {
   if (src) {
     return (
       <div className={`relative ${ratio} overflow-hidden rounded-br-[2rem] ${className}`}>
-        <Image src={src} alt={alt} fill className="object-cover" />
+        <Image src={src} alt={alt} fill className={`object-cover ${imgClassName}`} />
       </div>
     );
   }
