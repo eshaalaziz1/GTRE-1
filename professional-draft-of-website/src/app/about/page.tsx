@@ -1,7 +1,8 @@
 import Link from "next/link";
 import PhotoSlot from "@/components/PhotoSlot";
 import Reveal from "@/components/Reveal";
-import { VALUES, ENGAGEMENT, EVENTS, NEWS } from "@/lib/content";
+import { VALUES, ENGAGEMENT, EVENTS } from "@/lib/content";
+import { LINKEDIN_URL } from "@/lib/linkedin";
 
 export const metadata = { title: "Georgia Tech Real Estate Club" };
 
@@ -154,14 +155,31 @@ export default function AboutPage() {
             <h2 className="display text-3xl text-navy">Latest News</h2>
             <Link href="/news" className="text-sm font-semibold text-gold-hover hover:text-navy">All news →</Link>
           </div>
-          <div className="space-y-5">
-            {NEWS.slice(0, 3).map((n) => (
-              <Link key={n.slug} href="/news" className="block bg-white border border-border rounded-lg p-5 hover:shadow-md transition-shadow">
-                <div className="text-[11px] uppercase tracking-wide text-gold-hover font-semibold">{n.category} · {n.date}</div>
-                <div className="font-semibold text-navy mt-1.5">{n.title}</div>
-                <p className="text-[14px] text-secondary mt-1.5 leading-relaxed">{n.excerpt}</p>
+          <div className="bg-navy rounded-xl p-7 text-white h-full flex flex-col justify-center">
+            <div className="text-gold text-[12px] font-semibold uppercase tracking-[0.2em] mb-2">
+              On LinkedIn
+            </div>
+            <div className="display text-2xl text-white">Follow the club for the latest.</div>
+            <p className="text-white/70 text-sm mt-3 leading-relaxed">
+              Event recaps, recruiting updates, member wins, and market takes,
+              posted to our LinkedIn and featured on the News page.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors"
+              >
+                Follow on LinkedIn →
+              </a>
+              <Link
+                href="/news"
+                className="px-6 py-3 rounded-md border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition-colors"
+              >
+                View News
               </Link>
-            ))}
+            </div>
           </div>
         </div>
       </section>
