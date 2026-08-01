@@ -78,7 +78,7 @@ function Overview() {
         </p>
         <div className="grid sm:grid-cols-3 gap-4">
           {[
-            { n: "8", l: "weekly modules" },
+            { n: "6", l: "program modules" },
             { n: "1", l: "capstone case study" },
             { n: "250+", l: "alumni network" },
           ].map((s) => (
@@ -112,17 +112,18 @@ function Overview() {
 function Curriculum() {
   return (
     <div>
-      <h2 className="display text-3xl text-navy mb-8">Semester curriculum</h2>
+      <h2 className="display text-3xl text-navy mb-8">Program curriculum</h2>
       <div className="space-y-4">
         {CURRICULUM.map((m) => (
-          <div key={m.week} className="flex flex-col sm:flex-row gap-5 border border-border rounded-xl p-6">
+          <div key={m.number} className="flex flex-col sm:flex-row gap-5 border border-border rounded-xl p-6">
             <div className="text-center sm:border-r sm:border-border sm:pr-6 w-full sm:w-24 shrink-0">
-              <div className="text-[12px] uppercase text-gold-hover font-semibold">Week</div>
-              <div className="text-3xl text-navy display leading-none">{m.week}</div>
+              <div className="text-[12px] uppercase text-gold-hover font-semibold">Module</div>
+              <div className="text-3xl text-navy display leading-none">{m.number}</div>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-navy">{m.title}</h3>
-              <div className="flex flex-wrap gap-2 mt-2">
+              <p className="text-[15px] text-secondary leading-relaxed mt-1.5">{m.description}</p>
+              <div className="flex flex-wrap gap-2 mt-3">
                 {m.topics.map((t) => (
                   <Badge key={t} tone="gray">{t}</Badge>
                 ))}
@@ -132,7 +133,7 @@ function Curriculum() {
         ))}
       </div>
       <p className="text-[13px] text-secondary mt-6">
-        Placeholder outline — the exec team finalizes topics each semester.
+        The exec team finalizes the schedule and topics each semester.
       </p>
     </div>
   );

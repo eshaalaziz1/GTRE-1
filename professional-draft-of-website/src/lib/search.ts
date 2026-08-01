@@ -7,6 +7,7 @@ import { NEWS } from "./content";
 import { BOARD } from "./board";
 import { ANALYSTS } from "./analysts";
 import { EXEC_TERMS } from "./leadership";
+import { OPPORTUNITIES } from "./opportunities";
 
 export type SearchItem = {
   title: string;
@@ -24,6 +25,7 @@ const PAGES: SearchItem[] = [
   { title: "Calendar", description: "Meetings, the Analyst Program, and industry events.", href: "/calendar", category: "Page", keywords: "schedule events dates calendar" },
   { title: "News", description: "Club updates, recaps, and announcements.", href: "/news", category: "Page" },
   { title: "Events", description: "Panels, workshops, and networking nights.", href: "/events", category: "Page" },
+  { title: "Opportunities", description: "Internships, co-ops, and full-time analyst roles.", href: "/opportunities", category: "Page", keywords: "jobs internships careers opportunities hiring recruiting analyst" },
   { title: "Alumni", description: "The alumni network and ways to give back.", href: "/alumni", category: "Page" },
   { title: "Leadership", description: "The student executive board.", href: "/leadership", category: "Page", keywords: "exec board officers president leadership team" },
   { title: "Advisory Board", description: "Industry leaders who guide the club.", href: "/advisory-board", category: "Page" },
@@ -64,6 +66,13 @@ export const STATIC_INDEX: SearchItem[] = [
       keywords: `${m.role} exec board ${t.term}`,
     })),
   ),
+  ...OPPORTUNITIES.map((o) => ({
+    title: o.title,
+    description: `${o.company} · ${o.location}`,
+    href: "/opportunities",
+    category: "Opportunity",
+    keywords: `${o.jobType} ${o.sector} jobs internships careers ${o.company}`,
+  })),
 ];
 
 export function scoreMatch(item: SearchItem, q: string): number {

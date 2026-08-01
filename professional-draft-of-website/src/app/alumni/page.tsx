@@ -57,12 +57,18 @@ export default function AlumniPage() {
           <div className="border border-border rounded-xl p-7">
             <h3 className="text-lg font-semibold text-navy mb-2">Recruit and Hire</h3>
             <p className="text-[15px] text-secondary leading-relaxed mb-5">
-              Browse vetted member profiles in the Analyst Rolodex and reach
-              students directly for internships and full-time analyst roles.
+              Browse vetted member profiles in the Analyst Rolodex, or post a
+              role to the Opportunities board and reach students directly for
+              internships and full-time analyst positions.
             </p>
-            <Link href="/rolodex" className="text-sm font-semibold text-gold-hover hover:text-navy">
-              Enter the Analyst Rolodex →
-            </Link>
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              <Link href="/rolodex" className="text-sm font-semibold text-gold-hover hover:text-navy">
+                Enter the Analyst Rolodex →
+              </Link>
+              <Link href="/opportunities" className="text-sm font-semibold text-gold-hover hover:text-navy">
+                View the Opportunities board →
+              </Link>
+            </div>
           </div>
           <div className="border border-border rounded-xl p-7">
             <h3 className="text-lg font-semibold text-navy mb-2">Mentor a Member</h3>

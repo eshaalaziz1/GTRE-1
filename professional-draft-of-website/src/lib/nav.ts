@@ -5,6 +5,7 @@ export const MAIN_NAV: { label: string; href: string }[] = [
   { label: "News", href: "/news" },
   { label: "Events", href: "/events" },
   { label: "Calendar", href: "/calendar" },
+  { label: "Opportunities", href: "/opportunities" },
   { label: "Alumni", href: "/alumni" },
   { label: "Leadership", href: "/leadership" },
   { label: "Advisory Board", href: "/advisory-board" },
