@@ -42,7 +42,7 @@ const STORAGE_KEY = "gtre-store";
 // Bump this whenever the seed's SHAPE or baseline content changes (e.g. the
 // real schedule). Persisted data tagged with an older version is discarded on
 // load so everyone picks up the new seed instead of being stuck on stale data.
-const SEED_VERSION = 3;
+const SEED_VERSION = 4;
 
 function uid(prefix: string): string {
   const rand =
