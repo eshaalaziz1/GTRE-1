@@ -53,14 +53,14 @@ const fall2026: ExecMember[] = [
     name: "Tanish Patel",
     role: "VP of Development",
     bio: "Tanish is a fourth-year Business Administration major with a concentration in Finance, a minor in Economics, and certificates in Accounting and Business Analytics. He has past experience with Grant Thornton as an operations and performance consulting intern and with Reunitus as a corporate strategy and financial planning intern.",
-    photo: "/exec/tanish-patel.jpg",
+    photo: "/exec/tanish-patel.png",
   },
   {
     slug: "josh-craig",
     name: "Josh Craig",
     role: "VP of Industry Relations",
     bio: "Josh is a Building Construction major at Georgia Tech with a focus on real estate and development.",
-    photo: "/exec/josh-craig.jpg",
+    photo: "/exec/josh-craig.png",
   },
   {
     slug: "evan-mamun",
@@ -102,7 +102,7 @@ const fall2026: ExecMember[] = [
     name: "Leonid Shteynblik",
     role: "Treasurer",
     bio: "Leonid is a second-year Civil Engineering major pursuing a minor in French. He has past experience with Gabriel Fuentes Jr. Construction as an engineering intern and with PharmLogic International as a development intern.",
-    photo: "/exec/leonid-shteynblik.jpg",
+    photo: "/exec/leonid-shteynblik.png",
   },
 ];
 
