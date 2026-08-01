@@ -61,8 +61,8 @@ export default function AboutPage() {
       {/* Mission */}
       <Reveal>
       <section className="bg-surface border-y border-border">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16">
-          <div className="max-w-3xl">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
             <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-gold-hover mb-3">
               Our Mission
             </div>
@@ -81,6 +81,11 @@ export default function AboutPage() {
               Hiring? View the Analyst Rolodex →
             </Link>
           </div>
+          <PhotoSlot
+            src="/photos/naiop-win.webp"
+            alt="Georgia Tech team wins the NAIOP Georgia School Challenge"
+            ratio="aspect-[16/10]"
+          />
         </div>
       </section>
       </Reveal>
@@ -114,7 +119,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 gap-7 mt-10">
             {ENGAGEMENT.map((e) => (
               <Link key={e.title} href={e.href} className="group bg-white border border-border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
-                <PhotoSlot src={null} alt={e.title} ratio="aspect-[16/9]" className="rounded-none" />
+                <PhotoSlot src={e.image ?? null} alt={e.title} ratio="aspect-[16/9]" className="rounded-none" />
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-navy group-hover:text-gold-hover transition-colors">{e.title}</h3>
                   <p className="text-[14px] text-secondary mt-2 leading-relaxed">{e.body}</p>

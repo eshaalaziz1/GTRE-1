@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
+import PhotoSlot from "@/components/PhotoSlot";
 import { Badge, Tabs } from "@/components/ui";
 import { useGtre } from "@/lib/store/GtreStore";
 import { CURRICULUM, PROGRAM_TOOLS } from "@/lib/program";
@@ -21,24 +22,31 @@ export default function AnalystProgramPage() {
 
       {/* Hero */}
       <section className="bg-navy text-white">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16">
-          <div className="text-gold text-[12px] font-semibold uppercase tracking-[0.22em] mb-4">
-            The Analyst Program
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="text-gold text-[12px] font-semibold uppercase tracking-[0.22em] mb-4">
+              The Analyst Program
+            </div>
+            <h1 className="display text-5xl text-white">
+              From fundamentals to a full underwriting case study.
+            </h1>
+            <p className="mt-5 text-lg text-white/80 leading-relaxed">
+              {state.siteInfo.analystProgramIntro}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/signup" className="px-6 py-3 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors">
+                Apply to join
+              </Link>
+              <Link href="/portal" className="px-6 py-3 rounded-md border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition-colors">
+                Member resources
+              </Link>
+            </div>
           </div>
-          <h1 className="display text-5xl text-white max-w-3xl">
-            From fundamentals to a full underwriting case study.
-          </h1>
-          <p className="mt-5 text-lg text-white/80 max-w-2xl leading-relaxed">
-            {state.siteInfo.analystProgramIntro}
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/signup" className="px-6 py-3 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors">
-              Apply to join
-            </Link>
-            <Link href="/portal" className="px-6 py-3 rounded-md border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition-colors">
-              Member resources
-            </Link>
-          </div>
+          <PhotoSlot
+            src="/photos/analyst-session.jpg"
+            alt="An Analyst Program session at Georgia Tech"
+            ratio="aspect-[4/3]"
+          />
         </div>
       </section>
 

@@ -34,16 +34,20 @@ export const VALUES = [
 ];
 
 // "Get involved" cards (industry & alumni engagement).
-export const ENGAGEMENT = [
+export type EngagementCard = { title: string; body: string; href: string; image?: string };
+
+export const ENGAGEMENT: EngagementCard[] = [
   {
     title: "Hire Our Students",
     body: "Recruiters and alumni: browse vetted member profiles in the Analyst Rolodex and reach students directly.",
     href: "/rolodex",
+    image: "/photos/networking.jpg",
   },
   {
     title: "Advisory Board",
     body: "Senior industry leaders who shape our programming, judge case studies, and open doors for members.",
     href: "/advisory-board",
+    image: "/photos/kepano-center.jpg",
   },
   {
     title: "Alumni & Friends",
