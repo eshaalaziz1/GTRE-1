@@ -66,7 +66,7 @@ export default function RolodexGateway() {
             </p>
             <div className="mt-8 flex flex-wrap gap-6 text-sm text-white/70">
               <span>Vetted access only</span>
-              <span>120+ active members</span>
+              <span>Georgia Tech&apos;s top analysts</span>
               <span>Updated every semester</span>
             </div>
           </div>

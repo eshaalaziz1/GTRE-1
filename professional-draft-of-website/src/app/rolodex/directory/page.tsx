@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ANALYSTS, STATUS_META } from "@/lib/analysts";
+import { ANALYSTS, STATUS_META, type Analyst } from "@/lib/analysts";
 
 type SortKey = "caseStudy" | "gpa" | "attendance" | "name";
 
@@ -72,6 +72,90 @@ export default function AnalystDirectory() {
         </p>
       </section>
 
+      {ANALYSTS.length === 0 ? (
+        <ComingSoon />
+      ) : (
+        <DirectoryBody
+          query={query}
+          setQuery={setQuery}
+          gradYear={gradYear}
+          setGradYear={setGradYear}
+          status={status}
+          setStatus={setStatus}
+          skill={skill}
+          setSkill={setSkill}
+          sort={sort}
+          setSort={setSort}
+          results={results}
+        />
+      )}
+    </div>
+  );
+}
+
+function ComingSoon() {
+  return (
+    <section className="mt-2 mb-24">
+      <div className="rounded-2xl border border-dashed border-border bg-surface">
+        <div className="max-w-xl mx-auto text-center py-20 px-6">
+          <div className="w-16 h-16 rounded-2xl bg-navy/5 flex items-center justify-center mx-auto mb-6">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#003057" strokeWidth="1.7">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </div>
+          <h2 className="display text-2xl text-navy">The directory launches Fall 2026</h2>
+          <p className="text-secondary mt-3 leading-relaxed">
+            Analyst profiles go live once the Fall 2026 cohort is enrolled and the
+            club has tracked a semester of academics, attendance, and graded
+            case-study work. Recruiters and alumni with approved access will be
+            able to search by role, industry, and skill here.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link href="/contact" className="px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors">
+              Get in touch with the club
+            </Link>
+            <Link href="/rolodex" className="px-6 py-3 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-white transition-colors">
+              About the Rolodex
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+type SortSetter = (v: SortKey) => void;
+
+function DirectoryBody({
+  query,
+  setQuery,
+  gradYear,
+  setGradYear,
+  status,
+  setStatus,
+  skill,
+  setSkill,
+  sort,
+  setSort,
+  results,
+}: {
+  query: string;
+  setQuery: (v: string) => void;
+  gradYear: string;
+  setGradYear: (v: string) => void;
+  status: string;
+  setStatus: (v: string) => void;
+  skill: string;
+  setSkill: (v: string) => void;
+  sort: SortKey;
+  setSort: SortSetter;
+  results: Analyst[];
+}) {
+  return (
+    <>
       {/* Controls */}
       <section className="bg-white border border-border rounded-xl shadow-sm p-4 flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-[280px]">
@@ -152,7 +236,7 @@ export default function AnalystDirectory() {
           <div className="text-center text-secondary py-20">No analysts match that search.</div>
         )}
       </section>
-    </div>
+    </>
   );
 }
 

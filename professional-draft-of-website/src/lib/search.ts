@@ -3,10 +3,10 @@
 // Store-backed content (events, announcements, materials) is merged in at query
 // time by the search page since it lives in the client store.
 
-import { NEWS } from "./content";
 import { BOARD } from "./board";
 import { ANALYSTS } from "./analysts";
 import { EXEC_TERMS } from "./leadership";
+import { OPPORTUNITIES } from "./opportunities";
 
 export type SearchItem = {
   title: string;
@@ -22,8 +22,9 @@ const PAGES: SearchItem[] = [
   { title: "Analyst Program", description: "Overview, curriculum, syllabus, and resources.", href: "/analyst-program", category: "Page", keywords: "syllabus curriculum program analyst" },
   { title: "Syllabus", description: "The Analyst Program syllabus (view-only).", href: "/analyst-program", category: "Page", keywords: "syllabus document" },
   { title: "Calendar", description: "Meetings, the Analyst Program, and industry events.", href: "/calendar", category: "Page", keywords: "schedule events dates calendar" },
-  { title: "News", description: "Club updates, recaps, and announcements.", href: "/news", category: "Page" },
+  { title: "News", description: "The latest from the club, from our LinkedIn.", href: "/news", category: "Page", keywords: "news linkedin posts updates recaps" },
   { title: "Events", description: "Panels, workshops, and networking nights.", href: "/events", category: "Page" },
+  { title: "Opportunities", description: "Internships, co-ops, and full-time analyst roles.", href: "/opportunities", category: "Page", keywords: "jobs internships careers opportunities hiring recruiting analyst" },
   { title: "Alumni", description: "The alumni network and ways to give back.", href: "/alumni", category: "Page" },
   { title: "Leadership", description: "The student executive board.", href: "/leadership", category: "Page", keywords: "exec board officers president leadership team" },
   { title: "Advisory Board", description: "Industry leaders who guide the club.", href: "/advisory-board", category: "Page" },
@@ -34,19 +35,12 @@ const PAGES: SearchItem[] = [
 
 export const STATIC_INDEX: SearchItem[] = [
   ...PAGES,
-  ...NEWS.map((n) => ({
-    title: n.title,
-    description: n.excerpt,
-    href: "/news",
-    category: "News",
-    keywords: `${n.category} ${n.tags.join(" ")}`,
-  })),
   ...BOARD.map((m) => ({
     title: m.name,
-    description: `${m.position}, ${m.organization}`,
-    href: `/advisory-board/${m.slug}`,
+    description: m.role,
+    href: "/advisory-board",
     category: "Advisory Board",
-    keywords: `${m.group} ${m.focus.join(" ")}`,
+    keywords: `advisory board advisor ${m.role}`,
   })),
   ...ANALYSTS.map((a) => ({
     title: a.name,
@@ -64,6 +58,13 @@ export const STATIC_INDEX: SearchItem[] = [
       keywords: `${m.role} exec board ${t.term}`,
     })),
   ),
+  ...OPPORTUNITIES.map((o) => ({
+    title: o.title,
+    description: `${o.company} · ${o.location}`,
+    href: "/opportunities",
+    category: "Opportunity",
+    keywords: `${o.jobType} ${o.sector} jobs internships careers ${o.company}`,
+  })),
 ];
 
 export function scoreMatch(item: SearchItem, q: string): number {

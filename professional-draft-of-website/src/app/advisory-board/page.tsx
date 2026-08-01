@@ -1,7 +1,6 @@
-import Link from "next/link";
 import Avatar from "@/components/Avatar";
 import Breadcrumb from "@/components/Breadcrumb";
-import { BOARD, BOARD_GROUPS } from "@/lib/board";
+import { BOARD } from "@/lib/board";
 
 export const metadata = { title: "Advisory Board | GT Real Estate Club" };
 
@@ -34,39 +33,23 @@ export default function AdvisoryBoardPage() {
         </p>
       </section>
 
-      {/* Member grids (first, so visitors see who is on the board) */}
+      {/* Member grid — name and role */}
       <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-12">
-        {BOARD_GROUPS.map((group) => {
-          const members = BOARD.filter((m) => m.group === group);
-          if (!members.length) return null;
-          return (
-            <div key={group} className="mb-16 last:mb-0">
-              <h2 className="display text-3xl text-navy text-center mb-10">{group}</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                {members.map((m) => (
-                  <Link
-                    key={m.slug}
-                    href={`/advisory-board/${m.slug}`}
-                    className="group bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.14)] transition-shadow p-6 flex flex-col items-center text-center"
-                  >
-                    <Avatar name={m.name} photo={m.photo} size={120} />
-                    <h3 className="mt-4 text-[17px] font-bold text-navy group-hover:text-gold-hover transition-colors">
-                      {m.name}
-                    </h3>
-                    <div className="text-[14px] italic text-secondary mt-1">{m.position}</div>
-                    <div className="text-[14px] text-secondary">{m.organization}</div>
-                    <div className="mt-4 text-[13px] font-semibold text-gold-hover">
-                      View profile →
-                    </div>
-                  </Link>
-                ))}
-              </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {BOARD.map((m) => (
+            <div
+              key={m.slug}
+              className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-6 flex flex-col items-center text-center"
+            >
+              <Avatar name={m.name} photo={m.photo} size={120} />
+              <h3 className="mt-4 text-[17px] font-bold text-navy">{m.name}</h3>
+              <div className="text-[14px] italic text-secondary mt-1">{m.role}</div>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
 
-      {/* Intro + why serve, placed below the grids */}
+      {/* Intro + why serve */}
       <section className="bg-surface border-t border-border">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-14">
           <p className="text-[16px] text-secondary leading-relaxed max-w-4xl mb-12">

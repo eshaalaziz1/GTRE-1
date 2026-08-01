@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
+import PhotoSlot from "@/components/PhotoSlot";
 import { Badge, Tabs } from "@/components/ui";
 import { useGtre } from "@/lib/store/GtreStore";
 import { CURRICULUM, PROGRAM_TOOLS } from "@/lib/program";
@@ -21,24 +22,31 @@ export default function AnalystProgramPage() {
 
       {/* Hero */}
       <section className="bg-navy text-white">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16">
-          <div className="text-gold text-[12px] font-semibold uppercase tracking-[0.22em] mb-4">
-            The Analyst Program
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="text-gold text-[12px] font-semibold uppercase tracking-[0.22em] mb-4">
+              The Analyst Program
+            </div>
+            <h1 className="display text-5xl text-white">
+              From fundamentals to a full underwriting case study.
+            </h1>
+            <p className="mt-5 text-lg text-white/80 leading-relaxed">
+              {state.siteInfo.analystProgramIntro}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/signup" className="px-6 py-3 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors">
+                Apply to join
+              </Link>
+              <Link href="/portal" className="px-6 py-3 rounded-md border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition-colors">
+                Member resources
+              </Link>
+            </div>
           </div>
-          <h1 className="display text-5xl text-white max-w-3xl">
-            From fundamentals to a full underwriting case study.
-          </h1>
-          <p className="mt-5 text-lg text-white/80 max-w-2xl leading-relaxed">
-            {state.siteInfo.analystProgramIntro}
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/signup" className="px-6 py-3 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors">
-              Apply to join
-            </Link>
-            <Link href="/portal" className="px-6 py-3 rounded-md border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition-colors">
-              Member resources
-            </Link>
-          </div>
+          <PhotoSlot
+            src="/photos/analyst-session.jpg"
+            alt="An Analyst Program session at Georgia Tech"
+            ratio="aspect-[4/3]"
+          />
         </div>
       </section>
 
@@ -78,7 +86,7 @@ function Overview() {
         </p>
         <div className="grid sm:grid-cols-3 gap-4">
           {[
-            { n: "8", l: "weekly modules" },
+            { n: "6", l: "program modules" },
             { n: "1", l: "capstone case study" },
             { n: "250+", l: "alumni network" },
           ].map((s) => (
@@ -112,17 +120,18 @@ function Overview() {
 function Curriculum() {
   return (
     <div>
-      <h2 className="display text-3xl text-navy mb-8">Semester curriculum</h2>
+      <h2 className="display text-3xl text-navy mb-8">Program curriculum</h2>
       <div className="space-y-4">
         {CURRICULUM.map((m) => (
-          <div key={m.week} className="flex flex-col sm:flex-row gap-5 border border-border rounded-xl p-6">
+          <div key={m.number} className="flex flex-col sm:flex-row gap-5 border border-border rounded-xl p-6">
             <div className="text-center sm:border-r sm:border-border sm:pr-6 w-full sm:w-24 shrink-0">
-              <div className="text-[12px] uppercase text-gold-hover font-semibold">Week</div>
-              <div className="text-3xl text-navy display leading-none">{m.week}</div>
+              <div className="text-[12px] uppercase text-gold-hover font-semibold">Module</div>
+              <div className="text-3xl text-navy display leading-none">{m.number}</div>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-navy">{m.title}</h3>
-              <div className="flex flex-wrap gap-2 mt-2">
+              <p className="text-[15px] text-secondary leading-relaxed mt-1.5">{m.description}</p>
+              <div className="flex flex-wrap gap-2 mt-3">
                 {m.topics.map((t) => (
                   <Badge key={t} tone="gray">{t}</Badge>
                 ))}
@@ -132,7 +141,7 @@ function Curriculum() {
         ))}
       </div>
       <p className="text-[13px] text-secondary mt-6">
-        Placeholder outline — the exec team finalizes topics each semester.
+        The exec team finalizes the schedule and topics each semester.
       </p>
     </div>
   );

@@ -19,7 +19,7 @@ export default function EventsPage() {
           </p>
           <div className="border-t border-gold mt-7" />
         </div>
-        <PhotoSlot src="/gtre-mixer.png" alt="GTRE student and alumni mixer" ratio="aspect-[4/3]" />
+        <PhotoSlot src="/photos/site-tour.jpg" alt="GTRE members on a high-rise construction site tour in Atlanta" ratio="aspect-[3/4]" />
       </section>
 
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-10 pb-16">
@@ -45,7 +45,7 @@ export default function EventsPage() {
                 </span>
                 <div className="text-lg font-semibold text-navy">{e.title}</div>
                 <div className="text-[14px] text-secondary mt-0.5">
-                  {e.time} · {e.location}
+                  {[e.time, e.location].filter(Boolean).join(" · ")}
                 </div>
               </div>
               <button className="shrink-0 px-5 py-2.5 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-surface transition-colors">
