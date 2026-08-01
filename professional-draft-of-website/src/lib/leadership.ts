@@ -120,8 +120,8 @@ const fall2026: ExecMember[] = [
     role: "Director of IT",
     bio: "Eshaal is a second-year Computer Science major with a focus in FinTech. She has past experience with Mubadala Capital as a finance and strategy intern and with Cleveland Clinic Abu Dhabi as a data science and business intelligence intern.",
     photo: "/exec/eshaal-aziz.jpg",
-    focus: "50% 33%",
-    zoom: 1.18,
+    focus: "43% 29%",
+    zoom: 1.2,
   },
   {
     slug: "leonid-shteynblik",
