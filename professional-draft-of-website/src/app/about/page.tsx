@@ -7,9 +7,11 @@ export const metadata = { title: "Georgia Tech Real Estate Club" };
 export default function AboutPage() {
   return (
     <>
-      {/* Home hero: full-color building loop (undimmed) above the club wordmark */}
+      {/* Home hero: full-color building loop (undimmed, no overlay) above a bold
+          club wordmark. Sized so the whole hero shows above the fold on open. */}
       <section className="w-full">
-        <div className="relative w-full h-[40vh] min-h-[260px] max-h-[520px] overflow-hidden bg-navy">
+        {/* Building loop — full color */}
+        <div className="relative w-full h-[32svh] min-h-[200px] max-h-[400px] overflow-hidden bg-navy">
           <video
             autoPlay
             muted
@@ -21,21 +23,23 @@ export default function AboutPage() {
           >
             <source src="/about-hero.mp4" type="video/mp4" />
           </video>
+          <div className="absolute bottom-0 inset-x-0 h-1 bg-gold" />
         </div>
-        <div className="h-1 w-full bg-gold" />
 
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-12 text-center">
-          <div className="text-gold-hover uppercase tracking-[0.28em] text-[11px] sm:text-[13px] font-semibold mb-4">
+        {/* Striking club wordmark */}
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-8 text-center">
+          <div className="text-gold-hover uppercase tracking-[0.3em] text-[11px] sm:text-[12px] font-semibold mb-4">
             Georgia Institute of Technology
           </div>
-          <h1 className="display text-navy leading-[0.95] text-5xl sm:text-6xl lg:text-7xl">
-            Georgia Tech <span className="text-gold-hover">Real Estate Club</span>
+          <h1 className="font-bold uppercase tracking-tight leading-[0.86] text-navy text-[11vw] sm:text-6xl lg:text-7xl">
+            Georgia Tech
+            <span className="block text-gold">Real Estate Club</span>
           </h1>
-          <p className="mt-6 text-secondary text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-5 text-secondary text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Bridging the classroom and the industry — preparing Georgia Tech
             students to become the most prepared analysts in the room.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
             <Link
               href="/contact"
               className="px-7 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors"
