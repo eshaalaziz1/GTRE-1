@@ -6,6 +6,7 @@
 import { NEWS } from "./content";
 import { BOARD } from "./board";
 import { ANALYSTS } from "./analysts";
+import { EXEC_TERMS } from "./leadership";
 
 export type SearchItem = {
   title: string;
@@ -24,6 +25,7 @@ const PAGES: SearchItem[] = [
   { title: "News", description: "Club updates, recaps, and announcements.", href: "/news", category: "Page" },
   { title: "Events", description: "Panels, workshops, and networking nights.", href: "/events", category: "Page" },
   { title: "Alumni", description: "The alumni network and ways to give back.", href: "/alumni", category: "Page" },
+  { title: "Leadership", description: "The student executive board.", href: "/leadership", category: "Page", keywords: "exec board officers president leadership team" },
   { title: "Advisory Board", description: "Industry leaders who guide the club.", href: "/advisory-board", category: "Page" },
   { title: "Contact Us", description: "Reach club leadership directly.", href: "/contact", category: "Page" },
   { title: "Analyst Rolodex", description: "Vetted analyst directory for recruiters and alumni.", href: "/rolodex", category: "Page", keywords: "recruiters hire companies rolodex" },
@@ -53,6 +55,15 @@ export const STATIC_INDEX: SearchItem[] = [
     category: "Analyst",
     keywords: `${a.skills.join(" ")} ${a.interests.join(" ")}`,
   })),
+  ...EXEC_TERMS.flatMap((t) =>
+    t.members.map((m) => ({
+      title: m.name,
+      description: `${m.role} · ${t.term}`,
+      href: "/leadership",
+      category: "Leadership",
+      keywords: `${m.role} exec board ${t.term}`,
+    })),
+  ),
 ];
 
 export function scoreMatch(item: SearchItem, q: string): number {
