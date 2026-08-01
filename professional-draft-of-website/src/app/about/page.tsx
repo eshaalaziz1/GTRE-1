@@ -1,24 +1,68 @@
 import Link from "next/link";
-import Breadcrumb from "@/components/Breadcrumb";
 import PhotoSlot from "@/components/PhotoSlot";
 import { VALUES, ENGAGEMENT, EVENTS, NEWS } from "@/lib/content";
 
-export const metadata = { title: "About | GT Real Estate Club" };
+export const metadata = { title: "Georgia Tech Real Estate Club" };
 
 export default function AboutPage() {
   return (
     <>
-      <Breadcrumb trail={[{ label: "About" }]} />
+      {/* Full-bleed buildings video banner with the club name accentuated */}
+      <section className="relative w-full min-h-[80vh] flex items-center justify-center overflow-hidden bg-navy">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/about-hero-poster.jpg"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/about-hero.mp4" type="video/mp4" />
+        </video>
+        {/* Legibility overlays: flat wash + vertical gradient anchoring the type */}
+        <div className="absolute inset-0 bg-navy/65" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/25 to-navy/55" />
 
-      {/* Mission split hero with CTAs */}
-      <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 grid lg:grid-cols-2 gap-12 items-center">
-        <div>
+        <div className="relative z-10 text-center px-6 max-w-4xl">
+          <div className="text-gold uppercase tracking-[0.3em] text-[11px] sm:text-[13px] font-semibold mb-5">
+            Georgia Institute of Technology
+          </div>
+          <h1 className="text-white font-bold uppercase leading-[0.92] tracking-tight text-5xl sm:text-6xl lg:text-[5.25rem]">
+            Georgia Tech
+            <span className="block text-gold">Real Estate Club</span>
+          </h1>
+          <div className="mx-auto mt-7 h-[3px] w-24 bg-gold" />
+          <p className="mt-7 text-white/85 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Bridging the classroom and the industry — preparing Georgia Tech
+            students to become the most prepared analysts in the room.
+          </p>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/analyst-program"
+              className="px-7 py-3 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors"
+            >
+              Explore the Analyst Program
+            </Link>
+            <Link
+              href="/contact"
+              className="px-7 py-3 rounded-md border border-white/50 text-white text-sm font-semibold hover:bg-white/10 transition-colors"
+            >
+              Join the Club
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission */}
+      <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-16">
+        <div className="max-w-3xl">
           <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-gold-hover mb-3">
             Our Mission
           </div>
-          <h1 className="display text-4xl lg:text-5xl text-navy">
+          <h2 className="display text-4xl lg:text-5xl text-navy">
             Preparing Georgia Tech students to lead in real estate.
-          </h1>
+          </h2>
           <p className="mt-5 text-[15px] text-secondary leading-relaxed">
             The Georgia Tech Real Estate Club bridges the gap between the
             classroom and the industry, giving members the technical skills,
@@ -42,18 +86,6 @@ export default function AboutPage() {
               Hiring? View the Analyst Rolodex
             </Link>
           </div>
-        </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-br-[2rem] bg-navy">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/about-hero-poster.jpg"
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src="/about-hero.mp4" type="video/mp4" />
-          </video>
         </div>
       </section>
 

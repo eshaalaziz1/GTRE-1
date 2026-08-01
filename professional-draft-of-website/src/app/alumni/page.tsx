@@ -30,22 +30,28 @@ export default function AlumniPage() {
               Our alumni network serves as the link between graduates, current
               students, and the real estate industry. It supports student
               scholarships, programming, and the club&apos;s operations, and keeps
-              Badgers connected long after graduation through events and the
-              alumni LinkedIn group.
+              Yellow Jackets connected long after graduation through events and
+              the alumni LinkedIn group.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a href="#" className="px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors">
+              <Link href="/signup" className="px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors">
                 Join the alumni network
-              </a>
-              <a href="#" className="px-6 py-3 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-white transition-colors">
+              </Link>
+              <Link href="/contact" className="px-6 py-3 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-white transition-colors">
                 Make a gift
-              </a>
+              </Link>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <Stat value="400+" label="Alumni" />
-            <Stat value="30+" label="Firms" />
-            <Stat value="15+" label="Years" />
+          <div className="bg-white border border-border border-t-4 border-t-gold rounded-b-2xl p-7">
+            <h3 className="text-lg font-semibold text-navy">Alumni directory — coming soon</h3>
+            <p className="text-[14px] text-secondary leading-relaxed mt-2">
+              We&apos;re building a searchable directory of GT Real Estate alumni
+              and where they&apos;ve landed across the industry. Add yourself now
+              and you&apos;ll be included the moment it goes live.
+            </p>
+            <Link href="/signup" className="inline-block mt-4 text-sm font-semibold text-gold-hover hover:text-navy">
+              Add yourself to the network →
+            </Link>
           </div>
         </div>
       </section>
@@ -95,14 +101,5 @@ export default function AlumniPage() {
         </div>
       </section>
     </>
-  );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="border-t-4 border-gold pt-4">
-      <div className="text-3xl display text-navy">{value}</div>
-      <div className="text-[12px] uppercase tracking-wide text-secondary mt-1">{label}</div>
-    </div>
   );
 }

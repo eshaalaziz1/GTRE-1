@@ -36,13 +36,17 @@ export default function AdvisoryBoardPage() {
 
       {/* Member grids (first, so visitors see who is on the board) */}
       <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-12">
-        {BOARD_GROUPS.map((group) => {
-          const members = BOARD.filter((m) => m.group === group);
-          if (!members.length) return null;
-          return (
-            <div key={group} className="mb-16 last:mb-0">
-              <h2 className="display text-3xl text-navy text-center mb-10">{group}</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        {(() => {
+          const nonEmptyGroups = BOARD_GROUPS.filter((g) => BOARD.some((m) => m.group === g));
+          const showHeadings = nonEmptyGroups.length > 1;
+          return nonEmptyGroups.map((group) => {
+            const members = BOARD.filter((m) => m.group === group);
+            return (
+              <div key={group} className="mb-16 last:mb-0">
+                {showHeadings && (
+                  <h2 className="display text-3xl text-navy text-center mb-10">{group}</h2>
+                )}
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                 {members.map((m) => (
                   <Link
                     key={m.slug}
@@ -60,10 +64,11 @@ export default function AdvisoryBoardPage() {
                     </div>
                   </Link>
                 ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          });
+        })()}
       </div>
 
       {/* Intro + why serve, placed below the grids */}

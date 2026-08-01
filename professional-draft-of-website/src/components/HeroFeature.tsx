@@ -2,8 +2,8 @@ import Link from "next/link";
 import PhotoSlot from "./PhotoSlot";
 
 /**
- * Photo-left, text-right hero with a thin gold rule, faithful to the Wisconsin
- * Graaskamp page hero. Title is the light-weight 56px display heading in navy.
+ * Photo-left, text-right hero with a thin gold rule. Title is the light-weight
+ * 56px display heading in navy.
  */
 export default function HeroFeature({
   eyebrow,

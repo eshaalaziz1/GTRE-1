@@ -8,10 +8,10 @@ import { MAIN_NAV, UTILITY_NAV } from "@/lib/nav";
 import { useGtre } from "@/lib/store/GtreStore";
 
 /**
- * Two-row institutional header, faithful to the Wisconsin / Graaskamp pattern:
+ * Two-row institutional header in the Georgia Tech palette (navy / gold):
  *  Row 1 (white): logo lockup left · utility links + member area + search right
  *  Row 2 (white, ruled): brand label left · section nav right
- * Re-skinned to Georgia Tech (navy / gold). Collapses to a toggle on mobile.
+ * Collapses to a toggle on mobile.
  */
 export default function SiteHeader() {
   const pathname = usePathname();

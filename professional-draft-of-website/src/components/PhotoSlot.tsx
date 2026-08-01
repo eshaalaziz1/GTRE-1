@@ -1,9 +1,9 @@
 import Image from "next/image";
 
 /**
- * A photo area that mirrors the Wisconsin hero image. Renders a real image when
- * a src is supplied, otherwise a clean duotone placeholder (not a broken box) so
- * the layout reads correctly until real photography is dropped in.
+ * A framed photo area. Renders a real image when a src is supplied, otherwise a
+ * clean duotone placeholder (not a broken box) so the layout reads correctly
+ * until real photography is dropped in.
  */
 export default function PhotoSlot({
   src,

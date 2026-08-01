@@ -1,11 +1,4 @@
-// Placeholder site content for the prototype. Swap for real club material.
-
-export const STATS = [
-  { value: "120+", label: "Active members" },
-  { value: "400+", label: "Alumni network" },
-  { value: "30+", label: "Industry partners" },
-  { value: "2008", label: "Founded" },
-];
+// Site content for the prototype.
 
 // The club's three values, with copy pulled from the live GTRE Analyst Program
 // page (reatgt.org/commercial-real-estate-workshop). Resources lists the
@@ -191,35 +184,3 @@ export const EVENTS: EventItem[] = [
   },
 ];
 
-// Club leadership for the Contact page (people-card directory). Placeholder.
-export type Officer = {
-  name: string;
-  role: string;
-  affiliation: string;
-  email: string;
-};
-
-export const LEADERSHIP: Officer[] = [
-  { name: "Avery Mitchell", role: "President", affiliation: "Georgia Tech Real Estate Club", email: "president@reatgt.org" },
-  { name: "Jordan Ellis", role: "VP, Analyst Program", affiliation: "Georgia Tech Real Estate Club", email: "analyst@reatgt.org" },
-  { name: "Maya Patel", role: "VP, Programming & Events", affiliation: "Georgia Tech Real Estate Club", email: "events@reatgt.org" },
-  { name: "Chris Donovan", role: "VP, Corporate Relations", affiliation: "Georgia Tech Real Estate Club", email: "corporate@reatgt.org" },
-  { name: "Taylor Brooks", role: "Treasurer", affiliation: "Georgia Tech Real Estate Club", email: "treasurer@reatgt.org" },
-  { name: "Dr. Susan Reyes", role: "Faculty Advisor", affiliation: "Scheller College of Business", email: "advisor@gatech.edu" },
-];
-
-export type AlumItem = {
-  name: string;
-  gradYear: number;
-  role: string;
-  company: string;
-};
-
-export const ALUMNI: AlumItem[] = [
-  { name: "Whitney Adams", gradYear: 2019, role: "Vice President", company: "Cortland" },
-  { name: "Brandon Lee", gradYear: 2018, role: "Director, Acquisitions", company: "Invesco Real Estate" },
-  { name: "Maria Gonzalez", gradYear: 2020, role: "Senior Analyst", company: "Wells Fargo CRE" },
-  { name: "Derek Okafor", gradYear: 2017, role: "Principal", company: "Stonemont Financial" },
-  { name: "Sarah Chen", gradYear: 2021, role: "Associate", company: "JLL Capital Markets" },
-  { name: "Marcus Bell", gradYear: 2016, role: "Managing Director", company: "Portman Holdings" },
-];
