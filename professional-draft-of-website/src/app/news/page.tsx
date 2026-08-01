@@ -10,23 +10,13 @@ export default function NewsPage() {
       <Breadcrumb trail={[{ label: "News" }]} />
 
       <div className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 pb-16">
-        <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
-          <div>
-            <h1 className="display text-4xl lg:text-5xl text-navy mb-3">News</h1>
-            <p className="text-secondary max-w-2xl">
-              The latest from the Georgia Tech Real Estate Club: event recaps,
-              member wins, recruiting updates, and market takes, straight from
-              our LinkedIn.
-            </p>
-          </div>
-          <a
-            href={LINKEDIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors"
-          >
-            Follow us on LinkedIn →
-          </a>
+        <div className="mb-8">
+          <h1 className="display text-4xl lg:text-5xl text-navy mb-3">News</h1>
+          <p className="text-secondary max-w-2xl">
+            The latest from the Georgia Tech Real Estate Club: event recaps,
+            member wins, recruiting updates, and market takes, straight from
+            our LinkedIn.
+          </p>
         </div>
 
         {SOCIABLEKIT_EMBED_ID ? (
