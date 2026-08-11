@@ -56,10 +56,14 @@ create table public.events (
   id            uuid primary key default gen_random_uuid(),
   title         text not null,
   type          text not null default 'Meeting',
+  -- Which schedule track this belongs to (mirrors the two-column schedule).
+  track         text not null default 'General',
   date          date not null,
   time          text,
   location      text,
   description   text,
+  -- Manual display order within a track (lower = earlier); admins reorder.
+  "order"       int not null default 0,
   check_in_code text,
   check_in_open boolean not null default false,
   created_at    timestamptz not null default now()
@@ -150,6 +154,45 @@ create table public.site_info (
 insert into public.site_info (id) values (1) on conflict do nothing;
 
 -- ===========================================================================
+-- Auto-create a profile when a user signs up.
+--
+-- A new sign-up (supabase.auth.signUp) writes name/role/club fields into the
+-- user's metadata (raw_user_meta_data). This trigger copies them into
+-- public.profiles with status = 'pending'. SECURITY DEFINER lets it insert past
+-- RLS, so the browser never needs an INSERT policy on profiles. With email
+-- confirmation ON, the account still can't sign in until the user clicks the
+-- verification link AND an admin approves — the two gates behind sign-up.
+-- ===========================================================================
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.profiles (id, role, status, name, email, company, linkedin, title, grad_year, major)
+  values (
+    new.id,
+    coalesce((new.raw_user_meta_data->>'role')::account_role, 'student'),
+    'pending',
+    coalesce(new.raw_user_meta_data->>'name', ''),
+    new.email,
+    new.raw_user_meta_data->>'company',
+    new.raw_user_meta_data->>'linkedin',
+    new.raw_user_meta_data->>'title',
+    nullif(new.raw_user_meta_data->>'grad_year', '')::int,
+    new.raw_user_meta_data->>'major'
+  );
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
+
+-- ===========================================================================
 -- Row-Level Security (RLS) — sketch. Tighten before production.
 -- ===========================================================================
 alter table public.profiles      enable row level security;
@@ -183,18 +226,20 @@ create policy "own profile read"   on public.profiles for select using (id = aut
 create policy "own profile update" on public.profiles for update using (id = auth.uid());
 create policy "admin manage profiles" on public.profiles for all using (public.is_admin()) with check (public.is_admin());
 
--- Approved members read club content; admins write it.
-create policy "members read announcements" on public.announcements for select using (public.is_approved());
+-- Announcements, events, and resources are public: the public /news, /calendar,
+-- and /search pages read them without a session. Admins write them.
+create policy "public read announcements" on public.announcements for select using (true);
 create policy "admin write announcements"  on public.announcements for all using (public.is_admin()) with check (public.is_admin());
 
-create policy "members read events" on public.events for select using (public.is_approved());
+create policy "public read events" on public.events for select using (true);
 create policy "admin write events"  on public.events for all using (public.is_admin()) with check (public.is_admin());
 
+create policy "public read resources" on public.resources for select using (true);
+create policy "admin write resources"  on public.resources for all using (public.is_admin()) with check (public.is_admin());
+
+-- Assignments stay member-only (portal content). Admins write them.
 create policy "members read assignments" on public.assignments for select using (public.is_approved());
 create policy "admin write assignments"  on public.assignments for all using (public.is_admin()) with check (public.is_admin());
-
-create policy "members read resources" on public.resources for select using (public.is_approved());
-create policy "admin write resources"  on public.resources for all using (public.is_admin()) with check (public.is_admin());
 
 -- Submissions: a member manages their own; admins read/grade all.
 create policy "own submissions"     on public.submissions for all using (account_id = auth.uid()) with check (account_id = auth.uid());

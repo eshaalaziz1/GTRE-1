@@ -16,9 +16,9 @@ export default function CheckInPage() {
 
   const openEvents = state.events.filter((e) => e.checkInOpen);
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const res = checkIn(code);
+    const res = await checkIn(code);
     setResult(res);
     if (res.ok) setCode("");
   }

@@ -94,19 +94,20 @@ function StudentForm() {
   if (done) {
     return (
       <div className="text-center py-6">
-        <div className="text-2xl display text-navy">Request received.</div>
+        <div className="text-2xl display text-navy">Check your email.</div>
         <p className="text-sm text-secondary mt-3">
-          Thanks, {name.split(" ")[0]}. A club officer will approve your account
-          shortly. You&apos;ll be able to sign in once you&apos;re approved.
+          Thanks, {name.split(" ")[0]}. We sent a verification link to{" "}
+          <strong>{email}</strong> — click it to confirm your address. After that,
+          a club officer approves your account, and you&apos;ll be able to sign in.
         </p>
       </div>
     );
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const res = signUpStudent({
+    const res = await signUpStudent({
       name,
       email,
       password,
@@ -166,20 +167,21 @@ function IndustryForm() {
   if (done) {
     return (
       <div className="text-center py-6">
-        <div className="text-2xl display text-navy">Request received.</div>
+        <div className="text-2xl display text-navy">Check your email.</div>
         <p className="text-sm text-secondary mt-3">
-          Thanks, {name.split(" ")[0]}. We verify every industry account by hand.
-          Once an officer approves you, you&apos;ll be able to sign in and view
-          the Analyst Rolodex.
+          Thanks, {name.split(" ")[0]}. We sent a verification link to{" "}
+          <strong>{email}</strong> — click it to confirm your address. We verify
+          every industry account by hand; once an officer approves you, you&apos;ll
+          be able to sign in and view the Analyst Rolodex.
         </p>
       </div>
     );
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const res = signUpIndustry({
+    const res = await signUpIndustry({
       name,
       email,
       password,

@@ -41,10 +41,10 @@ export default function RolodexGateway() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const res = login(email, password);
+    const res = await login(email, password);
     if (!res.ok) return setError(res.error);
     router.push(ROLODEX_URL);
   }

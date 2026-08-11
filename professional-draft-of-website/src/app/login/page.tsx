@@ -17,10 +17,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const res = login(email, password);
+    const res = await login(email, password);
     if (!res.ok) {
       setError(res.error);
       return;
@@ -88,12 +88,14 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Prototype helper — remove once Supabase auth is wired. */}
-          <div className="mt-5 rounded-lg bg-surface border border-border p-3 text-[12px] text-secondary leading-relaxed">
-            <span className="font-semibold text-navy">Demo logins:</span>{" "}
-            admin@gatech.edu / admin123 · member@gatech.edu / member123 ·
-            recruiter@firm.com / recruiter123
-          </div>
+          {/* Prototype helper — only shown while the localStorage mock is active. */}
+          {(process.env.NEXT_PUBLIC_DATA_BACKEND ?? "").toLowerCase() !== "supabase" && (
+            <div className="mt-5 rounded-lg bg-surface border border-border p-3 text-[12px] text-secondary leading-relaxed">
+              <span className="font-semibold text-navy">Demo logins:</span>{" "}
+              admin@gatech.edu / admin123 · member@gatech.edu / member123 ·
+              recruiter@firm.com / recruiter123
+            </div>
+          )}
         </div>
       </div>
     </section>

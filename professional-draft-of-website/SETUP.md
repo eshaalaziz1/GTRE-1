@@ -1,10 +1,19 @@
 # GTRE Website — Portals, Auth & Backend Setup
 
-This app ships as a **fully working prototype with no backend**: accounts,
-approvals, assignments, grading, check-ins, Q&A, the calendar, and site-info
-edits all run against a browser `localStorage` store (`src/lib/store/`). That
-lets you click through every screen today. To go live, you swap that one store
-for Supabase — no page components change.
+This app runs on **two interchangeable data adapters**, selected at runtime by
+`NEXT_PUBLIC_DATA_BACKEND` (see `src/lib/store/`):
+
+- **`mock`** (default) — a browser `localStorage` store. Accounts, approvals,
+  assignments, grading, check-ins, Q&A, the calendar, and site-info edits all
+  work with no backend, so you can click through every screen. Data lives in one
+  browser and is not shared between visitors.
+- **`supabase`** — the real backend: Supabase Auth (with email verification) for
+  sign-up/sign-in, and Postgres tables (guarded by Row-Level Security) for
+  everything else. Site-info and content edits persist for **all** visitors.
+
+Both adapters implement the same `useGtre()` contract (`src/lib/store/context.tsx`),
+so **no page components change** when you flip the backend. The section below is
+everything needed to turn Supabase on.
 
 ## What's built
 
@@ -37,31 +46,51 @@ Reset demo data any time in **Admin → Site Info → Reset**.
 
 ## Going live with Supabase
 
-1. **Create a Supabase project** (free tier is fine). In
-   **Authentication → Providers**, enable **Email** and disable Google/all OAuth.
-2. **Run the schema**: paste `supabase/schema.sql` into the SQL editor. It
-   creates `profiles` (extends `auth.users`) plus all content tables and a
-   starter set of Row-Level-Security policies.
-3. **Add env vars**: copy `.env.example` → `.env.local` and fill in your
-   project URL + keys. Set `NEXT_PUBLIC_DATA_BACKEND=supabase`.
-4. **Install the client**: `npm i @supabase/supabase-js @supabase/ssr`.
-5. **Implement the Supabase adapter.** The whole app talks to the data layer
-   through `useGtre()` (`src/lib/store/GtreStore.tsx`). Create a sibling
-   implementation that fulfills the same interface against Supabase:
-   - `login` / `signUpStudent` / `signUpIndustry` → `supabase.auth` +
-     an `insert` into `profiles` (status `pending`).
-   - `approveAccount` / `rejectAccount` / `setRole` / etc. → `update profiles`
-     (admin, via a server action using the service-role key).
-   - announcements / events / assignments / submissions / questions / notes /
-     resources / site_info → straight table reads/writes.
-   Keep the mock adapter for local dev; select the adapter with
-   `NEXT_PUBLIC_DATA_BACKEND`.
-6. **Server-side gating.** `RequireAuth` is client-side (good UX, not a security
-   boundary). Rely on **RLS** so protected rows never reach an unauthorized
-   client, and put admin mutations (approvals, grading) in **server actions**
-   that check the caller is an approved admin.
-7. **Approval emails (optional).** On approve, send the "you're approved" email
-   via Supabase Edge Functions / Resend, or manually to start.
+The Supabase adapter is **already built** (`src/lib/store/SupabaseStore.tsx` +
+`src/lib/supabase/client.ts`). Turning it on is configuration, not coding:
+
+1. **Create a Supabase project** (free tier is fine).
+2. **Run the schema.** In the SQL editor, paste and run `supabase/schema.sql`.
+   It creates `profiles` (extends `auth.users`), every content table, the
+   sign-up trigger that auto-creates a pending profile, and the RLS policies.
+   *If you already ran an older `schema.sql`*, run `supabase/migration_backend.sql`
+   instead — it adds the missing pieces idempotently.
+3. **Enable email verification.** In **Authentication → Providers → Email**,
+   enable **Confirm email**. Disable Google/all other OAuth. This is what stops
+   someone signing up with an email that isn't theirs — the account can't sign
+   in until the real owner clicks the verification link.
+4. **Set redirect URLs.** In **Authentication → URL Configuration**, set the
+   **Site URL** to your deployed origin (e.g. `https://gtre.org`) and add it
+   (plus `http://localhost:3000` for local dev) to **Redirect URLs**. Sign-up
+   confirmation links send the user to `/login`.
+5. **Add env vars.** Copy `.env.example` → `.env.local` and fill in the
+   **Project URL** and **anon key** (Project Settings → API). Set
+   `NEXT_PUBLIC_DATA_BACKEND=supabase`. On Vercel, add the same three variables
+   in Project → Settings → Environment Variables and redeploy.
+   - `@supabase/supabase-js` and `@supabase/ssr` are already installed.
+   - **No service-role key is required** for the current features — admin
+     actions run through the signed-in admin's session under the RLS policies.
+6. **Make the first admin.** Sign up normally, click the email link to confirm,
+   then in the SQL editor promote yourself (there's no admin to approve the
+   first admin):
+   ```sql
+   update public.profiles
+   set role = 'admin', status = 'approved'
+   where email = 'you@gatech.edu';
+   ```
+   From then on you can approve/manage everyone else in **Admin → Members**.
+
+### Security notes
+- **RLS is the security boundary.** `RequireAuth` is client-side (good UX only).
+  The policies in `schema.sql` ensure protected rows never reach an unauthorized
+  client. Announcements, events, and resources are intentionally **public read**
+  (the public `/news`, `/calendar`, and `/search` pages use them); assignments,
+  submissions, check-ins, questions, meeting notes, and profiles are gated.
+- **Deleting an account** removes its `profiles` row via the admin RLS policy.
+  Fully deleting the underlying `auth.users` record (rare) needs a service-role
+  server action — add the `SUPABASE_SERVICE_ROLE_KEY` env var then.
+- **Approval emails (optional).** On approve, send a "you're approved" email via
+  Supabase Edge Functions / Resend, or notify members manually to start.
 
 ## Existing accounts (Wix / old Vercel portal)
 Password hashes can't be securely migrated. **Start fresh**: seed known members
