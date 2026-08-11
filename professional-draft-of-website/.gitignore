@@ -7,6 +7,9 @@
 npm-debug.log*
 .env*
 !.env.example
+# Committed on purpose: only NEXT_PUBLIC_* (non-secret) values, so Vercel builds
+# use the Supabase backend without needing dashboard env vars. See the file header.
+!.env.production
 .vercel
 next-env.d.ts
 *.tsbuildinfo

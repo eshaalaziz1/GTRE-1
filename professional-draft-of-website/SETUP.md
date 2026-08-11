@@ -76,7 +76,7 @@ The Supabase adapter is **already built** (`src/lib/store/SupabaseStore.tsx` +
    ```sql
    update public.profiles
    set role = 'admin', status = 'approved'
-   where email = 'you@gatech.edu';
+   where email = 'eaziz3@gatech.edu';
    ```
    From then on you can approve/manage everyone else in **Admin → Members**.
 
