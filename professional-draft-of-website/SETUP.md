@@ -53,8 +53,8 @@ The Supabase adapter is **already built** (`src/lib/store/SupabaseStore.tsx` +
 2. **Run the schema.** In the SQL editor, paste and run `supabase/schema.sql`.
    It creates `profiles` (extends `auth.users`), every content table, the
    sign-up trigger that auto-creates a pending profile, and the RLS policies.
-   *If you already ran an older `schema.sql`*, run `supabase/migration_backend.sql`
-   instead — it adds the missing pieces idempotently.
+   The script is **idempotent** — safe to run more than once, so if an earlier
+   run half-applied, just run it again and it converges.
 3. **Enable email verification.** In **Authentication → Providers → Email**,
    enable **Confirm email**. Disable Google/all other OAuth. This is what stops
    someone signing up with an email that isn't theirs — the account can't sign
