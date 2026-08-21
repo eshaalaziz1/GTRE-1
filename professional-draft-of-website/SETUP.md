@@ -120,6 +120,32 @@ and switch to Resend/custom SMTP (the app needs no changes — it's all dashboar
 - **Approval emails (optional).** On approve, send a "you're approved" email via
   Supabase Edge Functions / Resend, or notify members manually to start.
 
+## LinkedIn login (optional — needs a LinkedIn app)
+
+The code is scaffolded: a **"Continue with LinkedIn"** button appears on the
+login page **only when** `NEXT_PUBLIC_LINKEDIN_AUTH=on`, so it stays hidden until
+you've wired the provider (no broken button on the live site). To enable it:
+
+1. **Create a LinkedIn app** at [linkedin.com/developers](https://www.linkedin.com/developers/)
+   → add the **"Sign In with LinkedIn using OpenID Connect"** product.
+2. In the app's **Auth** tab, add the redirect URL Supabase shows for LinkedIn
+   (Supabase → Authentication → Providers → LinkedIn (OIDC)), typically
+   `https://<your-project>.supabase.co/auth/v1/callback`. Copy the app's
+   **Client ID** and **Client Secret**.
+3. In **Supabase → Authentication → Providers → LinkedIn (OIDC)**, enable it and
+   paste the Client ID/Secret.
+4. Set `NEXT_PUBLIC_LINKEDIN_AUTH=on` (env var, like the others) and redeploy.
+
+**How it behaves / a caveat worth knowing:** LinkedIn returns whatever email the
+person uses on LinkedIn — which usually **isn't** `@gatech.edu`. So the signup
+trigger files LinkedIn sign-ups as **industry** by default (a non-GT email can't
+be a `student` — that's enforced). LinkedIn login therefore fits **industry /
+alumni** sign-in and profile auto-fill best; **students should still sign up with
+their `@gatech.edu` email** to get the student role and Rolodex placement. If you
+later want students to *link* LinkedIn to auto-populate their profile/Rolodex
+(name, headline, photo, profile URL), that's a profile-linking flow we can add on
+top — different from using LinkedIn as their primary login.
+
 ## Existing accounts (Wix / old Vercel portal)
 Password hashes can't be securely migrated. **Start fresh**: seed known members
 by inviting them (or pre-creating approved `profiles` rows keyed to a Supabase

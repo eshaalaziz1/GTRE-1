@@ -193,9 +193,17 @@ begin
   insert into public.profiles (id, role, status, name, email, company, linkedin, title, grad_year, major)
   values (
     new.id,
-    coalesce((new.raw_user_meta_data->>'role')::account_role, 'student'),
+    -- Role from sign-up metadata; otherwise infer from the email domain so
+    -- OAuth sign-ups (e.g. LinkedIn, which won't be a @gatech.edu address) don't
+    -- default to 'student' and trip the student-email constraint.
+    coalesce(
+      (new.raw_user_meta_data->>'role')::account_role,
+      case when new.email ~* '@([a-z0-9-]+\.)*gatech\.edu$'
+           then 'student'::account_role
+           else 'industry'::account_role end
+    ),
     'pending',
-    coalesce(new.raw_user_meta_data->>'name', ''),
+    coalesce(new.raw_user_meta_data->>'name', new.raw_user_meta_data->>'full_name', ''),
     new.email,
     new.raw_user_meta_data->>'company',
     new.raw_user_meta_data->>'linkedin',

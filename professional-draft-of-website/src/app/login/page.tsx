@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useGtre } from "@/lib/store/GtreStore";
 import { Button, Field, Notice } from "@/components/ui";
+import LinkedInButton from "@/components/LinkedInButton";
 
 /**
  * Member / industry / admin sign-in. No Google sign-in (removed per direction).
@@ -78,6 +79,9 @@ export default function LoginPage() {
               Sign in
             </Button>
           </form>
+
+          {/* Appears only when LinkedIn auth is configured (see SETUP.md). */}
+          <LinkedInButton redirectTo="/portal" />
 
           <div className="mt-6 pt-6 border-t border-border text-center">
             <p className="text-sm text-secondary">
