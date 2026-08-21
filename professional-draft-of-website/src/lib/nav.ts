@@ -3,7 +3,6 @@ export const MAIN_NAV: { label: string; href: string }[] = [
   { label: "About", href: "/about" },
   { label: "Analyst Program", href: "/analyst-program" },
   { label: "News", href: "/news" },
-  { label: "Events", href: "/events" },
   { label: "Calendar", href: "/calendar" },
   { label: "Opportunities", href: "/opportunities" },
   { label: "Alumni", href: "/alumni" },

@@ -30,8 +30,8 @@ const fall2026: ExecMember[] = [
     role: "President",
     bio: "Rustin is a third-year Business major with a concentration in Finance and is pursuing two minors in Real Estate and Spanish. He has past experience with Third and Urban as a mixed-use development intern and with Brasfield and Gorrie as a pre-construction intern. He completed the GTRE Analyst Program in Fall 2025.",
     photo: "/exec/rustin-jalali.jpg",
-    focus: "50% 24%",
-    zoom: 1.0,
+    focus: "50% 25%",
+    zoom: 1.5,
   },
   {
     slug: "adam-stadelmeier",

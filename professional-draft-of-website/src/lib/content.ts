@@ -11,7 +11,7 @@ export const VALUES = [
       "Professional and career guidance.",
       "Excel and financial modeling practice.",
     ],
-    href: "/events",
+    href: "/analyst-program",
     cta: "See the program",
   },
   {

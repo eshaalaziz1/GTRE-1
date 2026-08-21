@@ -138,7 +138,7 @@ export default function AboutPage() {
         <div>
           <div className="flex items-end justify-between mb-7">
             <h2 className="display text-3xl text-navy">Upcoming Events</h2>
-            <Link href="/events" className="text-sm font-semibold text-gold-hover hover:text-navy">All events →</Link>
+            <Link href="/calendar" className="text-sm font-semibold text-gold-hover hover:text-navy">Full calendar →</Link>
           </div>
           <div className="space-y-3">
             {EVENTS.slice(0, 4).map((e) => (
