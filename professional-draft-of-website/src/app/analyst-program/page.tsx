@@ -7,6 +7,7 @@ import PhotoSlot from "@/components/PhotoSlot";
 import { Badge, Tabs } from "@/components/ui";
 import { useGtre } from "@/lib/store/GtreStore";
 import { CURRICULUM, PROGRAM_TOOLS } from "@/lib/program";
+import type { Resource } from "@/lib/store/types";
 
 // Public Analyst Program section. Tabs: Overview · Curriculum · Syllabus · Resources.
 // The Syllabus tab is built to embed a view-only document once the club uploads
@@ -57,6 +58,7 @@ export default function AnalystProgramPage() {
           tabs={[
             { key: "overview", label: "Overview" },
             { key: "curriculum", label: "Curriculum" },
+            { key: "case-study", label: "Case Study" },
             { key: "syllabus", label: "Syllabus" },
             { key: "resources", label: "Resources" },
           ]}
@@ -65,6 +67,7 @@ export default function AnalystProgramPage() {
         <div className="pt-10">
           {tab === "overview" && <Overview />}
           {tab === "curriculum" && <Curriculum />}
+          {tab === "case-study" && <CaseStudy resources={state.resources} />}
           {tab === "syllabus" && <Syllabus url={state.siteInfo.syllabusEmbedUrl} />}
           {tab === "resources" && <Resources />}
         </div>
@@ -143,6 +146,71 @@ function Curriculum() {
       <p className="text-[13px] text-secondary mt-6">
         The exec team finalizes the schedule and topics each semester.
       </p>
+    </div>
+  );
+}
+
+function CaseStudy({ resources }: { resources: Resource[] }) {
+  const items = resources.filter((r) => r.category === "Case Study");
+  return (
+    <div>
+      <div className="grid lg:grid-cols-[1.4fr_1fr] gap-12 mb-12">
+        <div className="space-y-5">
+          <h2 className="display text-3xl text-navy">The capstone case study</h2>
+          <p className="text-[16px] text-secondary leading-relaxed">
+            The Analyst Program culminates in a full underwriting case study.
+            Members get a real deal prompt, build a proforma from the ground up, and
+            present their recommendation to a panel of alumni judges against a shared
+            rubric. Everything you need — the prompt, proforma templates, and the
+            grading rubric — is posted here.
+          </p>
+        </div>
+        <aside className="bg-surface rounded-2xl p-7 h-fit">
+          <h3 className="font-semibold text-navy mb-3">What&apos;s included</h3>
+          <ul className="space-y-2 text-[15px] text-text">
+            {["Case prompt & scenario", "Proforma / model templates", "Presentation guidelines", "Grading rubric"].map((t) => (
+              <li key={t} className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-gold" /> {t}
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </div>
+
+      <h3 className="display text-2xl text-navy mb-5">Materials</h3>
+      {items.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-border bg-surface text-center py-16 px-6">
+          <h4 className="display text-xl text-navy">Materials coming soon</h4>
+          <p className="text-secondary mt-2 max-w-lg mx-auto leading-relaxed">
+            The case prompt, proforma templates, and grading rubric will be posted
+            here. Officers add them in <strong>Admin → Materials</strong> (category
+            &ldquo;Case Study&rdquo;) — no code needed.
+          </p>
+        </div>
+      ) : (
+        <div className="grid sm:grid-cols-2 gap-5">
+          {items.map((r) => (
+            <a
+              key={r.id}
+              href={r.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group border border-border rounded-xl p-6 hover:shadow-md transition-shadow"
+            >
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-gold-hover mb-1">
+                Case Study
+              </div>
+              <div className="text-lg font-semibold text-navy group-hover:text-gold-hover transition-colors">
+                {r.title}
+              </div>
+              {r.description && (
+                <p className="text-[14px] text-secondary mt-2 leading-relaxed">{r.description}</p>
+              )}
+              <span className="inline-block mt-4 text-sm font-semibold text-gold-hover">Open →</span>
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
