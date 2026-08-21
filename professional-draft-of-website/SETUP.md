@@ -55,10 +55,20 @@ The Supabase adapter is **already built** (`src/lib/store/SupabaseStore.tsx` +
    sign-up trigger that auto-creates a pending profile, and the RLS policies.
    The script is **idempotent** — safe to run more than once, so if an earlier
    run half-applied, just run it again and it converges.
-3. **Enable email verification.** In **Authentication → Providers → Email**,
-   enable **Confirm email**. Disable Google/all other OAuth. This is what stops
-   someone signing up with an email that isn't theirs — the account can't sign
-   in until the real owner clicks the verification link.
+3. **Enable email verification (as a 6-digit code).** In
+   **Authentication → Providers → Email**, enable **Confirm email**; disable
+   Google/all other OAuth. Then in **Authentication → Emails → Templates →
+   Confirm signup**, replace the magic-link body with the **code** token so
+   members type a code on the site instead of clicking a link — more reliable for
+   `@gatech.edu` (Outlook/Defender link-scanners can consume magic links):
+   ```html
+   <h2>Confirm your email</h2>
+   <p>Your Georgia Tech Real Estate Club verification code is:</p>
+   <p style="font-size:24px;font-weight:bold;letter-spacing:4px">{{ .Token }}</p>
+   <p>Enter it on the sign-up page to confirm your address.</p>
+   ```
+   This is what stops someone signing up with an email that isn't theirs — the
+   account can't sign in until the real owner enters the code sent to that inbox.
 4. **Set redirect URLs.** In **Authentication → URL Configuration**, set the
    **Site URL** to your deployed origin (e.g. `https://gtre.org`) and add it
    (plus `http://localhost:3000` for local dev) to **Redirect URLs**. Sign-up

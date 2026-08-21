@@ -81,6 +81,83 @@ export default function SignupPage() {
   );
 }
 
+/**
+ * Email-verification step: the member enters the 6-digit code sent to their
+ * inbox. Verifying proves they own the address (a code, not a link — more
+ * reliable for @gatech.edu / Outlook, where link scanners can consume magic
+ * links). After verifying, the account is still pending officer approval.
+ */
+function ConfirmCodeStep({ email, firstName }: { email: string; firstName: string }) {
+  const { confirmSignup, resendCode } = useGtre();
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [verified, setVerified] = useState(false);
+  const [resent, setResent] = useState(false);
+
+  if (verified) {
+    return (
+      <div className="text-center py-6">
+        <div className="text-2xl display text-navy">Email verified.</div>
+        <p className="text-sm text-secondary mt-3">
+          Thanks, {firstName}. Your email is confirmed. A club officer now reviews
+          your account — you&apos;ll be able to sign in once you&apos;re approved.
+        </p>
+      </div>
+    );
+  }
+
+  async function onVerify(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setBusy(true);
+    const res = await confirmSignup(email, code);
+    setBusy(false);
+    if (!res.ok) return setError(res.error || "That code didn't work.");
+    setVerified(true);
+  }
+
+  async function onResend() {
+    setError("");
+    setResent(false);
+    const res = await resendCode(email);
+    if (!res.ok) return setError(res.error || "Couldn't resend the code.");
+    setResent(true);
+  }
+
+  return (
+    <form onSubmit={onVerify} className="space-y-4 text-center">
+      <div className="text-2xl display text-navy">Enter your code</div>
+      <p className="text-sm text-secondary">
+        We emailed a 6-digit verification code to <strong>{email}</strong>. Enter it
+        to confirm you own this inbox.
+      </p>
+      {error && <Notice tone="error">{error}</Notice>}
+      {resent && <Notice tone="success">A new code is on its way.</Notice>}
+      <input
+        inputMode="numeric"
+        autoComplete="one-time-code"
+        value={code}
+        onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+        placeholder="••••••"
+        aria-label="6-digit verification code"
+        className="w-full text-center tracking-[0.5em] text-2xl px-3 py-3 border border-border rounded-md outline-none focus:border-navy"
+        required
+      />
+      <Button type="submit" className="w-full" disabled={busy || code.length < 6}>
+        {busy ? "Verifying…" : "Verify email"}
+      </Button>
+      <p className="text-[13px] text-secondary">
+        Didn&apos;t get it? Check spam, or{" "}
+        <button type="button" onClick={onResend} className="font-semibold text-gold-hover hover:text-navy">
+          resend the code
+        </button>
+        .
+      </p>
+    </form>
+  );
+}
+
 function StudentForm() {
   const { signUpStudent } = useGtre();
   const [name, setName] = useState("");
@@ -89,16 +166,18 @@ function StudentForm() {
   const [major, setMajor] = useState("");
   const [gradYear, setGradYear] = useState("");
   const [error, setError] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+
+  if (confirmEmail) return <ConfirmCodeStep email={confirmEmail} firstName={name.split(" ")[0] || "there"} />;
 
   if (done) {
     return (
       <div className="text-center py-6">
-        <div className="text-2xl display text-navy">Check your email.</div>
+        <div className="text-2xl display text-navy">Request received.</div>
         <p className="text-sm text-secondary mt-3">
-          Thanks, {name.split(" ")[0]}. We sent a verification link to{" "}
-          <strong>{email}</strong> — click it to confirm your address. After that,
-          a club officer approves your account, and you&apos;ll be able to sign in.
+          Thanks, {name.split(" ")[0]}. A club officer will review your account and
+          you&apos;ll be able to sign in once you&apos;re approved.
         </p>
       </div>
     );
@@ -115,6 +194,7 @@ function StudentForm() {
       gradYear: gradYear ? Number(gradYear) : undefined,
     });
     if (!res.ok) return setError(res.error);
+    if (res.needsConfirmation) return setConfirmEmail(email.trim());
     setDone(true);
   }
 
@@ -162,17 +242,19 @@ function IndustryForm() {
   const [title, setTitle] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [error, setError] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+
+  if (confirmEmail) return <ConfirmCodeStep email={confirmEmail} firstName={name.split(" ")[0] || "there"} />;
 
   if (done) {
     return (
       <div className="text-center py-6">
-        <div className="text-2xl display text-navy">Check your email.</div>
+        <div className="text-2xl display text-navy">Request received.</div>
         <p className="text-sm text-secondary mt-3">
-          Thanks, {name.split(" ")[0]}. We sent a verification link to{" "}
-          <strong>{email}</strong> — click it to confirm your address. We verify
-          every industry account by hand; once an officer approves you, you&apos;ll
-          be able to sign in and view the Analyst Rolodex.
+          Thanks, {name.split(" ")[0]}. We verify every industry account by hand;
+          once an officer approves you, you&apos;ll be able to sign in and view the
+          Analyst Rolodex.
         </p>
       </div>
     );
@@ -190,6 +272,7 @@ function IndustryForm() {
       title: title || undefined,
     });
     if (!res.ok) return setError(res.error);
+    if (res.needsConfirmation) return setConfirmEmail(email.trim());
     setDone(true);
   }
 

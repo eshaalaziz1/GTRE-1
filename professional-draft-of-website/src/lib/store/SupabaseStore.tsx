@@ -304,7 +304,9 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           major: input.major,
           createdAt: new Date().toISOString(),
         };
-        return { ok: true, account };
+        // No session back => Supabase is holding the account for email
+        // confirmation (the expected, secure path).
+        return { ok: true, account, needsConfirmation: !data.session };
       },
 
       async signUpIndustry(input) {
@@ -338,7 +340,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           title: input.title?.trim(),
           createdAt: new Date().toISOString(),
         };
-        return { ok: true, account };
+        return { ok: true, account, needsConfirmation: !data.session };
       },
 
       async login(email, password) {
@@ -382,6 +384,34 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           await supabase.auth.signOut();
           await loadAll();
         })();
+      },
+
+      async confirmSignup(email, token) {
+        // Verify the 6-digit signup code the member received by email. Success
+        // proves they own the inbox and marks the email confirmed.
+        const { error } = await supabase.auth.verifyOtp({
+          email: email.trim(),
+          token: token.trim(),
+          type: "signup",
+        });
+        if (error) {
+          if (/expired/i.test(error.message)) {
+            return { ok: false, error: "That code has expired. Request a new one." };
+          }
+          return { ok: false, error: "That code isn't right. Double-check and try again." };
+        }
+        // The account is verified but still pending admin approval — don't leave
+        // them signed in; loadAll() would treat a pending profile as logged out
+        // anyway. Sign out so the UX is a clean "verified, awaiting approval".
+        await supabase.auth.signOut();
+        await loadAll();
+        return { ok: true };
+      },
+
+      async resendCode(email) {
+        const { error } = await supabase.auth.resend({ type: "signup", email: email.trim() });
+        if (error) return { ok: false, error: error.message };
+        return { ok: true };
       },
 
       // ---- Accounts / admin --------------------------------------------

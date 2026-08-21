@@ -158,6 +158,15 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
         setState((s) => ({ ...s, currentAccountId: null }));
       },
 
+      // Prototype has no email service, so sign-up completes without a code and
+      // these are no-ops that satisfy the shared contract.
+      async confirmSignup() {
+        return { ok: true };
+      },
+      async resendCode() {
+        return { ok: true };
+      },
+
       // ---- Accounts / admin --------------------------------------------
       approveAccount(id) {
         setState((s) => ({

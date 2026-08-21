@@ -36,7 +36,9 @@ export function isGeorgiaTechEmail(email: string): boolean {
   return /@([a-z0-9-]+\.)*gatech\.edu$/i.test(email.trim());
 }
 
-export type SignUpResult = { ok: true; account: Account } | { ok: false; error: string };
+export type SignUpResult =
+  | { ok: true; account: Account; needsConfirmation?: boolean }
+  | { ok: false; error: string };
 export type LoginResult = { ok: true; account: Account } | { ok: false; error: string };
 
 export type GtreContextValue = {
@@ -63,6 +65,10 @@ export type GtreContextValue = {
   }) => Promise<SignUpResult>;
   login: (email: string, password: string) => Promise<LoginResult>;
   logout: () => void;
+  // Email verification (OTP code). After a sign-up that needs confirmation, the
+  // member enters the 6-digit code emailed to them to prove they own the inbox.
+  confirmSignup: (email: string, token: string) => Promise<{ ok: boolean; error?: string }>;
+  resendCode: (email: string) => Promise<{ ok: boolean; error?: string }>;
 
   // Accounts / admin
   approveAccount: (id: string) => void;
