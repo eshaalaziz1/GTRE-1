@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PhotoSlot from "@/components/PhotoSlot";
+import SiteImage from "@/components/SiteImage";
 import Reveal from "@/components/Reveal";
 import { VALUES, ENGAGEMENT, EVENTS } from "@/lib/content";
 import { LINKEDIN_URL } from "@/lib/linkedin";
@@ -91,8 +92,9 @@ export default function AboutPage() {
               Hiring? View the Analyst Rolodex →
             </Link>
           </div>
-          <PhotoSlot
-            src="/photos/naiop-win.webp"
+          <SiteImage
+            slotKey="home-mission"
+            defaultSrc="/photos/naiop-win.webp"
             alt="Georgia Tech team wins the NAIOP Georgia School Challenge"
             ratio="aspect-[16/10]"
           />

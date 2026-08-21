@@ -166,6 +166,13 @@ create table if not exists public.site_info (
 );
 insert into public.site_info (id) values (1) on conflict do nothing;
 
+-- Admin-swappable site images: slot key -> uploaded image URL (see lib/images.ts).
+create table if not exists public.site_images (
+  key        text primary key,
+  url        text not null,
+  updated_at timestamptz not null default now()
+);
+
 -- ===========================================================================
 -- Auto-create a profile when a user signs up.
 --
@@ -219,6 +226,7 @@ alter table public.questions     enable row level security;
 alter table public.meeting_notes enable row level security;
 alter table public.resources     enable row level security;
 alter table public.site_info     enable row level security;
+alter table public.site_images   enable row level security;
 
 -- Helper: is the current user an approved admin?
 create or replace function public.is_admin() returns boolean language sql stable as $$
@@ -300,3 +308,27 @@ drop policy if exists "public read site info" on public.site_info;
 drop policy if exists "admin edit site info"  on public.site_info;
 create policy "public read site info" on public.site_info for select using (true);
 create policy "admin edit site info"  on public.site_info for all using (public.is_admin()) with check (public.is_admin());
+
+-- Site images: anyone can read (public pages render them); admins edit.
+drop policy if exists "public read site images" on public.site_images;
+drop policy if exists "admin edit site images"  on public.site_images;
+create policy "public read site images" on public.site_images for select using (true);
+create policy "admin edit site images"  on public.site_images for all using (public.is_admin()) with check (public.is_admin());
+
+-- ===========================================================================
+-- Storage: a public bucket for admin-uploaded site images. Admins upload via
+-- Admin → Images; everyone can read the resulting public URLs.
+-- ===========================================================================
+insert into storage.buckets (id, name, public)
+  values ('site-images', 'site-images', true)
+  on conflict (id) do update set public = true;
+
+drop policy if exists "public read site-images" on storage.objects;
+create policy "public read site-images" on storage.objects
+  for select using (bucket_id = 'site-images');
+
+drop policy if exists "admin write site-images" on storage.objects;
+create policy "admin write site-images" on storage.objects
+  for all
+  using (bucket_id = 'site-images' and public.is_admin())
+  with check (bucket_id = 'site-images' and public.is_admin());

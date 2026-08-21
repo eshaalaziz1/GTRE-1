@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
-import PhotoSlot from "@/components/PhotoSlot";
+import SiteImage from "@/components/SiteImage";
 import { Badge, Tabs } from "@/components/ui";
 import { useGtre } from "@/lib/store/GtreStore";
 import { CURRICULUM, PROGRAM_TOOLS } from "@/lib/program";
@@ -43,8 +43,9 @@ export default function AnalystProgramPage() {
               </Link>
             </div>
           </div>
-          <PhotoSlot
-            src="/photos/analyst-session.jpg"
+          <SiteImage
+            slotKey="analyst-hero"
+            defaultSrc="/photos/analyst-session.jpg"
             alt="An Analyst Program session at Georgia Tech"
             ratio="aspect-[4/3]"
           />

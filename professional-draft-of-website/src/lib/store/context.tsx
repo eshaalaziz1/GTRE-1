@@ -113,6 +113,10 @@ export type GtreContextValue = {
   // Site info
   updateSiteInfo: (patch: Partial<SiteInfo>) => void;
 
+  // Site images (admin-swappable photos by slot key)
+  setSiteImage: (slot: string, file: File) => Promise<{ ok: boolean; error?: string }>;
+  resetSiteImage: (slot: string) => void;
+
   // Utility
   resetDemo: () => void;
 };

@@ -180,6 +180,10 @@ export type GtreState = {
   meetingNotes: MeetingNote[];
   resources: Resource[];
   siteInfo: SiteInfo;
+  // Admin-swappable images by slot key (see src/lib/images.ts). A slot maps to an
+  // uploaded image URL (Supabase Storage) or a data URL (mock); missing slots
+  // fall back to the bundled default.
+  siteImages: Record<string, string>;
   // id of the currently signed-in account, or null
   currentAccountId: string | null;
 };

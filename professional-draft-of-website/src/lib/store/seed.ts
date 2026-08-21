@@ -294,4 +294,5 @@ export const SEED: GtreState = {
       "https://gtvault-my.sharepoint.com/:w:/g/personal/jjohnson709_gatech_edu/IQAG5DhZ_CAYQ7Q0i30SEXYpARL_4OXuRyBX9ByaarWpyJ8?e=AKhQmr&action=embedview",
     googleCalendarEmbedUrl: "",
   },
+  siteImages: {},
 };

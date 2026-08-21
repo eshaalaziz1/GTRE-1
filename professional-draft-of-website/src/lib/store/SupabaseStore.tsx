@@ -53,8 +53,11 @@ const EMPTY_STATE: GtreState = {
   meetingNotes: [],
   resources: [],
   siteInfo: SEED.siteInfo,
+  siteImages: {},
   currentAccountId: null,
 };
+
+const IMAGE_BUCKET = "site-images";
 
 /* ----------------------------- row mappers ------------------------------- */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -204,6 +207,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       notes,
       resources,
       siteInfo,
+      siteImages,
     ] = await Promise.all([
       supabase.from("profiles").select("*"),
       supabase.from("announcements").select("*").order("created_at", { ascending: false }),
@@ -215,7 +219,13 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       supabase.from("meeting_notes").select("*").order("date", { ascending: false }),
       supabase.from("resources").select("*").order("created_at", { ascending: false }),
       supabase.from("site_info").select("*").eq("id", 1).maybeSingle(),
+      supabase.from("site_images").select("*"),
     ]);
+
+    const siteImagesMap: Record<string, string> = {};
+    for (const row of siteImages.data ?? []) {
+      if (row.key && row.url) siteImagesMap[row.key] = row.url;
+    }
 
     const accounts = (profiles.data ?? []).map(mapAccount);
     // Only treat an APPROVED profile as the signed-in app user. A confirmed but
@@ -234,6 +244,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       meetingNotes: (notes.data ?? []).map(mapNote),
       resources: (resources.data ?? []).map(mapResource),
       siteInfo: siteInfo.data ? mapSiteInfo(siteInfo.data) : SEED.siteInfo,
+      siteImages: siteImagesMap,
       currentAccountId,
     });
     setReady(true);
@@ -687,6 +698,30 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           if (patch.googleCalendarEmbedUrl !== undefined) row.google_calendar_embed_url = patch.googleCalendarEmbedUrl;
           // Upsert the single row (id = 1) so the first edit creates it if needed.
           await supabase.from("site_info").upsert(row, { onConflict: "id" });
+          await loadAll();
+        })();
+      },
+
+      // ---- Site images --------------------------------------------------
+      async setSiteImage(slot, file) {
+        const ext = file.name.includes(".") ? file.name.split(".").pop() : "bin";
+        // One object per slot, overwritten on re-upload (a stamp busts CDN cache).
+        const path = `${slot}-${Date.now()}.${ext}`;
+        const up = await supabase.storage
+          .from(IMAGE_BUCKET)
+          .upload(path, file, { upsert: true, contentType: file.type || undefined });
+        if (up.error) return { ok: false, error: up.error.message };
+        const { data: pub } = supabase.storage.from(IMAGE_BUCKET).getPublicUrl(path);
+        const { error } = await supabase
+          .from("site_images")
+          .upsert({ key: slot, url: pub.publicUrl, updated_at: new Date().toISOString() }, { onConflict: "key" });
+        if (error) return { ok: false, error: error.message };
+        await loadAll();
+        return { ok: true };
+      },
+      resetSiteImage(slot) {
+        void (async () => {
+          await supabase.from("site_images").delete().eq("key", slot);
           await loadAll();
         })();
       },

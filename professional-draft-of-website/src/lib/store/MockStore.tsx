@@ -33,7 +33,7 @@ const STORAGE_KEY = "gtre-store";
 // Bump this whenever the seed's SHAPE or baseline content changes (e.g. the
 // real schedule). Persisted data tagged with an older version is discarded on
 // load so everyone picks up the new seed instead of being stuck on stale data.
-const SEED_VERSION = 4;
+const SEED_VERSION = 5;
 
 function uid(prefix: string): string {
   const rand =
@@ -393,6 +393,32 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
       // ---- Site info ----------------------------------------------------
       updateSiteInfo(patch) {
         setState((s) => ({ ...s, siteInfo: { ...s.siteInfo, ...patch } }));
+      },
+
+      // ---- Site images --------------------------------------------------
+      async setSiteImage(slot, file) {
+        // Mock: read the file as a data URL and keep it in local state. (Large
+        // images can exceed the localStorage quota; the persist effect ignores
+        // quota errors, so the image still shows for the session.)
+        try {
+          const dataUrl = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = () => reject(new Error("Could not read the file."));
+            reader.readAsDataURL(file);
+          });
+          setState((s) => ({ ...s, siteImages: { ...s.siteImages, [slot]: dataUrl } }));
+          return { ok: true };
+        } catch (e) {
+          return { ok: false, error: e instanceof Error ? e.message : "Upload failed." };
+        }
+      },
+      resetSiteImage(slot) {
+        setState((s) => {
+          const next = { ...s.siteImages };
+          delete next[slot];
+          return { ...s, siteImages: next };
+        });
       },
 
       // ---- Utility ------------------------------------------------------
