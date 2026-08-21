@@ -56,31 +56,60 @@ export default function AlumniPage() {
         </div>
       </section>
 
-      {/* Invest in tomorrow's leaders */}
-      <section className="mx-auto max-w-[1280px] px-6 lg:px-10 py-14">
-        <h2 className="display text-3xl text-navy mb-8">Invest in tomorrow&apos;s leaders</h2>
-        <div className="grid md:grid-cols-2 gap-7">
-          <div className="border border-border rounded-xl p-7">
-            <h3 className="text-lg font-semibold text-navy mb-2">Recruit and Hire</h3>
-            <p className="text-[15px] text-secondary leading-relaxed mb-5">
-              Browse vetted member profiles in the Analyst Rolodex, or post a
-              role to the Opportunities board and reach students directly for
-              internships and full-time analyst positions.
-            </p>
-            <div className="flex flex-wrap gap-x-5 gap-y-2">
-              <Link href="/rolodex" className="text-sm font-semibold text-gold-hover hover:text-navy">
-                Enter the Analyst Rolodex →
-              </Link>
-              <Link href="/opportunities" className="text-sm font-semibold text-gold-hover hover:text-navy">
-                View the Opportunities board →
-              </Link>
+      {/* Recruit & Hire — prominent Rolodex banner, directly below the network */}
+      <section className="bg-navy">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16 grid lg:grid-cols-[1.5fr_1fr] gap-10 items-center">
+          <div>
+            <div className="text-gold text-[12px] font-semibold uppercase tracking-[0.22em] mb-3">
+              Recruit &amp; Hire
             </div>
+            <h2 className="display text-3xl lg:text-4xl text-white">
+              Hire the club&apos;s best from the Analyst Rolodex.
+            </h2>
+            <p className="mt-4 text-white/75 text-[15px] leading-relaxed max-w-xl">
+              A private, vetted directory of Georgia Tech&apos;s strongest real
+              estate students — backed by what the club tracks all semester:
+              academics, attendance, and graded case-study work. Find and reach the
+              next analyst before anyone else.
+            </p>
           </div>
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-3">
+            <Link
+              href="/rolodex"
+              className="px-7 py-3.5 rounded-md bg-gold text-navy text-sm font-bold text-center hover:bg-gold-hover transition-colors"
+            >
+              Enter the Analyst Rolodex →
+            </Link>
+            <Link
+              href="/opportunities"
+              className="px-7 py-3.5 rounded-md border border-white/40 text-white text-sm font-semibold text-center hover:bg-white/10 transition-colors"
+            >
+              Post an Opportunity
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Other ways to invest in tomorrow's leaders */}
+      <section className="mx-auto max-w-[1280px] px-6 lg:px-10 py-14">
+        <h2 className="display text-3xl text-navy mb-8">Other ways to invest in tomorrow&apos;s leaders</h2>
+        <div className="grid md:grid-cols-2 gap-7">
           <div className="border border-border rounded-xl p-7">
             <h3 className="text-lg font-semibold text-navy mb-2">Mentor a Member</h3>
             <p className="text-[15px] text-secondary leading-relaxed mb-5">
               Give an hour, a site tour, or a mock interview. The most valuable
               thing you can offer a student is your time and perspective.
+            </p>
+            <Link href="/contact" className="text-sm font-semibold text-gold-hover hover:text-navy">
+              Get in touch →
+            </Link>
+          </div>
+          <div className="border border-border rounded-xl p-7">
+            <h3 className="text-lg font-semibold text-navy mb-2">Make a Gift</h3>
+            <p className="text-[15px] text-secondary leading-relaxed mb-5">
+              Support student scholarships, the Analyst Program, and club
+              operations. Every gift goes directly toward preparing the next
+              generation of analysts.
             </p>
             <Link href="/contact" className="text-sm font-semibold text-gold-hover hover:text-navy">
               Get in touch →

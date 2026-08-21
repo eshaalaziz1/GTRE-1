@@ -9,8 +9,8 @@ export const metadata = { title: "Georgia Tech Real Estate Club" };
 export default function AboutPage() {
   return (
     <>
-      {/* Home hero: full-color building loop (undimmed, no overlay) above a bold
-          club wordmark. Sized so the whole hero shows above the fold on open. */}
+      {/* Home hero: full-color building loop (undimmed, no overlay) above the
+          club's mission, front and center. Branding kept light on purpose. */}
       <section className="w-full">
         {/* Building loop — full color */}
         <div className="relative w-full h-[32svh] min-h-[200px] max-h-[400px] overflow-hidden bg-navy">
@@ -28,20 +28,21 @@ export default function AboutPage() {
           <div className="absolute bottom-0 inset-x-0 h-1 bg-gold" />
         </div>
 
-        {/* Striking club wordmark */}
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-8 text-center">
-          <div className="text-gold-hover uppercase tracking-[0.3em] text-[11px] sm:text-[12px] font-semibold mb-4">
-            Georgia Institute of Technology
+        {/* Mission, front and center (pared-back branding — no oversized wordmark) */}
+        <div className="mx-auto max-w-[900px] px-6 lg:px-10 py-12 sm:py-14 text-center">
+          <div className="text-gold-hover uppercase tracking-[0.24em] text-[11px] sm:text-[12px] font-semibold mb-5">
+            Georgia Tech Real Estate Club
           </div>
-          <h1 className="font-[family-name:var(--font-source-serif)] font-bold uppercase tracking-tight leading-[0.9] text-navy text-[10vw] sm:text-6xl lg:text-7xl">
-            Georgia Tech
-            <span className="block text-gold">Real Estate Club</span>
+          <h1 className="display text-navy text-3xl sm:text-4xl lg:text-5xl leading-[1.12]">
+            Preparing students to lead in real estate — and connecting the
+            industry to the talent it&apos;s looking for.
           </h1>
-          <p className="mt-5 text-secondary text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Bridging the classroom and the industry to make Georgia Tech
-            students the most prepared analysts in the room.
+          <p className="mt-6 text-secondary text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            We equip Georgia Tech students with the skills, network, and
+            real-world reps to launch real estate careers, then connect firms to
+            the most prepared analysts in the room.
           </p>
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               href="/contact"
               className="px-7 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors"
@@ -66,17 +67,26 @@ export default function AboutPage() {
             <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-gold-hover mb-3">
               Our Mission
             </div>
-            <h2 className="display text-3xl lg:text-4xl text-navy">
-              Preparing Georgia Tech students to lead in real estate.
-            </h2>
-            <p className="mt-5 text-[15px] text-secondary leading-relaxed">
-              The Georgia Tech Real Estate Club bridges the gap between the
-              classroom and the industry, giving members the technical skills,
-              relationships, and real-world reps they need to launch careers in
-              acquisitions, development, debt, brokerage, and beyond. Everything we
-              do is built around one goal: helping Georgia Tech students become the
-              most prepared analysts in the room.
-            </p>
+            <h2 className="display text-3xl lg:text-4xl text-navy">Two goals, one club.</h2>
+            <div className="mt-6 space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold text-navy">1 · Equip our students</h3>
+                <p className="mt-2 text-[15px] text-secondary leading-relaxed">
+                  Give members the technical skills, relationships, and real-world
+                  reps to launch careers in acquisitions, development, debt,
+                  brokerage, and beyond — and become the most prepared analysts in
+                  the room.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-navy">2 · Supply the industry with talent</h3>
+                <p className="mt-2 text-[15px] text-secondary leading-relaxed">
+                  Connect firms and alumni to a vetted pipeline of Georgia Tech&apos;s
+                  strongest real estate students through the Analyst Rolodex and the
+                  Opportunities board.
+                </p>
+              </div>
+            </div>
             <Link href="/rolodex" className="inline-block mt-6 text-sm font-semibold text-gold-hover hover:text-navy">
               Hiring? View the Analyst Rolodex →
             </Link>
