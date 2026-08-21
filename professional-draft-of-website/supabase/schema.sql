@@ -193,16 +193,22 @@ begin
   insert into public.profiles (id, role, status, name, email, company, linkedin, title, grad_year, major)
   values (
     new.id,
-    -- Role from sign-up metadata; otherwise infer from the email domain so
-    -- OAuth sign-ups (e.g. LinkedIn, which won't be a @gatech.edu address) don't
-    -- default to 'student' and trip the student-email constraint.
-    coalesce(
-      (new.raw_user_meta_data->>'role')::account_role,
-      case when new.email ~* '@([a-z0-9-]+\.)*gatech\.edu$'
-           then 'student'::account_role
-           else 'industry'::account_role end
-    ),
-    'pending',
+    -- Bootstrap admins are auto-made admin so they always have access for testing
+    -- and setup. Otherwise: role from sign-up metadata, else inferred from the
+    -- email domain so OAuth sign-ups (e.g. LinkedIn, not a @gatech.edu address)
+    -- don't default to 'student' and trip the student-email constraint.
+    case
+      when lower(new.email) in ('eaziz3@gatech.edu') then 'admin'::account_role
+      else coalesce(
+        (new.raw_user_meta_data->>'role')::account_role,
+        case when new.email ~* '@([a-z0-9-]+\.)*gatech\.edu$'
+             then 'student'::account_role
+             else 'industry'::account_role end
+      )
+    end,
+    case when lower(new.email) in ('eaziz3@gatech.edu')
+         then 'approved'::account_status
+         else 'pending'::account_status end,
     coalesce(new.raw_user_meta_data->>'name', new.raw_user_meta_data->>'full_name', ''),
     new.email,
     new.raw_user_meta_data->>'company',

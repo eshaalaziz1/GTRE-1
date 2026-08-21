@@ -11,7 +11,7 @@ export default function AdminImages() {
       <div>
         <h2 className="display text-3xl text-navy">Images</h2>
         <p className="text-secondary mt-1">
-          Swap the photos on key pages — upload a new image and it goes live for
+          Swap the photos on key pages, upload a new image and it goes live for
           everyone. No code or GitHub needed.
         </p>
       </div>
@@ -42,7 +42,7 @@ function ImageSlotCard({ slot }: { slot: ImageSlot }) {
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      setMsg({ tone: "error", text: "Image is over 5 MB — please use a smaller file." });
+      setMsg({ tone: "error", text: "Image is over 5 MB, please use a smaller file." });
       return;
     }
     setBusy(true);

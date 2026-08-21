@@ -85,7 +85,7 @@ function SearchInner() {
           {!q ? (
             <p className="text-secondary text-sm">Start typing to search across the site.</p>
           ) : results.length === 0 ? (
-            <EmptyState title={`No results for “${query}”.`} body="Try a different term — a page name, person, event, or topic." />
+            <EmptyState title={`No results for “${query}”.`} body="Try a different term, a page name, person, event, or topic." />
           ) : (
             <>
               <p className="text-[13px] text-secondary mb-4">

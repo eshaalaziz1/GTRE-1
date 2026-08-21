@@ -6,10 +6,10 @@ import type { GtreState } from "./types";
 // initial migration / SQL fixtures instead of localStorage.
 //
 // Demo logins (email / password):
-//   admin@gatech.edu   / admin123     (admin — full access)
-//   member@gatech.edu  / member123    (student — approved)
-//   recruiter@firm.com / recruiter123 (industry — approved)
-//   pending@gatech.edu / pending123   (student — awaiting approval, cannot log in)
+//   admin@gatech.edu   / admin123     (admin, full access)
+//   member@gatech.edu  / member123    (student, approved)
+//   recruiter@firm.com / recruiter123 (industry, approved)
+//   pending@gatech.edu / pending123   (student, awaiting approval, cannot log in)
 // ---------------------------------------------------------------------------
 
 const now = "2026-07-01T12:00:00.000Z";
@@ -17,6 +17,19 @@ const now = "2026-07-01T12:00:00.000Z";
 export const SEED: GtreState = {
   currentAccountId: null,
   accounts: [
+    {
+      id: "acc-eaziz3",
+      role: "admin",
+      status: "approved",
+      name: "Eshaal Aziz",
+      email: "eaziz3@gatech.edu",
+      passwordHash: "gtre2026",
+      title: "Director of IT",
+      gradYear: 2028,
+      major: "Computer Science",
+      createdAt: now,
+      approvedAt: now,
+    },
     {
       id: "acc-admin",
       role: "admin",
@@ -105,7 +118,7 @@ export const SEED: GtreState = {
     },
     {
       id: "ann-2",
-      title: "Kickoff meeting — Thursday 6 PM",
+      title: "Kickoff meeting, Thursday 6 PM",
       body: "Our first general meeting of the semester is this Thursday at 6:00 PM in Scheller 200. Pizza provided. Check in with the meeting code to log attendance.",
       category: "Meeting",
       pinned: false,
@@ -132,7 +145,7 @@ export const SEED: GtreState = {
     { id: "ap-2", track: "Analyst Program", order: 1, type: "Meeting", title: "Intro and CRE Overview", date: "2026-09-14", time: "6:00 PM", location: "Caddell", checkInCode: "INTRO", checkInOpen: false },
     { id: "ap-3", track: "Analyst Program", order: 2, type: "Workshop", title: "Capital Markets & Financing", date: "2026-09-21", time: "6:00 PM", location: "Caddell", checkInCode: "CAPMKT", checkInOpen: false },
     { id: "ap-4", track: "Analyst Program", order: 3, type: "Event", title: "Recruitment Event - Peachtree", date: "2026-09-28", time: "6:00 PM", location: "Caddell", checkInCode: "RECRUIT", checkInOpen: false },
-    { id: "ap-5", track: "Analyst Program", order: 4, type: "Social", title: "Fall Break — No Meeting", date: "2026-10-05", location: "Caddell", description: "No class this week — enjoy the break." },
+    { id: "ap-5", track: "Analyst Program", order: 4, type: "Social", title: "Fall Break, No Meeting", date: "2026-10-05", location: "Caddell", description: "No class this week, enjoy the break." },
     { id: "ap-6", track: "Analyst Program", order: 5, type: "Workshop", title: "Development & Construction", date: "2026-10-12", time: "6:00 PM", location: "Caddell", checkInCode: "DEVCON", checkInOpen: false },
     { id: "ap-7", track: "Analyst Program", order: 6, type: "Workshop", title: "Investments in CRE", date: "2026-10-19", time: "6:00 PM", location: "Caddell", checkInCode: "INVEST", checkInOpen: false },
     { id: "ap-8", track: "Analyst Program", order: 7, type: "Case Study", title: "Case Study Overview / Submarket Research (Sandy Paul)", date: "2026-10-26", time: "6:00 PM", location: "Caddell", checkInCode: "CASE1", checkInOpen: false },
@@ -140,7 +153,7 @@ export const SEED: GtreState = {
     { id: "ap-10", track: "Analyst Program", order: 9, type: "Case Study", title: "Case Study Example", date: "2026-11-09", time: "6:00 PM", location: "Caddell", checkInCode: "CHECKIN", checkInOpen: true },
     { id: "ap-11", track: "Analyst Program", order: 10, type: "Case Study", title: "Case Study Practice", date: "2026-11-16", time: "6:00 PM", location: "Caddell", checkInCode: "PRACTICE", checkInOpen: false },
     { id: "ap-12", track: "Analyst Program", order: 11, type: "Case Study", title: "Presentations Day 1", date: "2026-11-23", time: "6:00 PM", location: "Caddell", checkInCode: "PRES1", checkInOpen: false },
-    { id: "ap-13", track: "Analyst Program", order: 12, type: "Social", title: "Break", date: "2026-11-30", location: "Caddell", description: "No class this week — enjoy the break." },
+    { id: "ap-13", track: "Analyst Program", order: 12, type: "Social", title: "Break", date: "2026-11-30", location: "Caddell", description: "No class this week, enjoy the break." },
     { id: "ap-14", track: "Analyst Program", order: 13, type: "Case Study", title: "Presentations Day 2", date: "2026-12-07", time: "6:00 PM", location: "Caddell", checkInCode: "PRES2", checkInOpen: false },
 
     // ---- Industry Events --------------------------------------------------
@@ -192,7 +205,7 @@ export const SEED: GtreState = {
     },
     {
       id: "asg-3",
-      title: "Case Study — Adaptive Reuse Underwriting",
+      title: "Case Study, Adaptive Reuse Underwriting",
       description: "As a team, produce a full underwriting package and recommendation for the Savannah hotel-to-multifamily conversion.",
       week: 4,
       dueDate: "2026-10-01",
@@ -228,7 +241,7 @@ export const SEED: GtreState = {
       subject: "Which template should we use for the underwriting model?",
       body: "Is there a standard club template for the multifamily model, or can we build our own?",
       status: "answered",
-      answer: "Use your own structure — we grade on logic and clarity, not a fixed template. A starter is in the Materials tab if you want one.",
+      answer: "Use your own structure, we grade on logic and clarity, not a fixed template. A starter is in the Materials tab if you want one.",
       answeredBy: "Jordan Ellis",
       createdAt: "2026-08-30T18:00:00.000Z",
       answeredAt: "2026-08-31T14:00:00.000Z",
@@ -238,7 +251,7 @@ export const SEED: GtreState = {
   meetingNotes: [
     {
       id: "note-1",
-      title: "Exec sync — semester planning",
+      title: "Exec sync, semester planning",
       date: "2026-07-01",
       body: "Set the Fall calendar, confirmed CoStar renewal, assigned case study leads. Action items: Maya to book rooms, Chris to finalize sponsor outreach.",
       authorName: "Avery Mitchell",
@@ -249,7 +262,7 @@ export const SEED: GtreState = {
   resources: [
     {
       id: "res-1",
-      title: "Real Estate Finance — Week 1 Slides",
+      title: "Real Estate Finance, Week 1 Slides",
       description: "Cap rates, NOI, valuation basics.",
       url: "https://docs.google.com/presentation/d/example/edit",
       category: "Slides",

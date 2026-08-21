@@ -1,7 +1,7 @@
 "use client";
 
 // ---------------------------------------------------------------------------
-// MockStore — the prototype's localStorage-backed data layer.
+// MockStore, the prototype's localStorage-backed data layer.
 //
 // This is the ONE place the mock adapter owns state and every read/write the
 // portals need. It persists to localStorage so the whole system is fully
@@ -33,7 +33,7 @@ const STORAGE_KEY = "gtre-store";
 // Bump this whenever the seed's SHAPE or baseline content changes (e.g. the
 // real schedule). Persisted data tagged with an older version is discarded on
 // load so everyone picks up the new seed instead of being stuck on stale data.
-const SEED_VERSION = 5;
+const SEED_VERSION = 6;
 
 function uid(prefix: string): string {
   const rand =

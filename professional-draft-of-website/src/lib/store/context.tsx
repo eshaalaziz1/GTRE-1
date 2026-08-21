@@ -3,15 +3,15 @@
 // ---------------------------------------------------------------------------
 // Shared data-layer contract for the GTRE portal + admin system.
 //
-// Both adapters — the localStorage mock (MockStore.tsx) and the real Supabase
-// backend (SupabaseStore.tsx) — implement THIS interface, so pages never care
+// Both adapters, the localStorage mock (MockStore.tsx) and the real Supabase
+// backend (SupabaseStore.tsx), implement THIS interface, so pages never care
 // which one is active. `GtreStore.tsx` picks the adapter at runtime from
 // NEXT_PUBLIC_DATA_BACKEND and re-exports everything a page imports.
 //
 // Async note: the four methods whose return value a caller consumes
 // (signUpStudent, signUpIndustry, login, checkIn) return Promises so the same
 // call site works against both a synchronous mock and an async network backend.
-// Fire-and-forget mutations stay `=> void` in the type — an async function that
+// Fire-and-forget mutations stay `=> void` in the type, an async function that
 // returns Promise<void> is assignable to a `() => void` slot, so the Supabase
 // adapter's async implementations satisfy this contract unchanged.
 // ---------------------------------------------------------------------------

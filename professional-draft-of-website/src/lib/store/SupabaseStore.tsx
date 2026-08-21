@@ -1,7 +1,7 @@
 "use client";
 
 // ---------------------------------------------------------------------------
-// SupabaseStore — the production data layer.
+// SupabaseStore, the production data layer.
 //
 // Implements the same GtreContextValue contract as the mock (see context.tsx),
 // but every read/write goes to Supabase:
@@ -9,7 +9,7 @@
 //   * Everything else → Postgres tables, filtered by Row-Level Security.
 //
 // Reads: on mount and on every auth change we SELECT from each table. RLS does
-// the filtering — anon sees only public rows (site info, events, announcements,
+// the filtering, anon sees only public rows (site info, events, announcements,
 // resources), an approved member sees their own submissions/check-ins/etc., and
 // an admin sees everything. So the same loadAll() is correct for every viewer.
 //
@@ -352,7 +352,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           if (/email not confirmed/i.test(error.message)) {
             return {
               ok: false,
-              error: "Please confirm your email first — check your inbox for the verification link.",
+              error: "Please confirm your email first, check your inbox for the verification link.",
             };
           }
           return { ok: false, error: "Incorrect email or password." };
@@ -400,7 +400,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           }
           return { ok: false, error: "That code isn't right. Double-check and try again." };
         }
-        // The account is verified but still pending admin approval — don't leave
+        // The account is verified but still pending admin approval, don't leave
         // them signed in; loadAll() would treat a pending profile as logged out
         // anyway. Sign out so the UX is a clean "verified, awaiting approval".
         await supabase.auth.signOut();
@@ -433,7 +433,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       deleteAccount(id) {
         void (async () => {
           // Removes the profile row (RLS admin policy). Fully deleting the
-          // underlying auth user requires a service-role server action — see SETUP.md.
+          // underlying auth user requires a service-role server action, see SETUP.md.
           await supabase.from("profiles").delete().eq("id", id);
           await loadAll();
         })();
@@ -758,7 +758,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
 
       // ---- Utility ------------------------------------------------------
       resetDemo() {
-        // No destructive reset against a live backend — just re-sync from the DB.
+        // No destructive reset against a live backend, just re-sync from the DB.
         void loadAll();
       },
     };

@@ -10,7 +10,7 @@ import type { Role } from "@/lib/store/types";
  *
  * This is prototype-grade gating (state lives in the browser). With Supabase,
  * pair this with server-side checks / RLS so protected data is never sent to
- * an unauthorized client — see SETUP.md.
+ * an unauthorized client, see SETUP.md.
  */
 export default function RequireAuth({
   roles,

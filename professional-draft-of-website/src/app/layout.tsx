@@ -13,7 +13,7 @@ const sourceSans = Source_Sans_3({
   display: "swap",
 });
 
-// Display face for the wordmark and headings — a professional serif that pairs
+// Display face for the wordmark and headings, a professional serif that pairs
 // with the Source Sans body.
 const sourceSerif = Source_Serif_4({
   variable: "--font-source-serif",

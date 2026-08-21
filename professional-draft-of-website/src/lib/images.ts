@@ -16,13 +16,13 @@ export type ImageSlot = {
 export const IMAGE_SLOTS: ImageSlot[] = [
   {
     key: "home-mission",
-    label: "Homepage — mission photo",
+    label: "Homepage, mission photo",
     description: "The large photo beside the mission on the homepage.",
     defaultSrc: "/photos/naiop-win.webp",
   },
   {
     key: "analyst-hero",
-    label: "Analyst Program — hero photo",
+    label: "Analyst Program, hero photo",
     description: "The photo in the Analyst Program page header.",
     defaultSrc: "/photos/analyst-session.jpg",
   },

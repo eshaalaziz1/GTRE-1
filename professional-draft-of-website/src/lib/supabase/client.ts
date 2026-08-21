@@ -3,11 +3,11 @@
 // ---------------------------------------------------------------------------
 // Browser Supabase client (singleton).
 //
-// Uses the public URL + anon key — safe to expose to the browser. Row-Level
+// Uses the public URL + anon key, safe to expose to the browser. Row-Level
 // Security on every table is what actually protects data; the anon key only
 // lets a caller do what the signed-in user's RLS policies permit. Admin-only
 // mutations work because the admin's session satisfies the `is_admin()` RLS
-// policies in supabase/schema.sql — no service-role key is shipped to the client.
+// policies in supabase/schema.sql, no service-role key is shipped to the client.
 // ---------------------------------------------------------------------------
 
 import { createBrowserClient } from "@supabase/ssr";

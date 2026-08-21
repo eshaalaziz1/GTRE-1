@@ -1,4 +1,4 @@
-// Advisory board roster — name and role only. `photo` left null falls back to
+// Advisory board roster, name and role only. `photo` left null falls back to
 // an initials avatar until a square headshot is dropped in.
 
 export type BoardMember = {
@@ -14,7 +14,7 @@ export const BOARD: BoardMember[] = [
   { slug: "stacy-scopano", name: "Stacy Scopano", role: "Alumni Advisor & Former President", photo: null },
 ];
 
-// Alumni Board — the club's active alumni board (~10 members), folded into the
+// Alumni Board, the club's active alumni board (~10 members), folded into the
 // Advisory Board page rather than a separate tab. Add each member below and they
 // appear automatically; while empty the page shows a "being finalized" note.
 // `company` is optional and shows under the name.

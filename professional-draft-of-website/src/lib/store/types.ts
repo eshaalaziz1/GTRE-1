@@ -17,7 +17,7 @@ export type AccountStatus = "pending" | "approved" | "rejected";
 /**
  * A person with a login. Students must use a Georgia Tech email; industry
  * professionals must supply a LinkedIn URL. `passwordHash` is a stand-in in the
- * mock adapter (plain text, never do this in production) — Supabase Auth owns
+ * mock adapter (plain text, never do this in production), Supabase Auth owns
  * real credentials, so this field disappears once the backend is wired.
  */
 export type Account = {
@@ -67,7 +67,7 @@ export type ClubEvent = {
   description?: string;
   // Manual display order within a track (lower = earlier). Admins reorder with
   // up/down controls; new events append to the end. The calendar grid still
-  // sorts by date — order only drives the schedule list view.
+  // sorts by date, order only drives the schedule list view.
   order: number;
   // Check-in: members enter this code during the event to record attendance.
   checkInCode?: string;

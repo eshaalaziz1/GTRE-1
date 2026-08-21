@@ -24,7 +24,7 @@ export default function CalendarPage() {
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 pb-4">
         <h1 className="display text-4xl lg:text-5xl text-navy mb-3">Calendar</h1>
         <p className="text-secondary max-w-2xl">
-          Club meetings, the Analyst Program, and industry events. Managed by the exec team — members can check in for
+          Club meetings, the Analyst Program, and industry events. Managed by the exec team, members can check in for
           meetings from the portal.
         </p>
         <div className="border-t border-gold mt-7" />

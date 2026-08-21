@@ -83,7 +83,7 @@ export default function SignupPage() {
 
 /**
  * Email-verification step: the member enters the 6-digit code sent to their
- * inbox. Verifying proves they own the address (a code, not a link — more
+ * inbox. Verifying proves they own the address (a code, not a link, more
  * reliable for @gatech.edu / Outlook, where link scanners can consume magic
  * links). After verifying, the account is still pending officer approval.
  */
@@ -101,7 +101,7 @@ function ConfirmCodeStep({ email, firstName }: { email: string; firstName: strin
         <div className="text-2xl display text-navy">Email verified.</div>
         <p className="text-sm text-secondary mt-3">
           Thanks, {firstName}. Your email is confirmed. A club officer now reviews
-          your account — you&apos;ll be able to sign in once you&apos;re approved.
+          your account, you&apos;ll be able to sign in once you&apos;re approved.
         </p>
       </div>
     );

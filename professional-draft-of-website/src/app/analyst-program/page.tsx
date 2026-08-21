@@ -162,8 +162,8 @@ function CaseStudy({ resources }: { resources: Resource[] }) {
             The Analyst Program culminates in a full underwriting case study.
             Members get a real deal prompt, build a proforma from the ground up, and
             present their recommendation to a panel of alumni judges against a shared
-            rubric. Everything you need — the prompt, proforma templates, and the
-            grading rubric — is posted here.
+            rubric. Everything you need, the prompt, proforma templates, and the
+            grading rubric, is posted here.
           </p>
         </div>
         <aside className="bg-surface rounded-2xl p-7 h-fit">
@@ -185,7 +185,7 @@ function CaseStudy({ resources }: { resources: Resource[] }) {
           <p className="text-secondary mt-2 max-w-lg mx-auto leading-relaxed">
             The case prompt, proforma templates, and grading rubric will be posted
             here. Officers add them in <strong>Admin → Materials</strong> (category
-            &ldquo;Case Study&rdquo;) — no code needed.
+            &ldquo;Case Study&rdquo;), no code needed.
           </p>
         </div>
       ) : (
@@ -252,7 +252,7 @@ function Syllabus({ url }: { url: string }) {
             <h3 className="display text-2xl text-navy">Syllabus coming soon</h3>
             <p className="text-secondary mt-3 leading-relaxed">
               The Fall 2026 Analyst Program syllabus will be published here as a view-only document. Once it&apos;s
-              ready, an officer adds it in <strong>Admin → Site Info</strong> and it renders on this page — no download,
+              ready, an officer adds it in <strong>Admin → Site Info</strong> and it renders on this page, no download,
               read in place.
             </p>
             <Link href="/signup" className="mt-8 inline-block px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors">

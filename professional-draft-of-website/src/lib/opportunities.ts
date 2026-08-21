@@ -20,7 +20,7 @@ export type Opportunity = {
 export const OPPORTUNITIES: Opportunity[] = [
   {
     id: "opp-jll-analyst",
-    title: "Summer Analyst — Real Estate Acquisitions",
+    title: "Summer Analyst, Real Estate Acquisitions",
     company: "JLL",
     location: "Atlanta, GA",
     jobType: "Internship",
@@ -43,7 +43,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     compensation: "$25/hr",
     deadline: "2026-04-01",
     applicationLink: "https://portmanholdings.com/careers",
-    postedBy: "Alumni — Sarah Chen '21",
+    postedBy: "Alumni, Sarah Chen '21",
     isAlumPosted: true,
     description:
       "Work alongside Portman's development team on mixed-use projects in Midtown Atlanta. Responsibilities include market analysis, project scheduling support, and assisting with entitlement processes. Great exposure to ground-up development.",
@@ -73,7 +73,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     compensation: "$110,000 - $130,000 + bonus",
     deadline: "2026-04-20",
     applicationLink: "https://starwoodcapital.com/careers",
-    postedBy: "Alumni — Marcus Williams '19",
+    postedBy: "Alumni, Marcus Williams '19",
     isAlumPosted: true,
     description:
       "Starwood Capital seeks an associate for their real estate private equity fund. Responsibilities include deal sourcing, financial modeling, asset management support, and investor reporting. 2+ years of investment banking or RE experience required.",
@@ -110,7 +110,7 @@ export const OPPORTUNITIES: Opportunity[] = [
   },
   {
     id: "opp-invesco-analyst",
-    title: "Investment Analyst — Summer Associate",
+    title: "Investment Analyst, Summer Associate",
     company: "Invesco Real Estate",
     location: "Atlanta, GA",
     jobType: "Internship",
@@ -155,7 +155,7 @@ export const OPPORTUNITIES: Opportunity[] = [
   },
   {
     id: "opp-greystar-coop-2027",
-    title: "Property Management Co-op — Spring 2027",
+    title: "Property Management Co-op, Spring 2027",
     company: "Greystar",
     location: "Atlanta, GA",
     jobType: "Co-op",

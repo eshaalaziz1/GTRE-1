@@ -9,7 +9,7 @@ import LinkedInButton from "@/components/LinkedInButton";
 
 /**
  * Member / industry / admin sign-in. No Google sign-in (removed per direction).
- * Approved accounts only — pending or rejected accounts get a clear message.
+ * Approved accounts only, pending or rejected accounts get a clear message.
  */
 export default function LoginPage() {
   const router = useRouter();
@@ -50,7 +50,7 @@ export default function LoginPage() {
           <ul className="mt-8 space-y-2 text-white/70 text-sm">
             <li>• Students sign in with a Georgia Tech email.</li>
             <li>• Industry professionals sign in with their approved account.</li>
-            <li>• New here? Request access — an officer approves every account.</li>
+            <li>• New here? Request access, an officer approves every account.</li>
           </ul>
         </div>
 
@@ -92,7 +92,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Prototype helper — only shown while the localStorage mock is active. */}
+          {/* Prototype helper, only shown while the localStorage mock is active. */}
           {(process.env.NEXT_PUBLIC_DATA_BACKEND ?? "").toLowerCase() !== "supabase" && (
             <div className="mt-5 rounded-lg bg-surface border border-border p-3 text-[12px] text-secondary leading-relaxed">
               <span className="font-semibold text-navy">Demo logins:</span>{" "}

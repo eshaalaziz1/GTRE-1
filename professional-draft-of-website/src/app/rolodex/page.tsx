@@ -100,8 +100,8 @@ export default function RolodexGateway() {
                     New here?{" "}
                     <Link href="/signup" className="font-semibold text-gold-hover hover:text-navy">
                       Request access
-                    </Link>{" "}
-                    — every account is approved by hand.
+                    </Link>
+                    {". Every account is approved by hand."}
                   </p>
                 </div>
               </>

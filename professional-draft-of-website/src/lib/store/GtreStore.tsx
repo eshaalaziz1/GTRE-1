@@ -1,7 +1,7 @@
 "use client";
 
 // ---------------------------------------------------------------------------
-// GtreStore — the app's data-layer entry point.
+// GtreStore, the app's data-layer entry point.
 //
 // Pages import `useGtre` (and `GtreProvider`, `isGeorgiaTechEmail`, the Result
 // types) from here and never care which backend is live. This module simply

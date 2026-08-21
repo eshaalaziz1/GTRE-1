@@ -43,7 +43,7 @@ function OpportunitiesBoard() {
         <h1 className="display text-4xl lg:text-5xl text-navy mb-4">Opportunities</h1>
         <p className="text-[16px] text-secondary leading-relaxed max-w-3xl">
           Internships, co-ops, and full-time analyst roles in commercial real
-          estate — posted by our career services team and by alumni across
+          estate, posted by our career services team and by alumni across
           acquisitions, development, capital markets, and beyond. Many of these
           firms recruit our members directly.
         </p>

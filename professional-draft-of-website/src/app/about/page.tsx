@@ -10,35 +10,34 @@ export const metadata = { title: "Georgia Tech Real Estate Club" };
 export default function AboutPage() {
   return (
     <>
-      {/* Home hero: full-color building loop (undimmed, no overlay) above the
-          club's mission, front and center. Branding kept light on purpose. */}
-      <section className="w-full">
-        {/* Building loop — full color */}
-        <div className="relative w-full h-[32svh] min-h-[200px] max-h-[400px] overflow-hidden bg-navy">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster="/about-hero-poster.jpg"
-            className="absolute inset-0 w-full h-full object-cover object-[center_38%]"
-          >
-            <source src="/about-hero.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute bottom-0 inset-x-0 h-1 bg-gold" />
-        </div>
+      {/* Home hero: the mission over the skyline loop, in one above-the-fold
+          screen so "Join the Club" is visible without scrolling. */}
+      <section className="relative w-full overflow-hidden bg-navy flex items-center min-h-[520px] h-[calc(100svh-160px)] max-h-[680px]">
+        {/* Background skyline loop */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/about-hero-poster.jpg"
+          className="absolute inset-0 w-full h-full object-cover object-[center_40%]"
+        >
+          <source src="/about-hero.mp4" type="video/mp4" />
+        </video>
+        {/* Navy wash for legible text over the video */}
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/85 via-navy/70 to-navy/90" />
 
-        {/* Mission, front and center (pared-back branding — no oversized wordmark) */}
-        <div className="mx-auto max-w-[900px] px-6 lg:px-10 py-12 sm:py-14 text-center">
-          <div className="text-gold-hover uppercase tracking-[0.24em] text-[11px] sm:text-[12px] font-semibold mb-5">
+        {/* Mission, front and center */}
+        <div className="relative mx-auto max-w-[920px] px-6 lg:px-10 text-center">
+          <div className="text-gold uppercase tracking-[0.26em] text-[11px] sm:text-[12px] font-semibold mb-5">
             Georgia Tech Real Estate Club
           </div>
-          <h1 className="display text-navy text-3xl sm:text-4xl lg:text-5xl leading-[1.12]">
-            Preparing students to lead in real estate — and connecting the
+          <h1 className="display text-white text-3xl sm:text-4xl lg:text-[3.25rem] leading-[1.12]">
+            Preparing students to lead in real estate, and connecting the
             industry to the talent it&apos;s looking for.
           </h1>
-          <p className="mt-6 text-secondary text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-6 text-white/80 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             We equip Georgia Tech students with the skills, network, and
             real-world reps to launch real estate careers, then connect firms to
             the most prepared analysts in the room.
@@ -46,18 +45,20 @@ export default function AboutPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               href="/contact"
-              className="px-7 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors"
+              className="px-8 py-3.5 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors"
             >
               Join the Club
             </Link>
             <Link
               href="/analyst-program"
-              className="px-7 py-3 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-surface transition-colors"
+              className="px-8 py-3.5 rounded-md border border-white/50 text-white text-sm font-semibold hover:bg-white/10 transition-colors"
             >
               Explore the Analyst Program
             </Link>
           </div>
         </div>
+
+        <div className="absolute bottom-0 inset-x-0 h-1 bg-gold" />
       </section>
 
       {/* Mission */}
@@ -75,7 +76,7 @@ export default function AboutPage() {
                 <p className="mt-2 text-[15px] text-secondary leading-relaxed">
                   Give members the technical skills, relationships, and real-world
                   reps to launch careers in acquisitions, development, debt,
-                  brokerage, and beyond — and become the most prepared analysts in
+                  brokerage, and beyond, and become the most prepared analysts in
                   the room.
                 </p>
               </div>

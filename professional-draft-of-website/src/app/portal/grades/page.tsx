@@ -27,7 +27,7 @@ export default function GradesPage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Card className="text-center">
-          <div className="text-3xl display text-navy">{pct != null ? `${pct}%` : "—"}</div>
+          <div className="text-3xl display text-navy">{pct != null ? `${pct}%` : "N/A"}</div>
           <div className="text-[13px] text-secondary mt-1">Overall average</div>
         </Card>
         <Card className="text-center">

@@ -64,7 +64,7 @@ export default function ForumPage() {
                 {q.answer && (
                   <div className="mt-3 pt-3 border-t border-border">
                     <div className="text-[12px] font-semibold text-navy uppercase tracking-wide">
-                      Answer{q.answeredBy ? ` — ${q.answeredBy}` : ""}
+                      Answer{q.answeredBy ? `, ${q.answeredBy}` : ""}
                     </div>
                     <p className="text-[15px] text-text mt-1 leading-relaxed">{q.answer}</p>
                   </div>

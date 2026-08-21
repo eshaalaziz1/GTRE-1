@@ -57,7 +57,7 @@ export default function AdminNotes() {
                     <div className="text-[12px] text-secondary">{new Date(n.date + "T12:00:00").toLocaleDateString()}</div>
                     <h4 className="font-semibold text-navy">{n.title}</h4>
                     <p className="text-[14px] text-secondary mt-1 whitespace-pre-wrap">{n.body}</p>
-                    <div className="text-[12px] text-secondary mt-2">— {n.authorName}</div>
+                    <div className="text-[12px] text-secondary mt-2">by {n.authorName}</div>
                   </div>
                   <ConfirmDelete onConfirm={() => deleteMeetingNote(n.id)} />
                 </div>

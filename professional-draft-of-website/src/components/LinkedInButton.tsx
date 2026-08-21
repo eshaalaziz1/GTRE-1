@@ -4,14 +4,14 @@ import { useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
 
 /**
- * "Continue with LinkedIn" — Supabase LinkedIn (OIDC) sign-in.
+ * "Continue with LinkedIn", Supabase LinkedIn (OIDC) sign-in.
  *
  * Hidden unless NEXT_PUBLIC_LINKEDIN_AUTH === "on", so it only appears once a
  * LinkedIn app is configured in Supabase (see SETUP.md → "LinkedIn login").
  * That keeps a non-functional button off the live site until it's ready to test.
  *
  * On success LinkedIn returns the member to `redirectTo`; the signup trigger
- * creates their profile (role inferred from email — LinkedIn users become
+ * creates their profile (role inferred from email, LinkedIn users become
  * `industry` by default). Best suited to industry/alumni sign-in and profile
  * auto-fill; students still sign up with their @gatech.edu email.
  */

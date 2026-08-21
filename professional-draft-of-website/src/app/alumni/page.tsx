@@ -60,7 +60,7 @@ export default function AlumniPage() {
             </div>
           </div>
           <div className="bg-white border border-border border-t-4 border-t-gold rounded-b-2xl p-7">
-            <h3 className="text-lg font-semibold text-navy">Alumni directory — coming soon</h3>
+            <h3 className="text-lg font-semibold text-navy">Alumni directory, coming soon</h3>
             <p className="text-[14px] text-secondary leading-relaxed mt-2">
               We&apos;re building a searchable directory of GT Real Estate alumni
               and where they&apos;ve landed across the industry. Add yourself now
@@ -73,7 +73,7 @@ export default function AlumniPage() {
         </div>
       </section>
 
-      {/* Advisory Board — senior advisors (merged in from the old Advisory tab) */}
+      {/* Advisory Board, senior advisors (merged in from the old Advisory tab) */}
       <div className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-14 pb-6">
         <div className="flex items-center gap-4 mb-3">
           <h2 className="display text-3xl text-navy">Advisory Board</h2>
@@ -84,7 +84,7 @@ export default function AlumniPage() {
         </div>
         <p className="text-[15px] text-secondary leading-relaxed max-w-3xl mb-8">
           Senior real estate leaders who guide the club, advise on direction, and
-          contribute as guest lecturers and mentors — drawn from across the
+          contribute as guest lecturers and mentors, drawn from across the
           functional areas of real estate and urban development.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -101,7 +101,7 @@ export default function AlumniPage() {
         </div>
       </div>
 
-      {/* Alumni Board — active alumni */}
+      {/* Alumni Board, active alumni */}
       <div className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-6 pb-14">
         <div className="flex items-center gap-4 mb-3">
           <h2 className="display text-3xl text-navy">Alumni Board</h2>
@@ -111,7 +111,7 @@ export default function AlumniPage() {
           </span>
         </div>
         <p className="text-[15px] text-secondary leading-relaxed max-w-3xl mb-8">
-          A group of active alumni who stay closely involved — mentoring members,
+          A group of active alumni who stay closely involved, mentoring members,
           judging case studies, opening doors to internships and full-time roles,
           and helping steer the club year to year.
         </p>
@@ -159,7 +159,7 @@ export default function AlumniPage() {
         </div>
       </section>
 
-      {/* Recruit & Hire — prominent Rolodex banner */}
+      {/* Recruit & Hire, prominent Rolodex banner */}
       <section className="bg-navy">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16 grid lg:grid-cols-[1.5fr_1fr] gap-10 items-center">
           <div>
@@ -171,7 +171,7 @@ export default function AlumniPage() {
             </h2>
             <p className="mt-4 text-white/75 text-[15px] leading-relaxed max-w-xl">
               A private, vetted directory of Georgia Tech&apos;s strongest real
-              estate students — backed by what the club tracks all semester:
+              estate students, backed by what the club tracks all semester:
               academics, attendance, and graded case-study work. Find and reach the
               next analyst before anyone else.
             </p>
