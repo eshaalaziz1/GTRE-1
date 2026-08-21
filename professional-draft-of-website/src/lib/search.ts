@@ -26,7 +26,7 @@ const PAGES: SearchItem[] = [
   { title: "Opportunities", description: "Internships, co-ops, and full-time analyst roles.", href: "/opportunities", category: "Page", keywords: "jobs internships careers opportunities hiring recruiting analyst" },
   { title: "Alumni", description: "The alumni network and ways to give back.", href: "/alumni", category: "Page" },
   { title: "Leadership", description: "The student executive board.", href: "/leadership", category: "Page", keywords: "exec board officers president leadership team" },
-  { title: "Advisory Board", description: "Industry leaders who guide the club.", href: "/advisory-board", category: "Page" },
+  { title: "Advisory Board", description: "Industry leaders and active alumni who guide the club.", href: "/alumni", category: "Page", keywords: "advisory board alumni board advisors mentors" },
   { title: "Contact Us", description: "Reach club leadership directly.", href: "/contact", category: "Page" },
   { title: "Analyst Rolodex", description: "Vetted analyst directory for recruiters and alumni.", href: "/rolodex", category: "Page", keywords: "recruiters hire companies rolodex" },
   { title: "Member Portal", description: "Assignments, check-in, materials, and more.", href: "/portal", category: "Page", keywords: "login member portal" },

@@ -2,13 +2,22 @@
 
 import { useMemo, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
+import RequireAuth from "@/components/RequireAuth";
 import { Badge } from "@/components/ui";
 import { OPPORTUNITIES, type Opportunity } from "@/lib/opportunities";
 
-// Public job & internship board. Members browse real analyst, development,
-// brokerage, and PE roles posted by career services and alumni. Sector filter
-// plus a "posted by alumni" toggle; each card expands to the full description.
+// Members-only job & internship board. Signed-in members browse real analyst,
+// development, brokerage, and PE roles posted by career services and alumni.
+// Sector filter plus a "posted by alumni" toggle; each card expands to details.
 export default function OpportunitiesPage() {
+  return (
+    <RequireAuth>
+      <OpportunitiesBoard />
+    </RequireAuth>
+  );
+}
+
+function OpportunitiesBoard() {
   const [sector, setSector] = useState("All");
   const [alumniOnly, setAlumniOnly] = useState(false);
 

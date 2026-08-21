@@ -4,10 +4,8 @@ export const MAIN_NAV: { label: string; href: string }[] = [
   { label: "Analyst Program", href: "/analyst-program" },
   { label: "News", href: "/news" },
   { label: "Calendar", href: "/calendar" },
-  { label: "Opportunities", href: "/opportunities" },
   { label: "Alumni", href: "/alumni" },
   { label: "Leadership", href: "/leadership" },
-  { label: "Advisory Board", href: "/advisory-board" },
   { label: "Contact Us", href: "/contact" },
 ];
 
