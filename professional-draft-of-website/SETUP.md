@@ -80,6 +80,34 @@ The Supabase adapter is **already built** (`src/lib/store/SupabaseStore.tsx` +
    ```
    From then on you can approve/manage everyone else in **Admin → Members**.
 
+## Sending verification emails (free, via Gmail SMTP)
+
+Supabase's built-in email service works but is **rate-limited to a few messages
+per hour** — fine for testing, not for a sign-up rush (it silently stops sending
+once you hit the cap). To send verification emails to **anyone**, for free,
+point Supabase at the club Gmail (`gtreclub@gmail.com`). No domain required.
+
+1. **On the Gmail account:** turn on **2-Step Verification** (Google Account →
+   Security), then create an **App Password** (Security → App passwords →
+   "Mail"). Google shows a 16-character password — copy it.
+2. **In Supabase → Authentication → Emails → SMTP Settings**, enable custom SMTP:
+
+   | Field | Value |
+   |---|---|
+   | Sender email | `gtreclub@gmail.com` |
+   | Sender name | `Georgia Tech Real Estate Club` |
+   | Host | `smtp.gmail.com` |
+   | Port | `465` |
+   | Username | `gtreclub@gmail.com` |
+   | Password | the 16-char App Password (not the Gmail login password) |
+
+3. **In Supabase → Authentication → Rate Limits**, raise **"Rate limit for
+   sending emails"** (e.g. 100–200/hr) so testing and real sign-ups don't stall.
+
+Gmail sends ~500 emails/day on a free account — plenty for the club. Later, if
+you want a branded `verify@yourdomain.org` sender and higher volume, buy a domain
+and switch to Resend/custom SMTP (the app needs no changes — it's all dashboard).
+
 ### Security notes
 - **RLS is the security boundary.** `RequireAuth` is client-side (good UX only).
   The policies in `schema.sql` ensure protected rows never reach an unauthorized
