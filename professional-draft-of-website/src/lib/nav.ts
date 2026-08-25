@@ -6,6 +6,7 @@ export const MAIN_NAV: { label: string; href: string }[] = [
   { label: "Calendar", href: "/calendar" },
   { label: "Alumni", href: "/alumni" },
   { label: "Leadership", href: "/leadership" },
+  { label: "Advisory Board", href: "/advisory-board" },
   { label: "Contact Us", href: "/contact" },
 ];
 
