@@ -430,6 +430,16 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
         });
       },
 
+      // ---- Site text ----------------------------------------------------
+      setSiteText(slot, value) {
+        setState((s) => {
+          const next = { ...s.siteText };
+          if (value.trim()) next[slot] = value;
+          else delete next[slot]; // empty reverts to the default
+          return { ...s, siteText: next };
+        });
+      },
+
       // ---- Utility ------------------------------------------------------
       resetDemo() {
         setState(SEED);

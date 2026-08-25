@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SiteText from "@/components/SiteText";
 
 export const metadata = { title: "Contact Us | GT Real Estate Club" };
 
@@ -9,7 +10,7 @@ export default function ContactPage() {
       <Breadcrumb trail={[{ label: "Contact Us" }]} />
 
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 pb-16">
-        <h1 className="display text-4xl lg:text-5xl text-navy mb-4">Contact Us</h1>
+        <h1 className="display text-4xl lg:text-5xl text-navy mb-4"><SiteText slotKey="contact-title" /></h1>
         <p className="text-[16px] text-secondary leading-relaxed max-w-3xl mb-10">
           For general questions, email{" "}
           <a href="mailto:realestate@gatech.edu" className="text-gold-hover hover:text-navy font-medium">

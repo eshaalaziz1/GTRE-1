@@ -184,6 +184,9 @@ export type GtreState = {
   // uploaded image URL (Supabase Storage) or a data URL (mock); missing slots
   // fall back to the bundled default.
   siteImages: Record<string, string>;
+  // Admin-editable page copy by slot key (see src/lib/siteText.ts). Missing slots
+  // fall back to the bundled default.
+  siteText: Record<string, string>;
   // id of the currently signed-in account, or null
   currentAccountId: string | null;
 };

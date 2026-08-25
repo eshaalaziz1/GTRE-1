@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useGtre } from "@/lib/store/GtreStore";
 import { Button, Field, Notice } from "@/components/ui";
+import LinkedInButton from "@/components/LinkedInButton";
 
 /**
  * Analyst Rolodex GATEWAY (not the directory itself).
@@ -95,6 +96,10 @@ export default function RolodexGateway() {
                     Sign in
                   </Button>
                 </form>
+
+                {/* Industry & alumni can use LinkedIn (no GT email needed).
+                    Appears only once LinkedIn auth is configured (see SETUP.md). */}
+                <LinkedInButton redirectTo="/rolodex/directory" />
                 <div className="mt-5 pt-5 border-t border-border text-center">
                   <p className="text-sm text-secondary">
                     New here?{" "}

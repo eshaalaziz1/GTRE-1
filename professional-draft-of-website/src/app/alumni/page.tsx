@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SiteText from "@/components/SiteText";
 
 export const metadata = { title: "Alumni | GT Real Estate Club" };
 
@@ -10,15 +11,8 @@ export default function AlumniPage() {
 
       {/* Intro */}
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 pb-10">
-        <h1 className="display text-4xl lg:text-5xl text-navy mb-6">Alumni</h1>
-        <p className="text-[16px] text-secondary leading-relaxed max-w-4xl">
-          Connect with an active and passionate alumni network of members who
-          hold positions around the world across commercial real estate
-          development, finance, investment, and beyond. Georgia Tech Real Estate
-          alumni are known for supporting one another, the club, and the next
-          generation of students, calling on each other to share ideas, business
-          opportunities, and career connections.
-        </p>
+        <h1 className="display text-4xl lg:text-5xl text-navy mb-6"><SiteText slotKey="alumni-title" /></h1>
+        <p className="text-[16px] text-secondary leading-relaxed max-w-4xl"><SiteText slotKey="alumni-intro" /></p>
       </section>
 
       {/* Alumni network / association */}

@@ -1,5 +1,6 @@
 import Avatar from "@/components/Avatar";
 import Breadcrumb from "@/components/Breadcrumb";
+import SiteText from "@/components/SiteText";
 import { BOARD, ALUMNI_BOARD } from "@/lib/board";
 
 export const metadata = { title: "Advisory Board | GT Real Estate Club" };
@@ -26,11 +27,8 @@ export default function AdvisoryBoardPage() {
 
       {/* Header */}
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 pb-2">
-        <h1 className="display text-4xl lg:text-5xl text-navy mb-3">Advisory Board</h1>
-        <p className="text-secondary max-w-2xl">
-          Senior real estate leaders and active alumni who guide the club, mentor
-          members, and open doors across the industry.
-        </p>
+        <h1 className="display text-4xl lg:text-5xl text-navy mb-3"><SiteText slotKey="advisory-title" /></h1>
+        <p className="text-secondary max-w-2xl"><SiteText slotKey="advisory-intro" /></p>
       </section>
 
       {/* Advisory Board — senior advisors */}

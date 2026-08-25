@@ -7,6 +7,7 @@ import MonthCalendar from "@/components/MonthCalendar";
 import ScheduleBoard from "@/components/ScheduleBoard";
 import { Tabs } from "@/components/ui";
 import { useGtre } from "@/lib/store/GtreStore";
+import SiteText from "@/components/SiteText";
 import { OUTLOOK_GROUP_JOIN_URL } from "@/lib/content";
 
 // Public calendar. Shows the club's two-track schedule (Mentorship Program +
@@ -23,11 +24,8 @@ export default function CalendarPage() {
       <Breadcrumb trail={[{ label: "Calendar" }]} />
 
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 pb-4">
-        <h1 className="display text-4xl lg:text-5xl text-navy mb-3">Calendar</h1>
-        <p className="text-secondary max-w-2xl">
-          Club meetings, the Mentorship Program, and industry events. Managed by the exec team, members can check in for
-          meetings from the portal.
-        </p>
+        <h1 className="display text-4xl lg:text-5xl text-navy mb-3"><SiteText slotKey="calendar-title" /></h1>
+        <p className="text-secondary max-w-2xl"><SiteText slotKey="calendar-intro" /></p>
         <div className="border-t border-gold mt-7" />
       </section>
 

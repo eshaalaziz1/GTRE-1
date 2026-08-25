@@ -123,6 +123,9 @@ export type GtreContextValue = {
   setSiteImage: (slot: string, file: File) => Promise<{ ok: boolean; error?: string }>;
   resetSiteImage: (slot: string) => void;
 
+  // Site text (admin-editable page copy by slot key)
+  setSiteText: (slot: string, value: string) => void;
+
   // Utility
   resetDemo: () => void;
 };

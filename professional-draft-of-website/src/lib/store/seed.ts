@@ -308,4 +308,5 @@ export const SEED: GtreState = {
     googleCalendarEmbedUrl: "",
   },
   siteImages: {},
+  siteText: {},
 };

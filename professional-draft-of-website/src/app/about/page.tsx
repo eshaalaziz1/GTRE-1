@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PhotoSlot from "@/components/PhotoSlot";
 import SiteImage from "@/components/SiteImage";
+import SiteText from "@/components/SiteText";
 import Reveal from "@/components/Reveal";
 import { VALUES, ENGAGEMENT, EVENTS } from "@/lib/content";
 import { LINKEDIN_URL } from "@/lib/linkedin";
@@ -34,13 +35,10 @@ export default function AboutPage() {
             Georgia Tech Real Estate Club
           </div>
           <h1 className="display text-white text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.08]">
-            Leading the future of real estate.
+            <SiteText slotKey="home-headline" />
           </h1>
           <p className="mt-6 text-white/85 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Our mission is to equip students with the resources and knowledge to
-            lead the future of the real estate industry, supply that industry with
-            exceptional talent, and grow a lasting real estate community at Georgia
-            Tech.
+            <SiteText slotKey="home-mission" />
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link

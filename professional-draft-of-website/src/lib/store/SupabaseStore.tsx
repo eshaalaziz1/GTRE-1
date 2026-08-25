@@ -54,6 +54,7 @@ const EMPTY_STATE: GtreState = {
   resources: [],
   siteInfo: SEED.siteInfo,
   siteImages: {},
+  siteText: {},
   currentAccountId: null,
 };
 
@@ -208,6 +209,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       resources,
       siteInfo,
       siteImages,
+      siteText,
     ] = await Promise.all([
       supabase.from("profiles").select("*"),
       supabase.from("announcements").select("*").order("created_at", { ascending: false }),
@@ -220,11 +222,16 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       supabase.from("resources").select("*").order("created_at", { ascending: false }),
       supabase.from("site_info").select("*").eq("id", 1).maybeSingle(),
       supabase.from("site_images").select("*"),
+      supabase.from("site_text").select("*"),
     ]);
 
     const siteImagesMap: Record<string, string> = {};
     for (const row of siteImages.data ?? []) {
       if (row.key && row.url) siteImagesMap[row.key] = row.url;
+    }
+    const siteTextMap: Record<string, string> = {};
+    for (const row of siteText.data ?? []) {
+      if (row.key && row.value) siteTextMap[row.key] = row.value;
     }
 
     const accounts = (profiles.data ?? []).map(mapAccount);
@@ -245,6 +252,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       resources: (resources.data ?? []).map(mapResource),
       siteInfo: siteInfo.data ? mapSiteInfo(siteInfo.data) : SEED.siteInfo,
       siteImages: siteImagesMap,
+      siteText: siteTextMap,
       currentAccountId,
     });
     setReady(true);
@@ -752,6 +760,21 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       resetSiteImage(slot) {
         void (async () => {
           await supabase.from("site_images").delete().eq("key", slot);
+          await loadAll();
+        })();
+      },
+
+      // ---- Site text ----------------------------------------------------
+      setSiteText(slot, value) {
+        void (async () => {
+          if (value.trim()) {
+            await supabase
+              .from("site_text")
+              .upsert({ key: slot, value, updated_at: new Date().toISOString() }, { onConflict: "key" });
+          } else {
+            // Empty reverts to the bundled default.
+            await supabase.from("site_text").delete().eq("key", slot);
+          }
           await loadAll();
         })();
       },

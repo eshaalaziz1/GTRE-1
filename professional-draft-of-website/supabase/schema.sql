@@ -173,6 +173,13 @@ create table if not exists public.site_images (
   updated_at timestamptz not null default now()
 );
 
+-- Admin-editable page copy: slot key -> text (see lib/siteText.ts).
+create table if not exists public.site_text (
+  key        text primary key,
+  value      text not null,
+  updated_at timestamptz not null default now()
+);
+
 -- ===========================================================================
 -- Auto-create a profile when a user signs up.
 --
@@ -241,6 +248,7 @@ alter table public.meeting_notes enable row level security;
 alter table public.resources     enable row level security;
 alter table public.site_info     enable row level security;
 alter table public.site_images   enable row level security;
+alter table public.site_text     enable row level security;
 
 -- Helper: is the current user an approved admin?
 create or replace function public.is_admin() returns boolean language sql stable as $$
@@ -328,6 +336,12 @@ drop policy if exists "public read site images" on public.site_images;
 drop policy if exists "admin edit site images"  on public.site_images;
 create policy "public read site images" on public.site_images for select using (true);
 create policy "admin edit site images"  on public.site_images for all using (public.is_admin()) with check (public.is_admin());
+
+-- Site text: anyone can read (public pages render it); admins edit.
+drop policy if exists "public read site text" on public.site_text;
+drop policy if exists "admin edit site text"  on public.site_text;
+create policy "public read site text" on public.site_text for select using (true);
+create policy "admin edit site text"  on public.site_text for all using (public.is_admin()) with check (public.is_admin());
 
 -- ===========================================================================
 -- Storage: a public bucket for admin-uploaded site images. Admins upload via
