@@ -7,16 +7,16 @@ export const metadata = { title: "Advisory Board | GT Real Estate Club" };
 
 const BENEFITS = [
   {
-    title: "High-level networking",
-    body: "Connect with students, faculty, and fellow leaders at board conferences and small-group, topic-focused discussions in Atlanta and beyond.",
+    title: "Stay close to the students",
+    body: "Board members meet the club at events, judge the case study, and sit in on small-group discussions in Atlanta through the year.",
   },
   {
-    title: "Lifelong learning",
-    body: "From timely presenters to the annual market outlook, board members get a front-row seat to the ideas and data shaping the industry.",
+    title: "Keep a read on the market",
+    body: "The speaker series and the annual market outlook keep board members current on where the industry is headed.",
   },
   {
-    title: "Opportunities to give back",
-    body: "Mentor students, judge case studies, and help fund scholarships and programming that prepare the next generation of members.",
+    title: "Give back",
+    body: "Mentor a student, judge a case study, or help fund a scholarship. Board members decide how they want to be involved.",
   },
 ];
 
@@ -69,9 +69,9 @@ export default function AdvisoryBoardPage() {
           </span>
         </div>
         <p className="text-[15px] text-secondary leading-relaxed max-w-3xl mb-8">
-          A group of active alumni who stay closely involved, mentoring members,
-          judging case studies, opening doors to internships and full-time roles,
-          and helping steer the club year to year.
+          Alumni who stay close to the club, mentoring members, judging case
+          studies, passing along internship and full-time leads, and helping steer
+          things year to year.
         </p>
         {ALUMNI_BOARD.length === 0 ? (
           <div className="rounded-2xl border border-border border-t-4 border-t-gold bg-surface p-8 text-center">
@@ -103,8 +103,8 @@ export default function AdvisoryBoardPage() {
         <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-14">
           <h2 className="display text-3xl text-navy mb-3">Why serve on the board</h2>
           <p className="text-secondary mb-10 max-w-2xl">
-            Board members strengthen the future of the profession and gain real
-            benefits in return.
+            What board members get out of it, beyond helping the next class of
+            students find their footing.
           </p>
           <div className="grid md:grid-cols-3 gap-7">
             {BENEFITS.map((b) => (

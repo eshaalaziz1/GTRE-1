@@ -42,7 +42,7 @@ export const TEXT_SLOTS: TextSlot[] = [
     label: "Intro",
     multiline: true,
     defaultValue:
-      "Connect with an active and passionate alumni network of members who hold positions around the world across commercial real estate development, finance, investment, and beyond. Georgia Tech Real Estate alumni are known for supporting one another, the club, and the next generation of students, calling on each other to share ideas, business opportunities, and career connections.",
+      "GT Real Estate alumni work across development, finance, and investment, in Atlanta and well beyond it. They stay close to the club and to each other, trading ideas, deals, and job leads, and they show up for students who are trying to break into the industry.",
   },
   // Advisory Board
   { key: "advisory-title", group: "Advisory Board", label: "Page title", defaultValue: "Advisory Board" },
@@ -52,7 +52,7 @@ export const TEXT_SLOTS: TextSlot[] = [
     label: "Intro",
     multiline: true,
     defaultValue:
-      "Senior real estate leaders and active alumni who guide the club, mentor members, and open doors across the industry.",
+      "Senior real estate leaders and active alumni who advise the club, mentor members, and help connect them to the industry.",
   },
   // Calendar
   { key: "calendar-title", group: "Calendar", label: "Page title", defaultValue: "Calendar" },

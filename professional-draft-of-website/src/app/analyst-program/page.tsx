@@ -46,7 +46,7 @@ export default function AnalystProgramPage() {
           <SiteImage
             slotKey="analyst-hero"
             defaultSrc="/photos/analyst-session.jpg"
-            alt="An Mentorship Program session at Georgia Tech"
+            alt="A Mentorship Program session at Georgia Tech"
             ratio="aspect-[4/3]"
           />
         </div>
@@ -159,11 +159,11 @@ function CaseStudy({ resources }: { resources: Resource[] }) {
         <div className="space-y-5">
           <h2 className="display text-3xl text-navy">The capstone case study</h2>
           <p className="text-[16px] text-secondary leading-relaxed">
-            The Mentorship Program culminates in a full underwriting case study.
-            Members get a real deal prompt, build a proforma from the ground up, and
+            The Mentorship Program ends with a full underwriting case study.
+            Members get a real deal prompt, build a proforma from scratch, and
             present their recommendation to a panel of alumni judges against a shared
-            rubric. Everything you need, the prompt, proforma templates, and the
-            grading rubric, is posted here.
+            rubric. The prompt, proforma templates, and grading rubric are all posted
+            here.
           </p>
         </div>
         <aside className="bg-surface rounded-2xl p-7 h-fit">

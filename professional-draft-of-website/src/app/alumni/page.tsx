@@ -21,11 +21,10 @@ export default function AlumniPage() {
           <div>
             <h2 className="display text-3xl text-navy mb-4">The GT Real Estate Alumni Network</h2>
             <p className="text-[15px] text-secondary leading-relaxed">
-              Our alumni network serves as the link between graduates, current
-              students, and the real estate industry. It supports student
-              scholarships, programming, and the club&apos;s operations, and keeps
-              Yellow Jackets connected long after graduation through events and
-              the alumni LinkedIn group.
+              The alumni network connects graduates back to current students and
+              to each other. It funds scholarships and programming, helps keep the
+              club running, and stays in touch through events and the alumni
+              LinkedIn group.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href="/signup" className="px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors">
@@ -41,7 +40,7 @@ export default function AlumniPage() {
             <p className="text-[14px] text-secondary leading-relaxed mt-2">
               We&apos;re building a searchable directory of GT Real Estate alumni
               and where they&apos;ve landed across the industry. Add yourself now
-              and you&apos;ll be included the moment it goes live.
+              and you&apos;ll be in it when it launches.
             </p>
             <Link href="/signup" className="inline-block mt-4 text-sm font-semibold text-gold-hover hover:text-navy">
               Add yourself to the network →
@@ -84,9 +83,9 @@ export default function AlumniPage() {
         </div>
       </section>
 
-      {/* Other ways to invest in tomorrow's leaders */}
+      {/* Other ways to stay involved */}
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 py-14">
-        <h2 className="display text-3xl text-navy mb-8">Other ways to invest in tomorrow&apos;s leaders</h2>
+        <h2 className="display text-3xl text-navy mb-8">Other ways to stay involved</h2>
         <div className="grid md:grid-cols-2 gap-7">
           <div className="border border-border rounded-xl p-7">
             <h3 className="text-lg font-semibold text-navy mb-2">Mentor a Member</h3>
@@ -102,8 +101,8 @@ export default function AlumniPage() {
             <h3 className="text-lg font-semibold text-navy mb-2">Make a Gift</h3>
             <p className="text-[15px] text-secondary leading-relaxed mb-5">
               Support student scholarships, the Mentorship Program, and club
-              operations. Every gift goes directly toward preparing the next
-              generation of members.
+              operations. Gifts go straight into what the club does for its
+              students.
             </p>
             <Link href="/contact" className="text-sm font-semibold text-gold-hover hover:text-navy">
               Get in touch →

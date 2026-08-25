@@ -88,8 +88,8 @@ export default function AboutPage() {
               <div>
                 <h3 className="text-lg font-semibold text-navy">Grow a lasting community</h3>
                 <p className="mt-2 text-[15px] text-secondary leading-relaxed">
-                  Build a real estate network at Georgia Tech that connects students,
-                  alumni, and industry, and endures well beyond graduation.
+                  Build a real estate network at Georgia Tech that keeps students,
+                  alumni, and industry connected long after graduation.
                 </p>
               </div>
             </div>

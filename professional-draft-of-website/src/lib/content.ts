@@ -53,7 +53,7 @@ export const ENGAGEMENT: EngagementCard[] = [
   },
   {
     title: "Advisory Board",
-    body: "Senior industry leaders who shape our programming, judge case studies, and open doors for members.",
+    body: "Senior industry leaders who shape our programming, judge case studies, and help members get in front of firms.",
     href: "/advisory-board",
     image: "/photos/kepano-center.jpg",
   },
