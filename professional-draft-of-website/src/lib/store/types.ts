@@ -46,14 +46,14 @@ export type Announcement = {
   id: string;
   title: string;
   body: string;
-  category: "General" | "Event" | "Meeting" | "Deadline" | "Analyst Program";
+  category: "General" | "Event" | "Meeting" | "Deadline" | "Mentorship Program";
   pinned: boolean;
   authorName: string;
   createdAt: string;
 };
 
 /** A calendar entry: meeting, event, or deadline. Feeds the calendar + check-in. */
-export type EventTrack = "Analyst Program" | "Industry Events" | "General";
+export type EventTrack = "Mentorship Program" | "Industry Events" | "General";
 
 export type ClubEvent = {
   id: string;

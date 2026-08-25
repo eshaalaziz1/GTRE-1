@@ -31,7 +31,7 @@ export default function ForumPage() {
       <div>
         <h2 className="display text-3xl text-navy">Questions &amp; Answers</h2>
         <p className="text-secondary mt-1">
-          Ask the exec team anything about the club or the Analyst Program. Answered questions are shared here.
+          Ask the exec team anything about the club or the Mentorship Program. Answered questions are shared here.
         </p>
       </div>
 

@@ -43,7 +43,7 @@ export default function ContactPage() {
           <div>
             <h2 className="display text-2xl text-white">Want to get involved?</h2>
             <p className="text-white/80 mt-1 text-[15px]">
-              Join the club and the Analyst Program, or request access as an industry partner.
+              Join the club and the Mentorship Program, or request access as an industry partner.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 shrink-0">
@@ -51,7 +51,7 @@ export default function ContactPage() {
               Request access
             </Link>
             <Link href="/analyst-program" className="px-6 py-3 rounded-md border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition-colors">
-              Analyst Program
+              Mentorship Program
             </Link>
           </div>
         </div>

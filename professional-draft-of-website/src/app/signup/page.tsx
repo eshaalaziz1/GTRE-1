@@ -4,6 +4,28 @@ import Link from "next/link";
 import { useState } from "react";
 import { useGtre } from "@/lib/store/GtreStore";
 import { Button, Field, Notice } from "@/components/ui";
+import { MEMBER_FORM_URL } from "@/lib/content";
+
+/** Prompt to complete the club's Microsoft new-member form after signing up. */
+function MemberFormCallout() {
+  return (
+    <div className="mt-5 rounded-xl border border-gold/50 bg-gold-soft/50 p-4 text-left">
+      <div className="font-semibold text-navy text-sm">One more step: the new member form</div>
+      <p className="text-[13px] text-secondary mt-1">
+        Complete the club&apos;s new member form so we can set up your profile,
+        resume, and Analyst Rolodex entry. This is your first assignment.
+      </p>
+      <a
+        href={MEMBER_FORM_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block mt-3 px-4 py-2 rounded-md bg-navy text-white text-[13px] font-semibold hover:bg-navy-deep transition-colors"
+      >
+        Open the new member form →
+      </a>
+    </div>
+  );
+}
 
 /**
  * Account request. Two paths:
@@ -32,7 +54,7 @@ export default function SignupPage() {
               <div className="font-semibold text-white">Students &amp; members</div>
               <p className="text-sm text-white/70 mt-1">
                 Sign up with your <strong>@gatech.edu</strong> email to join the
-                club, the Analyst Program, and the member portal.
+                club, the Mentorship Program, and the member portal.
               </p>
             </div>
             <div className="rounded-xl border border-white/15 p-4">
@@ -87,7 +109,7 @@ export default function SignupPage() {
  * reliable for @gatech.edu / Outlook, where link scanners can consume magic
  * links). After verifying, the account is still pending officer approval.
  */
-function ConfirmCodeStep({ email, firstName }: { email: string; firstName: string }) {
+function ConfirmCodeStep({ email, firstName, memberForm = false }: { email: string; firstName: string; memberForm?: boolean }) {
   const { confirmSignup, resendCode } = useGtre();
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
@@ -103,6 +125,7 @@ function ConfirmCodeStep({ email, firstName }: { email: string; firstName: strin
           Thanks, {firstName}. Your email is confirmed. A club officer now reviews
           your account, you&apos;ll be able to sign in once you&apos;re approved.
         </p>
+        {memberForm && <MemberFormCallout />}
       </div>
     );
   }
@@ -169,7 +192,7 @@ function StudentForm() {
   const [confirmEmail, setConfirmEmail] = useState<string | null>(null);
   const [done, setDone] = useState(false);
 
-  if (confirmEmail) return <ConfirmCodeStep email={confirmEmail} firstName={name.split(" ")[0] || "there"} />;
+  if (confirmEmail) return <ConfirmCodeStep email={confirmEmail} firstName={name.split(" ")[0] || "there"} memberForm />;
 
   if (done) {
     return (
@@ -179,6 +202,7 @@ function StudentForm() {
           Thanks, {name.split(" ")[0]}. A club officer will review your account and
           you&apos;ll be able to sign in once you&apos;re approved.
         </p>
+        <MemberFormCallout />
       </div>
     );
   }

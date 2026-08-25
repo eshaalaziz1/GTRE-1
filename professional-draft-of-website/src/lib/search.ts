@@ -19,9 +19,9 @@ export type SearchItem = {
 // Top-level pages, so a search for "syllabus" or "alumni" jumps straight there.
 const PAGES: SearchItem[] = [
   { title: "About", description: "Mission, values, and how to get involved.", href: "/about", category: "Page" },
-  { title: "Analyst Program", description: "Overview, curriculum, syllabus, and resources.", href: "/analyst-program", category: "Page", keywords: "syllabus curriculum program analyst" },
-  { title: "Syllabus", description: "The Analyst Program syllabus (view-only).", href: "/analyst-program", category: "Page", keywords: "syllabus document" },
-  { title: "Calendar", description: "Meetings, the Analyst Program, and industry events.", href: "/calendar", category: "Page", keywords: "schedule events dates calendar" },
+  { title: "Mentorship Program", description: "Overview, curriculum, syllabus, and resources.", href: "/analyst-program", category: "Page", keywords: "syllabus curriculum program analyst" },
+  { title: "Syllabus", description: "The Mentorship Program syllabus (view-only).", href: "/analyst-program", category: "Page", keywords: "syllabus document" },
+  { title: "Calendar", description: "Meetings, the Mentorship Program, and industry events.", href: "/calendar", category: "Page", keywords: "schedule events dates calendar" },
   { title: "News", description: "The latest from the club, from our LinkedIn.", href: "/news", category: "Page", keywords: "news linkedin posts updates recaps" },
   { title: "Opportunities", description: "Internships, co-ops, and full-time analyst roles.", href: "/opportunities", category: "Page", keywords: "jobs internships careers opportunities hiring recruiting analyst" },
   { title: "Alumni", description: "The alumni network and ways to give back.", href: "/alumni", category: "Page" },

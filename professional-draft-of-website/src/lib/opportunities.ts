@@ -31,7 +31,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     postedBy: "Career Services",
     isAlumPosted: false,
     description:
-      "Join JLL's acquisitions team for a 10-week summer analyst program. You'll support underwriting, due diligence, and market research on commercial real estate transactions across the Southeast. Ideal for rising juniors with strong Excel and financial modeling skills.",
+      "Join JLL's acquisitions team for a 10-week summer mentorship program. You'll support underwriting, due diligence, and market research on commercial real estate transactions across the Southeast. Ideal for rising juniors with strong Excel and financial modeling skills.",
   },
   {
     id: "opp-portman-dev",

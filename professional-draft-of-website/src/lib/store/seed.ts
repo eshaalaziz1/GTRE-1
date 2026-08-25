@@ -109,9 +109,9 @@ export const SEED: GtreState = {
   announcements: [
     {
       id: "ann-1",
-      title: "Fall Analyst Program applications are open",
-      body: "Applications for the Fall 2026 Analyst Program cohort are now open. Submit your resume through the portal by August 25. The program runs weekly and covers underwriting, development, and capital markets.",
-      category: "Analyst Program",
+      title: "Fall Mentorship Program applications are open",
+      body: "Applications for the Fall 2026 Mentorship Program cohort are now open. Submit your resume through the portal by August 25. The program runs weekly and covers underwriting, development, and capital markets.",
+      category: "Mentorship Program",
       pinned: true,
       authorName: "Avery Mitchell",
       createdAt: "2026-07-01T15:00:00.000Z",
@@ -137,24 +137,24 @@ export const SEED: GtreState = {
   ],
 
   // The real 2026 GTRE schedule, split into the two tracks the club runs:
-  // the weekly Analyst Program and the Industry Events series. Times default to
-  // 6:00 PM for Analyst Program meetings; adjust in Admin → Events.
+  // the weekly Mentorship Program and the Industry Events series. Times default to
+  // 6:00 PM for Mentorship Program meetings; adjust in Admin → Events.
   events: [
-    // ---- Analyst Program (weekly, Caddell) --------------------------------
-    { id: "ap-1", track: "Analyst Program", order: 0, type: "Meeting", title: "Info Session", date: "2026-08-31", time: "6:00 PM", location: "Caddell", checkInCode: "INFO26", checkInOpen: false },
-    { id: "ap-2", track: "Analyst Program", order: 1, type: "Meeting", title: "Intro and CRE Overview", date: "2026-09-14", time: "6:00 PM", location: "Caddell", checkInCode: "INTRO", checkInOpen: false },
-    { id: "ap-3", track: "Analyst Program", order: 2, type: "Workshop", title: "Capital Markets & Financing", date: "2026-09-21", time: "6:00 PM", location: "Caddell", checkInCode: "CAPMKT", checkInOpen: false },
-    { id: "ap-4", track: "Analyst Program", order: 3, type: "Event", title: "Recruitment Event - Peachtree", date: "2026-09-28", time: "6:00 PM", location: "Caddell", checkInCode: "RECRUIT", checkInOpen: false },
-    { id: "ap-5", track: "Analyst Program", order: 4, type: "Social", title: "Fall Break, No Meeting", date: "2026-10-05", location: "Caddell", description: "No class this week, enjoy the break." },
-    { id: "ap-6", track: "Analyst Program", order: 5, type: "Workshop", title: "Development & Construction", date: "2026-10-12", time: "6:00 PM", location: "Caddell", checkInCode: "DEVCON", checkInOpen: false },
-    { id: "ap-7", track: "Analyst Program", order: 6, type: "Workshop", title: "Investments in CRE", date: "2026-10-19", time: "6:00 PM", location: "Caddell", checkInCode: "INVEST", checkInOpen: false },
-    { id: "ap-8", track: "Analyst Program", order: 7, type: "Case Study", title: "Case Study Overview / Submarket Research (Sandy Paul)", date: "2026-10-26", time: "6:00 PM", location: "Caddell", checkInCode: "CASE1", checkInOpen: false },
-    { id: "ap-9", track: "Analyst Program", order: 8, type: "Workshop", title: "Underwriting and Excel Modeling", date: "2026-11-02", time: "6:00 PM", location: "Caddell", checkInCode: "MODEL", checkInOpen: false },
-    { id: "ap-10", track: "Analyst Program", order: 9, type: "Case Study", title: "Case Study Example", date: "2026-11-09", time: "6:00 PM", location: "Caddell", checkInCode: "CHECKIN", checkInOpen: true },
-    { id: "ap-11", track: "Analyst Program", order: 10, type: "Case Study", title: "Case Study Practice", date: "2026-11-16", time: "6:00 PM", location: "Caddell", checkInCode: "PRACTICE", checkInOpen: false },
-    { id: "ap-12", track: "Analyst Program", order: 11, type: "Case Study", title: "Presentations Day 1", date: "2026-11-23", time: "6:00 PM", location: "Caddell", checkInCode: "PRES1", checkInOpen: false },
-    { id: "ap-13", track: "Analyst Program", order: 12, type: "Social", title: "Break", date: "2026-11-30", location: "Caddell", description: "No class this week, enjoy the break." },
-    { id: "ap-14", track: "Analyst Program", order: 13, type: "Case Study", title: "Presentations Day 2", date: "2026-12-07", time: "6:00 PM", location: "Caddell", checkInCode: "PRES2", checkInOpen: false },
+    // ---- Mentorship Program (weekly, Caddell) --------------------------------
+    { id: "ap-1", track: "Mentorship Program", order: 0, type: "Meeting", title: "Info Session", date: "2026-08-31", time: "6:00 PM", location: "Caddell", checkInCode: "INFO26", checkInOpen: false },
+    { id: "ap-2", track: "Mentorship Program", order: 1, type: "Meeting", title: "Intro and CRE Overview", date: "2026-09-14", time: "6:00 PM", location: "Caddell", checkInCode: "INTRO", checkInOpen: false },
+    { id: "ap-3", track: "Mentorship Program", order: 2, type: "Workshop", title: "Capital Markets & Financing", date: "2026-09-21", time: "6:00 PM", location: "Caddell", checkInCode: "CAPMKT", checkInOpen: false },
+    { id: "ap-4", track: "Mentorship Program", order: 3, type: "Event", title: "Recruitment Event - Peachtree", date: "2026-09-28", time: "6:00 PM", location: "Caddell", checkInCode: "RECRUIT", checkInOpen: false },
+    { id: "ap-5", track: "Mentorship Program", order: 4, type: "Social", title: "Fall Break, No Meeting", date: "2026-10-05", location: "Caddell", description: "No class this week, enjoy the break." },
+    { id: "ap-6", track: "Mentorship Program", order: 5, type: "Workshop", title: "Development & Construction", date: "2026-10-12", time: "6:00 PM", location: "Caddell", checkInCode: "DEVCON", checkInOpen: false },
+    { id: "ap-7", track: "Mentorship Program", order: 6, type: "Workshop", title: "Investments in CRE", date: "2026-10-19", time: "6:00 PM", location: "Caddell", checkInCode: "INVEST", checkInOpen: false },
+    { id: "ap-8", track: "Mentorship Program", order: 7, type: "Case Study", title: "Case Study Overview / Submarket Research (Sandy Paul)", date: "2026-10-26", time: "6:00 PM", location: "Caddell", checkInCode: "CASE1", checkInOpen: false },
+    { id: "ap-9", track: "Mentorship Program", order: 8, type: "Workshop", title: "Underwriting and Excel Modeling", date: "2026-11-02", time: "6:00 PM", location: "Caddell", checkInCode: "MODEL", checkInOpen: false },
+    { id: "ap-10", track: "Mentorship Program", order: 9, type: "Case Study", title: "Case Study Example", date: "2026-11-09", time: "6:00 PM", location: "Caddell", checkInCode: "CHECKIN", checkInOpen: true },
+    { id: "ap-11", track: "Mentorship Program", order: 10, type: "Case Study", title: "Case Study Practice", date: "2026-11-16", time: "6:00 PM", location: "Caddell", checkInCode: "PRACTICE", checkInOpen: false },
+    { id: "ap-12", track: "Mentorship Program", order: 11, type: "Case Study", title: "Presentations Day 1", date: "2026-11-23", time: "6:00 PM", location: "Caddell", checkInCode: "PRES1", checkInOpen: false },
+    { id: "ap-13", track: "Mentorship Program", order: 12, type: "Social", title: "Break", date: "2026-11-30", location: "Caddell", description: "No class this week, enjoy the break." },
+    { id: "ap-14", track: "Mentorship Program", order: 13, type: "Case Study", title: "Presentations Day 2", date: "2026-12-07", time: "6:00 PM", location: "Caddell", checkInCode: "PRES2", checkInOpen: false },
 
     // ---- Industry Events --------------------------------------------------
     { id: "ie-1", track: "Industry Events", order: 0, type: "Event", title: "Kickoff Event", date: "2026-09-10", location: "Scheller Tower" },
@@ -299,7 +299,7 @@ export const SEED: GtreState = {
     meetingLocation: "Scheller College of Business, Room 200",
     contactEmail: "realestate@gatech.edu",
     analystProgramIntro:
-      "The Analyst Program is a semester-long, hands-on curriculum that takes members from real estate fundamentals to a full underwriting case study. Members build models, present to alumni judges, and earn a place in the vetted Analyst Rolodex.",
+      "The Mentorship Program is a semester-long, hands-on curriculum that takes members from real estate fundamentals to a full underwriting case study. Members build models, present to alumni judges, and earn a place in the vetted Analyst Rolodex.",
     // Live-embedded syllabus (SharePoint/Word). `action=embedview` renders a
     // read-only, scrollable viewer that reflects edits to the source document.
     // Update this URL any time in Admin → Site Info.

@@ -45,7 +45,7 @@ export default function LoginPage() {
           <h1 className="display text-5xl text-white">Sign in</h1>
           <p className="mt-5 text-lg text-white/80 max-w-md leading-relaxed">
             The member portal is your hub for club info, assignments, check-ins,
-            the Analyst Program, announcements, and documents.
+            the Mentorship Program, announcements, and documents.
           </p>
           <ul className="mt-8 space-y-2 text-white/70 text-sm">
             <li>• Students sign in with a Georgia Tech email.</li>

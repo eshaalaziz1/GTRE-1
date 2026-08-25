@@ -1,6 +1,14 @@
 // Site content for the prototype.
 
-// The club's three values, with copy pulled from the live GTRE Analyst Program
+// Join the club's Outlook group to get announcement emails + the shared calendar.
+export const OUTLOOK_GROUP_JOIN_URL =
+  "https://outlook.office365.com/groups/groupsubscription?action=join&smtp=gtrementorshipfall2026%40groups.gatech.edu&bO=true";
+
+// New-member intake form (Microsoft Forms). Students complete this after signing
+// up with their GT email; it feeds their profile, Rolodex, and resume.
+export const MEMBER_FORM_URL = "https://forms.office.com/r/Q2NXGZrMFH";
+
+// The club's three values, with copy pulled from the live GTRE Mentorship Program
 // page (reatgt.org/commercial-real-estate-workshop). Resources lists the
 // industry-standard tools as text rather than logos, per direction.
 export const VALUES = [

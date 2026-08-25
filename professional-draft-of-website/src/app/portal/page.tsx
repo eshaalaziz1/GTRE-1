@@ -105,7 +105,7 @@ export default function PortalHome() {
             </dl>
             <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
               <Link href="/analyst-program" className="text-[13px] font-semibold text-gold-hover hover:text-navy">
-                Analyst Program →
+                Mentorship Program →
               </Link>
               <Link href="/portal/resources" className="text-[13px] font-semibold text-gold-hover hover:text-navy ml-4">
                 Documents & links →

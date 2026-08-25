@@ -9,7 +9,7 @@ import { useGtre } from "@/lib/store/GtreStore";
 import { CURRICULUM, PROGRAM_TOOLS } from "@/lib/program";
 import type { Resource } from "@/lib/store/types";
 
-// Public Analyst Program section. Tabs: Overview · Curriculum · Syllabus · Resources.
+// Public Mentorship Program section. Tabs: Overview · Curriculum · Syllabus · Resources.
 // The Syllabus tab is built to embed a view-only document once the club uploads
 // one (admin sets the embed URL in Admin → Site Info); until then it shows a
 // clean placeholder.
@@ -19,14 +19,14 @@ export default function AnalystProgramPage() {
 
   return (
     <>
-      <Breadcrumb trail={[{ label: "Analyst Program" }]} />
+      <Breadcrumb trail={[{ label: "Mentorship Program" }]} />
 
       {/* Hero */}
       <section className="bg-navy text-white">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <div className="text-gold text-[12px] font-semibold uppercase tracking-[0.22em] mb-4">
-              The Analyst Program
+              The Mentorship Program
             </div>
             <h1 className="display text-5xl text-white">
               From fundamentals to a full underwriting case study.
@@ -46,7 +46,7 @@ export default function AnalystProgramPage() {
           <SiteImage
             slotKey="analyst-hero"
             defaultSrc="/photos/analyst-session.jpg"
-            alt="An Analyst Program session at Georgia Tech"
+            alt="An Mentorship Program session at Georgia Tech"
             ratio="aspect-[4/3]"
           />
         </div>
@@ -83,7 +83,7 @@ function Overview() {
       <div className="space-y-6">
         <h2 className="display text-3xl text-navy">What the program is</h2>
         <p className="text-[16px] text-secondary leading-relaxed">
-          The Analyst Program is the club&apos;s flagship curriculum. Over a semester, members build real estate
+          The Mentorship Program is the club&apos;s flagship curriculum. Over a semester, members build real estate
           financial models, learn the tools professionals use every day, and finish by presenting a full underwriting
           case study to a panel of alumni judges. Strong performers earn a spot in the vetted Analyst Rolodex, where
           recruiters find them first.
@@ -159,7 +159,7 @@ function CaseStudy({ resources }: { resources: Resource[] }) {
         <div className="space-y-5">
           <h2 className="display text-3xl text-navy">The capstone case study</h2>
           <p className="text-[16px] text-secondary leading-relaxed">
-            The Analyst Program culminates in a full underwriting case study.
+            The Mentorship Program culminates in a full underwriting case study.
             Members get a real deal prompt, build a proforma from the ground up, and
             present their recommendation to a panel of alumni judges against a shared
             rubric. Everything you need, the prompt, proforma templates, and the
@@ -233,7 +233,7 @@ function Syllabus({ url }: { url: string }) {
         <div className="rounded-2xl overflow-hidden border border-border shadow-sm bg-white">
           <iframe
             src={url}
-            title="Analyst Program Syllabus"
+            title="Mentorship Program Syllabus"
             className="w-full"
             style={{ height: "80vh" }}
             loading="lazy"
@@ -251,7 +251,7 @@ function Syllabus({ url }: { url: string }) {
             </div>
             <h3 className="display text-2xl text-navy">Syllabus coming soon</h3>
             <p className="text-secondary mt-3 leading-relaxed">
-              The Fall 2026 Analyst Program syllabus will be published here as a view-only document. Once it&apos;s
+              The Fall 2026 Mentorship Program syllabus will be published here as a view-only document. Once it&apos;s
               ready, an officer adds it in <strong>Admin → Site Info</strong> and it renders on this page, no download,
               read in place.
             </p>

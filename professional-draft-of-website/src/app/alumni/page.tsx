@@ -210,7 +210,7 @@ export default function AlumniPage() {
           <div className="border border-border rounded-xl p-7">
             <h3 className="text-lg font-semibold text-navy mb-2">Make a Gift</h3>
             <p className="text-[15px] text-secondary leading-relaxed mb-5">
-              Support student scholarships, the Analyst Program, and club
+              Support student scholarships, the Mentorship Program, and club
               operations. Every gift goes directly toward preparing the next
               generation of analysts.
             </p>

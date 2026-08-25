@@ -1,4 +1,4 @@
-// Analyst Program curriculum. These are the club's real program modules, kept
+// Mentorship Program curriculum. These are the club's real program modules, kept
 // in one file so the exec team can edit them without touching the page.
 export type Module = {
   number: number;
@@ -7,7 +7,7 @@ export type Module = {
   topics: string[];
 };
 
-// The six-module GTRE Analyst Program curriculum. Titles and descriptions are
+// The six-module GTRE Mentorship Program curriculum. Titles and descriptions are
 // the club's own; the topic tags are pulled directly from each description.
 export const CURRICULUM: Module[] = [
   {

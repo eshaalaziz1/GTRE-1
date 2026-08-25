@@ -1,7 +1,7 @@
 // Section nav (Row 2): the main institutional subnav.
 export const MAIN_NAV: { label: string; href: string }[] = [
   { label: "About", href: "/about" },
-  { label: "Analyst Program", href: "/analyst-program" },
+  { label: "Mentorship Program", href: "/analyst-program" },
   { label: "News", href: "/news" },
   { label: "Calendar", href: "/calendar" },
   { label: "Alumni", href: "/alumni" },

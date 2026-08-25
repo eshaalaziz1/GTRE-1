@@ -22,8 +22,8 @@ export const IMAGE_SLOTS: ImageSlot[] = [
   },
   {
     key: "analyst-hero",
-    label: "Analyst Program, hero photo",
-    description: "The photo in the Analyst Program page header.",
+    label: "Mentorship Program, hero photo",
+    description: "The photo in the Mentorship Program page header.",
     defaultSrc: "/photos/analyst-session.jpg",
   },
 ];

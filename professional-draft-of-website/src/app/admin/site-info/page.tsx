@@ -26,7 +26,7 @@ export default function AdminSiteInfo() {
       <div>
         <h2 className="display text-3xl text-navy">Site Info</h2>
         <p className="text-secondary mt-1">
-          Edit club details, the Analyst Program intro, and the Syllabus / Calendar embeds. Changes show across the site.
+          Edit club details, the Mentorship Program intro, and the Syllabus / Calendar embeds. Changes show across the site.
         </p>
       </div>
 
@@ -41,7 +41,7 @@ export default function AdminSiteInfo() {
           <Field label="Contact email" type="email" value={form.contactEmail} onChange={(v) => set("contactEmail", v)} />
 
           <TextArea
-            label="Analyst Program intro"
+            label="Mentorship Program intro"
             value={form.analystProgramIntro}
             onChange={(v) => set("analystProgramIntro", v)}
             rows={4}
@@ -51,7 +51,7 @@ export default function AdminSiteInfo() {
             <h3 className="font-semibold text-navy mt-4 mb-1">Syllabus embed</h3>
             <p className="text-[13px] text-secondary mb-3">
               Paste a Google Docs/Drive <strong>preview/embed URL</strong> (ending in <code>/preview</code>) to show the
-              syllabus view-only in the Analyst Program → Syllabus tab. Leave blank to keep the placeholder.
+              syllabus view-only in the Mentorship Program → Syllabus tab. Leave blank to keep the placeholder.
             </p>
             <Field
               label="Syllabus embed URL"
