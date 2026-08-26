@@ -33,7 +33,7 @@ export default function ExecAvatar({
   if (failed) {
     return (
       <div
-        className="rounded-full bg-gold-soft text-navy flex items-center justify-center font-semibold shrink-0"
+        className="rounded-full bg-gold-soft text-navy flex items-center justify-center font-semibold shrink-0 ring-1 ring-navy/15 shadow-[0_1px_4px_rgba(0,0,0,0.10)]"
         style={{ width: size, height: size, fontSize: size * 0.32 }}
         aria-label={name}
       >
@@ -44,7 +44,7 @@ export default function ExecAvatar({
 
   return (
     <div
-      className="rounded-full overflow-hidden bg-gold-soft shrink-0"
+      className="rounded-full overflow-hidden bg-gold-soft shrink-0 ring-1 ring-navy/15 shadow-[0_1px_4px_rgba(0,0,0,0.10)]"
       style={{ width: size, height: size }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
