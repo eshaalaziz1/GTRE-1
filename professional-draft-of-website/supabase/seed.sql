@@ -51,6 +51,21 @@ update public.site_info set
   syllabus_embed_url    = 'https://gtvault-my.sharepoint.com/:w:/g/personal/jjohnson709_gatech_edu/IQAG5DhZ_CAYQ7Q0i30SEXYpARL_4OXuRyBX9ByaarWpyJ8?e=AKhQmr&action=embedview'
 where id = 1 and coalesce(analyst_program_intro, '') = '';
 
+-- Case Study materials. Files are served statically from /public/case-study.
+-- Seeds only if no Case Study resources exist yet (safe to re-run; won't
+-- duplicate or overwrite anything an admin later adds in Admin -> Materials).
+insert into public.resources (title, description, url, category)
+select * from (values
+  ('Case Study Example — Rustin Jalali', 'A full, worked case study submission to model your own after.', '/case-study/case-study-example-rustin-jalali.pdf', 'Case Study'),
+  ('Multifamily Development Model',       'Excel template for a ground-up multifamily development.',         '/case-study/multifamily-development-model.xlsx',   'Case Study'),
+  ('Office Development Model',            'Excel template for an office development underwriting.',          '/case-study/office-development-model.xlsx',        'Case Study'),
+  ('Hotel Development Model',             'Excel template for a hotel development underwriting.',            '/case-study/hotel-development-model.xlsx',         'Case Study'),
+  ('Industrial Underwriting Model',       'Excel template for an industrial deal underwriting.',            '/case-study/industrial-underwriting-model.xlsx',   'Case Study'),
+  ('Asset Management Portfolio Model',    'Excel template for portfolio-level asset management.',            '/case-study/asset-management-portfolio-model.xlsx','Case Study'),
+  ('Case Study Prompts & Rubric',         'The current case study prompts and the grading rubric.',         '/case-study/case-study-prompts-and-rubric.docx',   'Case Study')
+) as v(title, description, url, category)
+where not exists (select 1 from public.resources where category = 'Case Study');
+
 -- Ensure eaziz3 is admin if that account has already signed up.
 update public.profiles set role = 'admin', status = 'approved'
 where lower(email) = 'eaziz3@gatech.edu';

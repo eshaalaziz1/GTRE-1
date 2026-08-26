@@ -9,9 +9,9 @@ export type BoardMember = {
 };
 
 export const BOARD: BoardMember[] = [
-  { slug: "rick-porter", name: "Rick Porter", role: "Faculty Advisor", photo: null },
-  { slug: "barry-branch", name: "Barry Branch", role: "Faculty Advisor", photo: null },
-  { slug: "stacy-scopano", name: "Stacy Scopano", role: "Alumni Advisor & Former President", photo: null },
+  { slug: "rick-porter", name: "Rick Porter", role: "Faculty Advisor", photo: "/board/rick-porter.jpg" },
+  { slug: "barry-branch", name: "Barry Branch", role: "Faculty Advisor", photo: "/board/barry-branch.jpg" },
+  { slug: "stacy-scopano", name: "Stacy Scopano", role: "Alumni Advisor & Former President", photo: "/board/stacy-scopano.jpg" },
 ];
 
 // Alumni Board, the club's active alumni board (~10 members), folded into the

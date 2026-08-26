@@ -8,6 +8,7 @@ import { Badge, Tabs } from "@/components/ui";
 import { useGtre } from "@/lib/store/GtreStore";
 import { CURRICULUM, PROGRAM_TOOLS } from "@/lib/program";
 import type { Resource } from "@/lib/store/types";
+import { groupCaseStudy, fileKind } from "@/lib/caseStudy";
 
 // Public Mentorship Program section. Tabs: Overview · Curriculum · Syllabus · Resources.
 // The Syllabus tab is built to embed a view-only document once the club uploads
@@ -208,26 +209,38 @@ function CaseStudy({ resources, isMember }: { resources: Resource[]; isMember: b
           </p>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 gap-5">
-          {items.map((r) => (
-            <a
-              key={r.id}
-              href={r.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group border border-border rounded-xl p-6 hover:shadow-md transition-shadow"
-            >
-              <div className="text-[11px] font-semibold uppercase tracking-wide text-gold-hover mb-1">
-                Case Study
+        <div className="space-y-10">
+          {groupCaseStudy(items).map(({ group, items }) => (
+            <section key={group}>
+              <div className="flex items-center gap-4 mb-4">
+                <h4 className="text-[13px] font-semibold uppercase tracking-[0.16em] text-gold-hover">{group}</h4>
+                <div className="flex-1 border-t border-border" />
               </div>
-              <div className="text-lg font-semibold text-navy group-hover:text-gold-hover transition-colors">
-                {r.title}
+              <div className="grid sm:grid-cols-2 gap-5">
+                {items.map((r) => (
+                  <a
+                    key={r.id}
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex gap-4 border border-border rounded-xl p-6 hover:shadow-md transition-shadow"
+                  >
+                    <span className="shrink-0 mt-0.5 inline-flex items-center justify-center w-11 h-11 rounded-lg bg-navy/[0.04] text-[10px] font-bold tracking-wide text-navy">
+                      {fileKind(r.url)}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-lg font-semibold text-navy group-hover:text-gold-hover transition-colors">
+                        {r.title}
+                      </div>
+                      {r.description && (
+                        <p className="text-[14px] text-secondary mt-1 leading-relaxed">{r.description}</p>
+                      )}
+                      <span className="inline-block mt-3 text-sm font-semibold text-gold-hover">Open →</span>
+                    </div>
+                  </a>
+                ))}
               </div>
-              {r.description && (
-                <p className="text-[14px] text-secondary mt-2 leading-relaxed">{r.description}</p>
-              )}
-              <span className="inline-block mt-4 text-sm font-semibold text-gold-hover">Open →</span>
-            </a>
+            </section>
           ))}
         </div>
       )}
