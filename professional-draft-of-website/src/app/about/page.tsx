@@ -32,7 +32,7 @@ export default function AboutPage() {
         {/* Mission, front and center */}
         <div className="relative mx-auto max-w-[920px] px-6 lg:px-10 text-center">
           <div className="text-gold uppercase tracking-[0.26em] text-[11px] sm:text-[12px] font-semibold mb-5">
-            Georgia Tech Real Estate Club
+            <SiteText slotKey="home-hero-eyebrow">Georgia Tech Real Estate Club</SiteText>
           </div>
           <h1 className="display text-white text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.08]">
             <SiteText slotKey="home-headline" />
@@ -45,13 +45,13 @@ export default function AboutPage() {
               href="/contact"
               className="px-8 py-3.5 rounded-md bg-gold text-navy text-sm font-bold hover:bg-gold-hover transition-colors"
             >
-              Join the Club
+              <SiteText slotKey="home-hero-cta1">Join the Club</SiteText>
             </Link>
             <Link
               href="/analyst-program"
               className="px-8 py-3.5 rounded-md border border-white/50 text-white text-sm font-semibold hover:bg-white/10 transition-colors"
             >
-              Explore the Mentorship Program
+              <SiteText slotKey="home-hero-cta2">Explore the Mentorship Program</SiteText>
             </Link>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function AboutPage() {
               </div>
             </div>
             <Link href="/rolodex" className="inline-block mt-6 text-sm font-semibold text-gold-hover hover:text-navy">
-              Hiring? View the Analyst Rolodex →
+              <SiteText slotKey="home-rolodex-link">Hiring? View the Analyst Rolodex →</SiteText>
             </Link>
           </div>
           <SiteImage
@@ -106,12 +106,16 @@ export default function AboutPage() {
       <Reveal>
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16">
         <div className="grid md:grid-cols-3 gap-5">
-          {VALUES.map((v) => (
+          {VALUES.map((v, vi) => (
             <div key={v.title} className="bg-white border-t-4 border-gold border-x border-b border-border rounded-b-lg p-5">
-              <h2 className="text-lg font-semibold text-navy mb-2">{v.title}</h2>
+              <h2 className="text-lg font-semibold text-navy mb-2">
+                <SiteText slotKey={`home-value-${vi}-title`}>{v.title}</SiteText>
+              </h2>
               <ul className="space-y-1.5">
                 {v.lines.map((line, i) => (
-                  <li key={i} className="text-[13px] text-secondary leading-snug">{line}</li>
+                  <li key={i} className="text-[13px] text-secondary leading-snug">
+                    <SiteText slotKey={`home-value-${vi}-line-${i}`}>{line}</SiteText>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -129,12 +133,16 @@ export default function AboutPage() {
           </div>
           <h2 className="display text-4xl text-navy max-w-2xl"><SiteText slotKey="home-getinvolved-title" /></h2>
           <div className="grid md:grid-cols-3 gap-7 mt-10">
-            {ENGAGEMENT.map((e) => (
+            {ENGAGEMENT.map((e, ei) => (
               <Link key={e.title} href={e.href} className="group bg-white border border-border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
                 <PhotoSlot src={e.image ?? null} alt={e.title} ratio="aspect-[16/9]" className="rounded-none" imgClassName={e.imgClassName} />
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold text-navy group-hover:text-gold-hover transition-colors">{e.title}</h3>
-                  <p className="text-[14px] text-secondary mt-2 leading-relaxed">{e.body}</p>
+                  <h3 className="text-xl font-semibold text-navy group-hover:text-gold-hover transition-colors">
+                    <SiteText slotKey={`home-engage-${ei}-title`}>{e.title}</SiteText>
+                  </h3>
+                  <p className="text-[14px] text-secondary mt-2 leading-relaxed">
+                    <SiteText slotKey={`home-engage-${ei}-body`}>{e.body}</SiteText>
+                  </p>
                   <span className="inline-block mt-4 text-sm font-semibold text-gold-hover">Learn more →</span>
                 </div>
               </Link>
@@ -149,7 +157,7 @@ export default function AboutPage() {
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16 grid lg:grid-cols-2 gap-14">
         <div>
           <div className="flex items-end justify-between mb-7">
-            <h2 className="display text-3xl text-navy">Upcoming Events</h2>
+            <h2 className="display text-3xl text-navy"><SiteText slotKey="home-events-title">Upcoming Events</SiteText></h2>
             <Link href="/calendar" className="text-sm font-semibold text-gold-hover hover:text-navy">Full calendar →</Link>
           </div>
           <div className="space-y-3">
@@ -169,17 +177,16 @@ export default function AboutPage() {
         </div>
         <div>
           <div className="flex items-end justify-between mb-7">
-            <h2 className="display text-3xl text-navy">Latest News</h2>
+            <h2 className="display text-3xl text-navy"><SiteText slotKey="home-news-title">Latest News</SiteText></h2>
             <Link href="/news" className="text-sm font-semibold text-gold-hover hover:text-navy">All news →</Link>
           </div>
           <div className="bg-navy rounded-xl p-7 text-white h-full flex flex-col justify-center">
             <div className="text-gold text-[12px] font-semibold uppercase tracking-[0.2em] mb-2">
-              On LinkedIn
+              <SiteText slotKey="home-linkedin-eyebrow">On LinkedIn</SiteText>
             </div>
-            <div className="display text-2xl text-white">Follow the club for the latest.</div>
+            <div className="display text-2xl text-white"><SiteText slotKey="home-linkedin-title">Follow the club for the latest.</SiteText></div>
             <p className="text-white/70 text-sm mt-3 leading-relaxed">
-              Event recaps, recruiting updates, member wins, and market takes,
-              posted to our LinkedIn and featured on the News page.
+              <SiteText slotKey="home-linkedin-body">Event recaps, recruiting updates, member wins, and market takes, posted to our LinkedIn and featured on the News page.</SiteText>
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a

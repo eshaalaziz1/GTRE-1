@@ -13,12 +13,19 @@ import { useEditMode } from "@/lib/editMode";
  * When an admin turns on Edit mode (floating bar), the text becomes click-to-edit
  * right on the page. Members and signed-out visitors always see plain text.
  */
-export default function SiteText({ slotKey }: { slotKey: string }) {
+export default function SiteText({ slotKey, children }: { slotKey: string; children?: React.ReactNode }) {
   const { state, currentAccount, setSiteText } = useGtre();
   const { editMode } = useEditMode();
   const [editing, setEditing] = useState(false);
 
-  const value = textValue(state.siteText, slotKey);
+  // Default text comes from inline children when provided (so any string on a
+  // page can be wrapped without pre-registering it), otherwise from the slot
+  // registry in siteText.ts. An admin's saved override always wins.
+  const registryDefault = TEXT_SLOTS.find((s) => s.key === slotKey)?.defaultValue;
+  const inlineDefault = children != null ? String(children) : undefined;
+  const def = inlineDefault ?? registryDefault ?? "";
+  const override = state.siteText?.[slotKey];
+  const value = override && override.trim() ? override : def;
   const canEdit = editMode && currentAccount?.role === "admin";
 
   if (!canEdit) return <>{value}</>;
@@ -58,6 +65,7 @@ function SiteTextEditor({
 }) {
   const slot = TEXT_SLOTS.find((s) => s.key === slotKey);
   const [draft, setDraft] = useState(value);
+  const multiline = slot?.multiline ?? (value.length > 70 || value.includes("\n"));
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
@@ -69,7 +77,7 @@ function SiteTextEditor({
         <textarea
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          rows={slot?.multiline ? 6 : 2}
+          rows={multiline ? 6 : 2}
           autoFocus
           className="w-full border border-border rounded-lg p-3 text-sm text-text outline-none focus:border-navy resize-y"
         />
