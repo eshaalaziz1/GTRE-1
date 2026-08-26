@@ -114,6 +114,7 @@ export type GtreContextValue = {
 
   // Resources / documents
   addResource: (r: Omit<Resource, "id" | "createdAt">) => void;
+  updateResource: (id: string, patch: Partial<Omit<Resource, "id" | "createdAt">>) => void;
   deleteResource: (id: string) => void;
 
   // Site info

@@ -717,6 +717,17 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           await loadAll();
         })();
       },
+      updateResource(id, patch) {
+        void (async () => {
+          const row: Record<string, unknown> = {};
+          if (patch.title !== undefined) row.title = patch.title;
+          if (patch.description !== undefined) row.description = patch.description ?? null;
+          if (patch.url !== undefined) row.url = patch.url;
+          if (patch.category !== undefined) row.category = patch.category;
+          await supabase.from("resources").update(row).eq("id", id);
+          await loadAll();
+        })();
+      },
       deleteResource(id) {
         void (async () => {
           await supabase.from("resources").delete().eq("id", id);

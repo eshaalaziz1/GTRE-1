@@ -395,6 +395,12 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
           resources: [{ ...r, id: uid("res"), createdAt: nowIso() }, ...s.resources],
         }));
       },
+      updateResource(id, patch) {
+        setState((s) => ({
+          ...s,
+          resources: s.resources.map((r) => (r.id === id ? { ...r, ...patch } : r)),
+        }));
+      },
       deleteResource(id) {
         setState((s) => ({ ...s, resources: s.resources.filter((r) => r.id !== id) }));
       },

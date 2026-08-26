@@ -18,7 +18,7 @@ export default function AnalystDirectory() {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return MEMBERS.filter((m) => {
-      const haystack = [m.name, m.major, m.year, m.interests, m.experience, ...m.disciplines]
+      const haystack = [m.name, m.major, m.year, m.summary, m.experience, ...m.disciplines]
         .join(" ")
         .toLowerCase();
       const matchesQuery = !q || haystack.includes(q);
@@ -122,8 +122,8 @@ function MemberCard({ m }: { m: RolodexMember }) {
         </div>
       )}
 
-      {m.interests && (
-        <p className="text-[13px] text-secondary leading-relaxed mt-4 line-clamp-5">{m.interests}</p>
+      {m.summary && (
+        <p className="text-[13px] text-secondary leading-relaxed mt-4 line-clamp-5">{m.summary}</p>
       )}
 
       {m.experience && (
