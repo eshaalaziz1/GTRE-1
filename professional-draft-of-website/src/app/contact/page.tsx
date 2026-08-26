@@ -13,22 +13,22 @@ export default function ContactPage() {
         <h1 className="display text-4xl lg:text-5xl text-navy mb-4"><SiteText slotKey="contact-title" /></h1>
         <p className="text-[16px] text-secondary leading-relaxed max-w-3xl mb-10">
           For general questions, email{" "}
-          <a href="mailto:realestate@gatech.edu" className="text-gold-hover hover:text-navy font-medium">
-            realestate@gatech.edu
+          <a href="mailto:rjalali6@gatech.edu" className="text-gold-hover hover:text-navy font-medium">
+            rjalali6@gatech.edu
           </a>
-          . We meet Thursdays at 6:00 PM in the Scheller College of Business.
+          . We meet Mondays at 6:30 PM in the Scheller College of Business.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-6">
             <h2 className="font-bold text-navy">Email</h2>
-            <a href="mailto:realestate@gatech.edu" className="text-[15px] text-gold-hover hover:text-navy break-all">
-              realestate@gatech.edu
+            <a href="mailto:rjalali6@gatech.edu" className="text-[15px] text-gold-hover hover:text-navy break-all">
+              rjalali6@gatech.edu
             </a>
           </div>
           <div className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-6">
             <h2 className="font-bold text-navy">Meetings</h2>
-            <p className="text-[15px] text-secondary">Thursdays at 6:00 PM</p>
+            <p className="text-[15px] text-secondary">Mondays at 6:30 PM</p>
             <p className="text-[15px] text-secondary">Scheller College of Business</p>
           </div>
           <div className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-6">

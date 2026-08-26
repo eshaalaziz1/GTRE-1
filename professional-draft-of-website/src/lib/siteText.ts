@@ -32,7 +32,7 @@ export const TEXT_SLOTS: TextSlot[] = [
     label: "Intro",
     multiline: true,
     defaultValue:
-      "The student executive board runs the club, the Mentorship Program, and every event on the calendar. Meet the team leading Georgia Tech Real Estate.",
+      "The students who run the club, the Mentorship Program, and everything on the calendar.",
   },
   // Alumni
   { key: "alumni-title", group: "Alumni", label: "Page title", defaultValue: "Alumni" },
@@ -61,8 +61,7 @@ export const TEXT_SLOTS: TextSlot[] = [
     group: "Calendar",
     label: "Intro",
     multiline: true,
-    defaultValue:
-      "Club meetings, the Mentorship Program, and industry events. Managed by the exec team, members can check in for meetings from the portal.",
+    defaultValue: "Club meetings, the Mentorship Program, and industry events.",
   },
   // Contact
   { key: "contact-title", group: "Contact", label: "Page title", defaultValue: "Contact Us" },

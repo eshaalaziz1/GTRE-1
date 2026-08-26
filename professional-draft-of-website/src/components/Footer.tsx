@@ -42,8 +42,8 @@ export default function Footer() {
           </div>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <a href="mailto:realestate@gatech.edu" className="hover:text-white transition-colors">
-                realestate@gatech.edu
+              <a href="mailto:rjalali6@gatech.edu" className="hover:text-white transition-colors">
+                rjalali6@gatech.edu
               </a>
             </li>
             <li>Scheller College of Business</li>

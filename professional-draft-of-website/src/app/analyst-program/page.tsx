@@ -14,8 +14,10 @@ import type { Resource } from "@/lib/store/types";
 // one (admin sets the embed URL in Admin → Site Info); until then it shows a
 // clean placeholder.
 export default function AnalystProgramPage() {
-  const { state } = useGtre();
+  const { state, currentAccount } = useGtre();
   const [tab, setTab] = useState("overview");
+  // Case-study materials are for members: an approved student or an admin.
+  const isMember = !!currentAccount && (currentAccount.role === "student" || currentAccount.role === "admin");
 
   return (
     <>
@@ -68,7 +70,7 @@ export default function AnalystProgramPage() {
         <div className="pt-10">
           {tab === "overview" && <Overview />}
           {tab === "curriculum" && <Curriculum />}
-          {tab === "case-study" && <CaseStudy resources={state.resources} />}
+          {tab === "case-study" && <CaseStudy resources={state.resources} isMember={isMember} />}
           {tab === "syllabus" && <Syllabus url={state.siteInfo.syllabusEmbedUrl} />}
           {tab === "resources" && <Resources />}
         </div>
@@ -151,7 +153,7 @@ function Curriculum() {
   );
 }
 
-function CaseStudy({ resources }: { resources: Resource[] }) {
+function CaseStudy({ resources, isMember }: { resources: Resource[]; isMember: boolean }) {
   const items = resources.filter((r) => r.category === "Case Study");
   return (
     <div>
@@ -162,8 +164,8 @@ function CaseStudy({ resources }: { resources: Resource[] }) {
             The Mentorship Program ends with a full underwriting case study.
             Members get a real deal prompt, build a proforma from scratch, and
             present their recommendation to a panel of alumni judges against a shared
-            rubric. The prompt, proforma templates, and grading rubric are all posted
-            here.
+            rubric. The prompt, proforma templates, and grading rubric are all
+            available to members here.
           </p>
         </div>
         <aside className="bg-surface rounded-2xl p-7 h-fit">
@@ -179,13 +181,30 @@ function CaseStudy({ resources }: { resources: Resource[] }) {
       </div>
 
       <h3 className="display text-2xl text-navy mb-5">Materials</h3>
-      {items.length === 0 ? (
+      {!isMember ? (
+        // Case-study materials are member-only. Non-members see a sign-in gate.
+        <div className="rounded-2xl border border-border border-t-4 border-t-gold bg-surface text-center py-16 px-6">
+          <h4 className="display text-xl text-navy">Members only</h4>
+          <p className="text-secondary mt-2 max-w-lg mx-auto leading-relaxed">
+            The case prompt, proforma templates, and grading rubric are available to
+            signed-in members. Sign in with your member account to open them.
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Link href="/login" className="px-6 py-3 rounded-md bg-navy text-white text-sm font-semibold hover:bg-navy-deep transition-colors">
+              Sign in
+            </Link>
+            <Link href="/signup" className="px-6 py-3 rounded-md border border-navy text-navy text-sm font-semibold hover:bg-white transition-colors">
+              Become a member
+            </Link>
+          </div>
+        </div>
+      ) : items.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border bg-surface text-center py-16 px-6">
           <h4 className="display text-xl text-navy">Materials coming soon</h4>
           <p className="text-secondary mt-2 max-w-lg mx-auto leading-relaxed">
             The case prompt, proforma templates, and grading rubric will be posted
             here. Officers add them in <strong>Admin → Materials</strong> (category
-            &ldquo;Case Study&rdquo;), no code needed.
+            &ldquo;Case Study&rdquo;).
           </p>
         </div>
       ) : (

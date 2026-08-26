@@ -14,20 +14,20 @@
 insert into public.events (title, type, track, date, "time", location, description, "order", check_in_code, check_in_open)
 select * from (values
   -- Mentorship Program
-  ('Info Session',                                       'Meeting',    'Mentorship Program', date '2026-08-31', '6:00 PM', 'Caddell', null,                                      0,  'INFO26',   false),
-  ('Intro and CRE Overview',                             'Meeting',    'Mentorship Program', date '2026-09-14', '6:00 PM', 'Caddell', null,                                      1,  'INTRO',    false),
-  ('Capital Markets & Financing',                        'Workshop',   'Mentorship Program', date '2026-09-21', '6:00 PM', 'Caddell', null,                                      2,  'CAPMKT',   false),
-  ('Recruitment Event - Peachtree',                      'Event',      'Mentorship Program', date '2026-09-28', '6:00 PM', 'Caddell', null,                                      3,  'RECRUIT',  false),
+  ('Info Session',                                       'Meeting',    'Mentorship Program', date '2026-08-31', '6:30 PM', 'Caddell', null,                                      0,  'INFO26',   false),
+  ('Intro and CRE Overview',                             'Meeting',    'Mentorship Program', date '2026-09-14', '6:30 PM', 'Caddell', null,                                      1,  'INTRO',    false),
+  ('Capital Markets & Financing',                        'Workshop',   'Mentorship Program', date '2026-09-21', '6:30 PM', 'Caddell', null,                                      2,  'CAPMKT',   false),
+  ('Recruitment Event - Peachtree',                      'Event',      'Mentorship Program', date '2026-09-28', '6:30 PM', 'Caddell', null,                                      3,  'RECRUIT',  false),
   ('Fall Break (No Meeting)',                            'Social',     'Mentorship Program', date '2026-10-05', null,      'Caddell', 'No class this week. Enjoy the break.',     4,  null,       false),
-  ('Development & Construction',                          'Workshop',   'Mentorship Program', date '2026-10-12', '6:00 PM', 'Caddell', null,                                      5,  'DEVCON',   false),
-  ('Investments in CRE',                                 'Workshop',   'Mentorship Program', date '2026-10-19', '6:00 PM', 'Caddell', null,                                      6,  'INVEST',   false),
-  ('Case Study Overview / Submarket Research (Sandy Paul)','Case Study','Mentorship Program', date '2026-10-26', '6:00 PM', 'Caddell', null,                                      7,  'CASE1',    false),
-  ('Underwriting and Excel Modeling',                    'Workshop',   'Mentorship Program', date '2026-11-02', '6:00 PM', 'Caddell', null,                                      8,  'MODEL',    false),
-  ('Case Study Example',                                 'Case Study', 'Mentorship Program', date '2026-11-09', '6:00 PM', 'Caddell', null,                                      9,  'CHECKIN',  true),
-  ('Case Study Practice',                                'Case Study', 'Mentorship Program', date '2026-11-16', '6:00 PM', 'Caddell', null,                                      10, 'PRACTICE', false),
-  ('Presentations Day 1',                                'Case Study', 'Mentorship Program', date '2026-11-23', '6:00 PM', 'Caddell', null,                                      11, 'PRES1',    false),
+  ('Development & Construction',                          'Workshop',   'Mentorship Program', date '2026-10-12', '6:30 PM', 'Caddell', null,                                      5,  'DEVCON',   false),
+  ('Investments in CRE',                                 'Workshop',   'Mentorship Program', date '2026-10-19', '6:30 PM', 'Caddell', null,                                      6,  'INVEST',   false),
+  ('Case Study Overview / Submarket Research (Sandy Paul)','Case Study','Mentorship Program', date '2026-10-26', '6:30 PM', 'Caddell', null,                                      7,  'CASE1',    false),
+  ('Underwriting and Excel Modeling',                    'Workshop',   'Mentorship Program', date '2026-11-02', '6:30 PM', 'Caddell', null,                                      8,  'MODEL',    false),
+  ('Case Study Example',                                 'Case Study', 'Mentorship Program', date '2026-11-09', '6:30 PM', 'Caddell', null,                                      9,  'CHECKIN',  true),
+  ('Case Study Practice',                                'Case Study', 'Mentorship Program', date '2026-11-16', '6:30 PM', 'Caddell', null,                                      10, 'PRACTICE', false),
+  ('Presentations Day 1',                                'Case Study', 'Mentorship Program', date '2026-11-23', '6:30 PM', 'Caddell', null,                                      11, 'PRES1',    false),
   ('Break (No Meeting)',                                 'Social',     'Mentorship Program', date '2026-11-30', null,      'Caddell', 'No class this week. Enjoy the break.',     12, null,       false),
-  ('Presentations Day 2',                                'Case Study', 'Mentorship Program', date '2026-12-07', '6:00 PM', 'Caddell', null,                                      13, 'PRES2',    false),
+  ('Presentations Day 2',                                'Case Study', 'Mentorship Program', date '2026-12-07', '6:30 PM', 'Caddell', null,                                      13, 'PRES2',    false),
   -- Industry Events
   ('Kickoff Event',            'Event', 'Industry Events', date '2026-09-10', null, 'Scheller Tower', null, 0, null, false),
   ('Careers in RE',            'Event', 'Industry Events', date '2026-09-17', null, 'Caddell',        null, 1, null, false),
@@ -44,9 +44,9 @@ where not exists (select 1 from public.events);
 -- Site info: meeting details, Mentorship Program intro, live syllabus embed.
 -- Only seeds if it hasn't been customized (won't clobber an admin's edits).
 update public.site_info set
-  meeting_time          = 'Thursdays at 6:00 PM',
+  meeting_time          = 'Mondays at 6:30 PM',
   meeting_location      = 'Scheller College of Business, Room 200',
-  contact_email         = 'realestate@gatech.edu',
+  contact_email         = 'rjalali6@gatech.edu',
   analyst_program_intro = 'The Mentorship Program is a semester-long, hands-on curriculum that takes members from real estate fundamentals to a full underwriting case study. Members build models, present to alumni judges, and earn a place in the vetted Analyst Rolodex.',
   syllabus_embed_url    = 'https://gtvault-my.sharepoint.com/:w:/g/personal/jjohnson709_gatech_edu/IQAG5DhZ_CAYQ7Q0i30SEXYpARL_4OXuRyBX9ByaarWpyJ8?e=AKhQmr&action=embedview'
 where id = 1 and coalesce(analyst_program_intro, '') = '';

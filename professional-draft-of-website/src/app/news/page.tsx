@@ -13,9 +13,8 @@ export default function NewsPage() {
         <div className="mb-8">
           <h1 className="display text-4xl lg:text-5xl text-navy mb-3">News</h1>
           <p className="text-secondary max-w-2xl">
-            The latest from the Georgia Tech Real Estate Club: event recaps,
-            member wins, recruiting updates, and market takes, straight from
-            our LinkedIn.
+            Event recaps, member news, and recruiting updates, straight from our
+            LinkedIn.
           </p>
         </div>
 
