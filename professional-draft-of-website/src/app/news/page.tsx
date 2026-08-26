@@ -1,4 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumb";
+import SiteText from "@/components/SiteText";
 import LinkedInFeed from "@/components/LinkedInFeed";
 import { LINKEDIN_URL, LINKEDIN_POSTS, SOCIABLEKIT_EMBED_ID } from "@/lib/linkedin";
 
@@ -11,10 +12,9 @@ export default function NewsPage() {
 
       <div className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 pb-16">
         <div className="mb-8">
-          <h1 className="display text-4xl lg:text-5xl text-navy mb-3">News</h1>
+          <h1 className="display text-4xl lg:text-5xl text-navy mb-3"><SiteText slotKey="news-title">News</SiteText></h1>
           <p className="text-secondary max-w-2xl">
-            Event recaps, member news, and recruiting updates, straight from our
-            LinkedIn.
+            <SiteText slotKey="news-intro">Event recaps, member news, and recruiting updates, straight from our LinkedIn.</SiteText>
           </p>
         </div>
 

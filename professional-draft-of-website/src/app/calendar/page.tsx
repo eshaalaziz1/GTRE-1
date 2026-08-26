@@ -37,12 +37,12 @@ export default function CalendarPage() {
           className="flex items-center justify-between gap-3 rounded-xl border border-navy/15 bg-navy/[0.03] px-5 py-4 hover:bg-navy/[0.06] transition-colors"
         >
           <div>
-            <div className="font-semibold text-navy">Get announcements and the calendar in Outlook</div>
+            <div className="font-semibold text-navy"><SiteText slotKey="calendar-outlook-title">Get announcements and the calendar in Outlook</SiteText></div>
             <div className="text-[13px] text-secondary">
-              Join the club&apos;s Outlook group to get event emails and add the schedule to your own calendar.
+              <SiteText slotKey="calendar-outlook-body">Join the club&apos;s Outlook group to get event emails and add the schedule to your own calendar.</SiteText>
             </div>
           </div>
-          <span className="shrink-0 px-4 py-2 rounded-md bg-navy text-white text-[13px] font-semibold">Join →</span>
+          <span className="shrink-0 px-4 py-2 rounded-md bg-navy text-white text-[13px] font-semibold"><SiteText slotKey="calendar-outlook-cta">Join →</SiteText></span>
         </a>
       </section>
 
