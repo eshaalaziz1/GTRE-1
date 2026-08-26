@@ -3,7 +3,9 @@ import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
+import AdminEditBar from "@/components/AdminEditBar";
 import { GtreProvider } from "@/lib/store/GtreStore";
+import { EditModeProvider } from "@/lib/editMode";
 
 // Body text.
 const sourceSans = Source_Sans_3({
@@ -39,9 +41,12 @@ export default function RootLayout({
           <style>{`.reveal{opacity:1!important;transform:none!important;}`}</style>
         </noscript>
         <GtreProvider>
-          <SiteHeader />
-          <main>{children}</main>
-          <Footer />
+          <EditModeProvider>
+            <SiteHeader />
+            <main>{children}</main>
+            <Footer />
+            <AdminEditBar />
+          </EditModeProvider>
         </GtreProvider>
       </body>
     </html>

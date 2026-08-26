@@ -24,6 +24,25 @@ export const TEXT_SLOTS: TextSlot[] = [
     defaultValue:
       "Our mission is to equip students with the resources and knowledge to lead the future of the real estate industry, supply that industry with exceptional talent, and grow a lasting real estate community at Georgia Tech.",
   },
+  { key: "home-whatwedo-eyebrow", group: "Homepage", label: "\"What we do\" eyebrow", defaultValue: "What we do" },
+  { key: "home-goals-title", group: "Homepage", label: "Goals section title", defaultValue: "Built around three goals." },
+  { key: "home-goal1-title", group: "Homepage", label: "Goal 1 title", defaultValue: "Equip our students" },
+  {
+    key: "home-goal1-body", group: "Homepage", label: "Goal 1 body", multiline: true,
+    defaultValue: "Give members the knowledge, technical skills, and real-world reps to launch careers across acquisitions, development, debt, brokerage, and beyond.",
+  },
+  { key: "home-goal2-title", group: "Homepage", label: "Goal 2 title", defaultValue: "Supply the industry with talent" },
+  {
+    key: "home-goal2-body", group: "Homepage", label: "Goal 2 body", multiline: true,
+    defaultValue: "Connect firms and alumni to a vetted pipeline of Georgia Tech's strongest real estate students through the Analyst Rolodex and the Opportunities board.",
+  },
+  { key: "home-goal3-title", group: "Homepage", label: "Goal 3 title", defaultValue: "Grow a lasting community" },
+  {
+    key: "home-goal3-body", group: "Homepage", label: "Goal 3 body", multiline: true,
+    defaultValue: "Build a real estate network at Georgia Tech that keeps students, alumni, and industry connected long after graduation.",
+  },
+  { key: "home-getinvolved-eyebrow", group: "Homepage", label: "\"Get involved\" eyebrow", defaultValue: "Get involved" },
+  { key: "home-getinvolved-title", group: "Homepage", label: "Get involved title", defaultValue: "Industry and alumni engagement." },
   // Leadership
   { key: "leadership-title", group: "Leadership", label: "Page title", defaultValue: "Leadership" },
   {

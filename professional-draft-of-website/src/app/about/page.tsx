@@ -65,31 +65,26 @@ export default function AboutPage() {
         <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-gold-hover mb-3">
-              What we do
+              <SiteText slotKey="home-whatwedo-eyebrow" />
             </div>
-            <h2 className="display text-3xl lg:text-4xl text-navy">Built around three goals.</h2>
+            <h2 className="display text-3xl lg:text-4xl text-navy"><SiteText slotKey="home-goals-title" /></h2>
             <div className="mt-6 space-y-6">
               <div>
-                <h3 className="text-lg font-semibold text-navy">Equip our students</h3>
+                <h3 className="text-lg font-semibold text-navy"><SiteText slotKey="home-goal1-title" /></h3>
                 <p className="mt-2 text-[15px] text-secondary leading-relaxed">
-                  Give members the knowledge, technical skills, and real-world reps
-                  to launch careers across acquisitions, development, debt,
-                  brokerage, and beyond.
+                  <SiteText slotKey="home-goal1-body" />
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-navy">Supply the industry with talent</h3>
+                <h3 className="text-lg font-semibold text-navy"><SiteText slotKey="home-goal2-title" /></h3>
                 <p className="mt-2 text-[15px] text-secondary leading-relaxed">
-                  Connect firms and alumni to a vetted pipeline of Georgia Tech&apos;s
-                  strongest real estate students through the Analyst Rolodex and the
-                  Opportunities board.
+                  <SiteText slotKey="home-goal2-body" />
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-navy">Grow a lasting community</h3>
+                <h3 className="text-lg font-semibold text-navy"><SiteText slotKey="home-goal3-title" /></h3>
                 <p className="mt-2 text-[15px] text-secondary leading-relaxed">
-                  Build a real estate network at Georgia Tech that keeps students,
-                  alumni, and industry connected long after graduation.
+                  <SiteText slotKey="home-goal3-body" />
                 </p>
               </div>
             </div>
@@ -130,9 +125,9 @@ export default function AboutPage() {
       <section id="get-involved" className="bg-surface border-y border-border scroll-mt-24">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-10 py-16">
           <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-gold-hover mb-3">
-            Get involved
+            <SiteText slotKey="home-getinvolved-eyebrow" />
           </div>
-          <h2 className="display text-4xl text-navy max-w-2xl">Industry and alumni engagement.</h2>
+          <h2 className="display text-4xl text-navy max-w-2xl"><SiteText slotKey="home-getinvolved-title" /></h2>
           <div className="grid md:grid-cols-3 gap-7 mt-10">
             {ENGAGEMENT.map((e) => (
               <Link key={e.title} href={e.href} className="group bg-white border border-border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
