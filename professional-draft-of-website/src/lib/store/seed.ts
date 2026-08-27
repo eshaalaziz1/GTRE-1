@@ -140,32 +140,30 @@ export const SEED: GtreState = {
   // the weekly Mentorship Program and the Industry Events series. Times default to
   // 6:30 PM for Mentorship Program meetings; adjust in Admin → Events.
   events: [
-    // ---- Mentorship Program (weekly, Caddell) --------------------------------
-    { id: "ap-1", track: "Mentorship Program", order: 0, type: "Meeting", title: "Info Session", date: "2026-08-31", time: "6:30 PM", location: "Caddell", checkInCode: "INFO26", checkInOpen: false },
-    { id: "ap-2", track: "Mentorship Program", order: 1, type: "Meeting", title: "Intro and CRE Overview", date: "2026-09-14", time: "6:30 PM", location: "Caddell", checkInCode: "INTRO", checkInOpen: false },
-    { id: "ap-3", track: "Mentorship Program", order: 2, type: "Workshop", title: "Capital Markets & Financing", date: "2026-09-21", time: "6:30 PM", location: "Caddell", checkInCode: "CAPMKT", checkInOpen: false },
-    { id: "ap-4", track: "Mentorship Program", order: 3, type: "Event", title: "Recruitment Event - Peachtree", date: "2026-09-28", time: "6:30 PM", location: "Caddell", checkInCode: "RECRUIT", checkInOpen: false },
-    { id: "ap-5", track: "Mentorship Program", order: 4, type: "Social", title: "Fall Break, No Meeting", date: "2026-10-05", location: "Caddell", description: "No class this week, enjoy the break." },
-    { id: "ap-6", track: "Mentorship Program", order: 5, type: "Workshop", title: "Development & Construction", date: "2026-10-12", time: "6:30 PM", location: "Caddell", checkInCode: "DEVCON", checkInOpen: false },
-    { id: "ap-7", track: "Mentorship Program", order: 6, type: "Workshop", title: "Investments in CRE", date: "2026-10-19", time: "6:30 PM", location: "Caddell", checkInCode: "INVEST", checkInOpen: false },
-    { id: "ap-8", track: "Mentorship Program", order: 7, type: "Case Study", title: "Case Study Overview / Submarket Research (Sandy Paul)", date: "2026-10-26", time: "6:30 PM", location: "Caddell", checkInCode: "CASE1", checkInOpen: false },
-    { id: "ap-9", track: "Mentorship Program", order: 8, type: "Workshop", title: "Underwriting and Excel Modeling", date: "2026-11-02", time: "6:30 PM", location: "Caddell", checkInCode: "MODEL", checkInOpen: false },
-    { id: "ap-10", track: "Mentorship Program", order: 9, type: "Case Study", title: "Case Study Example", date: "2026-11-09", time: "6:30 PM", location: "Caddell", checkInCode: "CHECKIN", checkInOpen: true },
-    { id: "ap-11", track: "Mentorship Program", order: 10, type: "Case Study", title: "Case Study Practice", date: "2026-11-16", time: "6:30 PM", location: "Caddell", checkInCode: "PRACTICE", checkInOpen: false },
-    { id: "ap-12", track: "Mentorship Program", order: 11, type: "Case Study", title: "Presentations Day 1", date: "2026-11-23", time: "6:30 PM", location: "Caddell", checkInCode: "PRES1", checkInOpen: false },
-    { id: "ap-13", track: "Mentorship Program", order: 12, type: "Social", title: "Break", date: "2026-11-30", location: "Caddell", description: "No class this week, enjoy the break." },
-    { id: "ap-14", track: "Mentorship Program", order: 13, type: "Case Study", title: "Presentations Day 2", date: "2026-12-07", time: "6:30 PM", location: "Caddell", checkInCode: "PRES2", checkInOpen: false },
+    // ---- Mentorship Program (weekly, George Tower 0232) ----------------------
+    { id: "ap-1", track: "Mentorship Program", order: 0, type: "Meeting", title: "Info Session", date: "2026-08-31", time: "6:30 PM", location: "George Tower 0232", checkInCode: "INFO26", checkInOpen: false },
+    { id: "ap-2", track: "Mentorship Program", order: 1, type: "Meeting", title: "Intro and CRE Overview", date: "2026-09-14", time: "6:30 PM", location: "George Tower 0232", checkInCode: "INTRO", checkInOpen: false },
+    { id: "ap-3", track: "Mentorship Program", order: 2, type: "Workshop", title: "Capital Markets & Financing", date: "2026-09-21", time: "6:30 PM", location: "George Tower 0232", checkInCode: "CAPMKT", checkInOpen: false },
+    { id: "ap-4", track: "Mentorship Program", order: 3, type: "Event", title: "Recruitment Event - Peachtree", date: "2026-09-28", time: "6:30 PM", location: "George Tower 0232", checkInCode: "RECRUIT", checkInOpen: false },
+    { id: "ap-5", track: "Mentorship Program", order: 4, type: "Social", title: "Fall Break", date: "2026-10-05", description: "No class this week, enjoy the break." },
+    { id: "ap-6", track: "Mentorship Program", order: 5, type: "Workshop", title: "Development & Construction", date: "2026-10-12", time: "6:30 PM", location: "George Tower 0232", checkInCode: "DEVCON", checkInOpen: false },
+    { id: "ap-7", track: "Mentorship Program", order: 6, type: "Workshop", title: "Investments in CRE", date: "2026-10-19", time: "6:30 PM", location: "George Tower 0232", checkInCode: "INVEST", checkInOpen: false },
+    { id: "ap-8", track: "Mentorship Program", order: 7, type: "Case Study", title: "Case Study Overview / Submarket Research", date: "2026-10-26", time: "6:30 PM", location: "George Tower 0232", checkInCode: "CASE1", checkInOpen: false },
+    { id: "ap-9", track: "Mentorship Program", order: 8, type: "Workshop", title: "Underwriting and Excel Modeling", date: "2026-11-02", time: "6:30 PM", location: "George Tower 0232", checkInCode: "MODEL", checkInOpen: false },
+    { id: "ap-10", track: "Mentorship Program", order: 9, type: "Case Study", title: "Case Study Example", date: "2026-11-09", time: "6:30 PM", location: "George Tower 0232", checkInCode: "CASE2", checkInOpen: false },
+    { id: "ap-11", track: "Mentorship Program", order: 10, type: "Case Study", title: "Case Study Review Session", date: "2026-11-16", time: "6:30 PM", location: "George Tower 0232", checkInCode: "REVIEW", checkInOpen: false },
+    { id: "ap-12", track: "Mentorship Program", order: 11, type: "Case Study", title: "Presentations Day 1", date: "2026-11-23", time: "6:30 PM", location: "George Tower 0232", checkInCode: "PRES1", checkInOpen: false },
 
     // ---- Industry Events --------------------------------------------------
-    { id: "ie-1", track: "Industry Events", order: 0, type: "Event", title: "Kickoff Event", date: "2026-09-10", location: "Scheller Tower" },
-    { id: "ie-2", track: "Industry Events", order: 1, type: "Event", title: "Careers in RE", date: "2026-09-17", location: "Caddell" },
-    { id: "ie-3", track: "Industry Events", order: 2, type: "Event", title: "JOINT Private Equity Panel", date: "2026-09-24", location: "Biltmore" },
-    { id: "ie-4", track: "Industry Events", order: 3, type: "Event", title: "Development Panel", date: "2026-10-15", location: "Caddell" },
-    { id: "ie-5", track: "Industry Events", order: 4, type: "Event", title: "Capital Markets Panel", date: "2026-10-22", location: "Caddell" },
-    { id: "ie-6", track: "Industry Events", order: 5, type: "Event", title: "Site Tour", date: "2026-10-29", location: "Caddell" },
-    { id: "ie-7", track: "Industry Events", order: 6, type: "Event", title: "Affordable Housing Panel", date: "2026-11-05", location: "Caddell" },
-    { id: "ie-8", track: "Industry Events", order: 7, type: "Event", title: "Site Tour", date: "2026-11-12", location: "Caddell" },
-    { id: "ie-9", track: "Industry Events", order: 8, type: "Event", title: "Entrepreneurship Panel", date: "2026-11-19", location: "Caddell" },
+    { id: "ie-1", track: "Industry Events", order: 0, type: "Event", title: "Kickoff Event", date: "2026-09-10", location: "The Biltmore" },
+    { id: "ie-2", track: "Industry Events", order: 1, type: "Event", title: "Careers in RE", date: "2026-09-17", location: "George Tower 0220" },
+    { id: "ie-3", track: "Industry Events", order: 2, type: "Event", title: "JOINT Private Equity Panel", date: "2026-09-24", location: "George Tower 0220" },
+    { id: "ie-4", track: "Industry Events", order: 3, type: "Event", title: "Development Panel", date: "2026-10-15", location: "George Tower 0220" },
+    { id: "ie-5", track: "Industry Events", order: 4, type: "Event", title: "Affordable Housing Panel", date: "2026-10-22", location: "George Tower 0220" },
+    { id: "ie-6", track: "Industry Events", order: 5, type: "Event", title: "Site Tour", date: "2026-10-29" },
+    { id: "ie-7", track: "Industry Events", order: 6, type: "Event", title: "Capital Markets Panel", date: "2026-11-05", location: "George Tower 0220" },
+    { id: "ie-8", track: "Industry Events", order: 7, type: "Event", title: "Site Tour", date: "2026-11-12" },
+    { id: "ie-9", track: "Industry Events", order: 8, type: "Event", title: "Entrepreneurship Panel", date: "2026-11-19", location: "George Tower 0220" },
   ],
 
   checkIns: [
@@ -261,27 +259,19 @@ export const SEED: GtreState = {
 
   resources: [
     {
-      id: "res-1",
-      title: "Real Estate Finance, Week 1 Slides",
-      description: "Cap rates, NOI, valuation basics.",
-      url: "https://docs.google.com/presentation/d/example/edit",
+      id: "res-week1-slides",
+      title: "Week 1 Slides",
+      description: "Mentorship Program, Week 1.",
+      url: "/materials/week-1-slides.pdf",
       category: "Slides",
       createdAt: now,
     },
     {
-      id: "res-2",
-      title: "Multifamily Underwriting Starter Model",
-      description: "Excel template to build from.",
-      url: "https://docs.google.com/spreadsheets/d/example/edit",
-      category: "Tool",
-      createdAt: now,
-    },
-    {
-      id: "res-3",
-      title: "CoStar & Argus Access Instructions",
-      description: "How approved members log in.",
-      url: "https://drive.google.com/file/d/example/view",
-      category: "Document",
+      id: "res-week2-slides",
+      title: "Week 2 Slides",
+      description: "Mentorship Program, Week 2.",
+      url: "/materials/week-2-slides.pdf",
+      category: "Slides",
       createdAt: now,
     },
     // Case Study materials (grouped in the portal by title: Examples,
@@ -346,7 +336,7 @@ export const SEED: GtreState = {
 
   siteInfo: {
     meetingTime: "Mondays at 6:30 PM",
-    meetingLocation: "Scheller College of Business, Room 200",
+    meetingLocation: "George Tower 0232",
     contactEmail: "rjalali6@gatech.edu",
     analystProgramIntro:
       "The Mentorship Program is a semester-long, hands-on curriculum that takes members from real estate fundamentals to a full underwriting case study. Members build models, present to alumni judges, and earn a place in the vetted Analyst Rolodex.",

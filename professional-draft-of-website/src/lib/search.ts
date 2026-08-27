@@ -23,7 +23,7 @@ const PAGES: SearchItem[] = [
   { title: "Syllabus", description: "The Mentorship Program syllabus (view-only).", href: "/analyst-program", category: "Page", keywords: "syllabus document" },
   { title: "Calendar", description: "Meetings, the Mentorship Program, and industry events.", href: "/calendar", category: "Page", keywords: "schedule events dates calendar" },
   { title: "News", description: "The latest from the club, from our LinkedIn.", href: "/news", category: "Page", keywords: "news linkedin posts updates recaps" },
-  { title: "Opportunities", description: "Internships, co-ops, and full-time analyst roles.", href: "/opportunities", category: "Page", keywords: "jobs internships careers opportunities hiring recruiting analyst" },
+  { title: "Opportunities", description: "Internships, co-ops, and full-time analyst roles.", href: "/portal/opportunities", category: "Page", keywords: "jobs internships careers opportunities hiring recruiting analyst" },
   { title: "Alumni", description: "The alumni network and ways to give back.", href: "/alumni", category: "Page" },
   { title: "Leadership", description: "The student executive board.", href: "/leadership", category: "Page", keywords: "exec board officers president leadership team" },
   { title: "Advisory Board", description: "Industry leaders and active alumni who guide the club.", href: "/advisory-board", category: "Page", keywords: "advisory board alumni board advisors mentors" },
@@ -60,7 +60,7 @@ export const STATIC_INDEX: SearchItem[] = [
   ...OPPORTUNITIES.map((o) => ({
     title: o.title,
     description: `${o.company} · ${o.location}`,
-    href: "/opportunities",
+    href: "/portal/opportunities",
     category: "Opportunity",
     keywords: `${o.jobType} ${o.sector} jobs internships careers ${o.company}`,
   })),

@@ -20,7 +20,7 @@ const TABS = [
   { href: "/portal/check-in", label: "Check-In" },
   { href: "/portal/resources", label: "Materials" },
   { href: "/portal/case-study", label: "Case Study" },
-  { href: "/opportunities", label: "Opportunities" },
+  { href: "/portal/opportunities", label: "Opportunities" },
   { href: "/portal/forum", label: "Q&A" },
   { href: "/portal/profile", label: "Profile" },
 ];
