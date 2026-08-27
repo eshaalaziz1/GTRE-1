@@ -1,5 +1,4 @@
 import Link from "next/link";
-import PhotoSlot from "@/components/PhotoSlot";
 import SiteImage from "@/components/SiteImage";
 import SiteText from "@/components/SiteText";
 import Reveal from "@/components/Reveal";
@@ -135,7 +134,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 gap-7 mt-10">
             {ENGAGEMENT.map((e, ei) => (
               <Link key={e.title} href={e.href} className="group bg-white border border-border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
-                <PhotoSlot src={e.image ?? null} alt={e.title} ratio="aspect-[16/9]" className="rounded-none" imgClassName={e.imgClassName} />
+                <SiteImage slotKey={`home-engage-${ei}-image`} defaultSrc={e.image ?? ""} alt={e.title} ratio="aspect-[16/9]" rounded="rounded-none" imgClassName={e.imgClassName} />
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-navy group-hover:text-gold-hover transition-colors">
                     <SiteText slotKey={`home-engage-${ei}-title`}>{e.title}</SiteText>

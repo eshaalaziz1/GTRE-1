@@ -20,6 +20,7 @@ export default function SiteImage({
   defaultSrc,
   alt,
   ratio = "aspect-[3/2]",
+  rounded = "rounded-br-[2rem]",
   className = "",
   imgClassName = "",
 }: {
@@ -27,6 +28,7 @@ export default function SiteImage({
   defaultSrc: string;
   alt: string;
   ratio?: string;
+  rounded?: string;
   className?: string;
   imgClassName?: string;
 }) {
@@ -52,7 +54,7 @@ export default function SiteImage({
   }
 
   return (
-    <div className={`relative ${ratio} overflow-hidden rounded-br-[2rem] ${className}`}>
+    <div className={`relative ${ratio} overflow-hidden ${rounded} ${className}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt={alt} className={`absolute inset-0 w-full h-full object-cover ${imgClassName}`} />
 

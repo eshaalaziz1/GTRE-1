@@ -51,7 +51,7 @@ export default function AdvisoryBoardPage() {
               key={m.slug}
               className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-6 flex flex-col items-center text-center"
             >
-              <Avatar name={m.name} photo={m.photo} size={120} />
+              <Avatar name={m.name} photo={m.photo} size={120} slotKey={`board-${m.slug}`} />
               <h3 className="mt-4 text-[17px] font-bold text-navy">{m.name}</h3>
               <div className="text-[14px] italic text-secondary mt-1">{m.role}</div>
             </div>
@@ -88,7 +88,7 @@ export default function AdvisoryBoardPage() {
                 key={m.slug}
                 className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-6 flex flex-col items-center text-center"
               >
-                <Avatar name={m.name} photo={m.photo} size={120} />
+                <Avatar name={m.name} photo={m.photo} size={120} slotKey={`board-${m.slug}`} />
                 <h3 className="mt-4 text-[17px] font-bold text-navy">{m.name}</h3>
                 <div className="text-[14px] italic text-secondary mt-1">{m.role}</div>
                 {m.company && <div className="text-[13px] text-secondary mt-0.5">{m.company}</div>}
