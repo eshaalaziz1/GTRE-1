@@ -16,7 +16,7 @@ export default function ContactPage() {
           <a href="mailto:rjalali6@gatech.edu" className="text-gold-hover hover:text-navy font-medium">
             rjalali6@gatech.edu
           </a>
-          . We meet Mondays at 6:30 PM in the Scheller College of Business.
+          . We meet Mondays at 6:30 PM in George Tower 0232.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -29,7 +29,7 @@ export default function ContactPage() {
           <div className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-6">
             <h2 className="font-bold text-navy"><SiteText slotKey="contact-meetings-label">Meetings</SiteText></h2>
             <p className="text-[15px] text-secondary"><SiteText slotKey="contact-meeting-time">Mondays at 6:30 PM</SiteText></p>
-            <p className="text-[15px] text-secondary"><SiteText slotKey="contact-meeting-place">Scheller College of Business</SiteText></p>
+            <p className="text-[15px] text-secondary"><SiteText slotKey="contact-meeting-place">George Tower 0232</SiteText></p>
           </div>
           <div className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-6">
             <h2 className="font-bold text-navy"><SiteText slotKey="contact-leadership-label">Leadership</SiteText></h2>
