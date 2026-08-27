@@ -74,7 +74,7 @@ export default function AlumniPage() {
               <SiteText slotKey="alumni-enter-rolodex-cta">Enter the Analyst Rolodex →</SiteText>
             </Link>
             <Link
-              href="/opportunities"
+              href="/portal/opportunities"
               className="px-7 py-3.5 rounded-md border border-white/40 text-white text-sm font-semibold text-center hover:bg-white/10 transition-colors"
             >
               <SiteText slotKey="alumni-post-opportunity-cta">Post an Opportunity</SiteText>

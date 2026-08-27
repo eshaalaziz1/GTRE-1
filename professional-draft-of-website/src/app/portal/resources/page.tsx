@@ -5,7 +5,8 @@ import { useGtre } from "@/lib/store/GtreStore";
 import { Badge, EmptyState } from "@/components/ui";
 import type { Resource } from "@/lib/store/types";
 
-const CATEGORY_ORDER: Resource["category"][] = ["Slides", "Tool", "Document", "Case Study", "Link"];
+// Case Study materials live in their own portal tab, so they are excluded here.
+const CATEGORY_ORDER: Resource["category"][] = ["Slides", "Tool", "Document", "Link"];
 
 export default function ResourcesPage() {
   const { state } = useGtre();
@@ -20,11 +21,12 @@ export default function ResourcesPage() {
       <div>
         <h2 className="display text-3xl text-navy">Materials &amp; Documents</h2>
         <p className="text-secondary mt-1">
-          Slides, tools, templates, case-study packets, and important links. Managed by the exec team.
+          Slides, tools, templates, and important links. Managed by the exec team.
+          Case study materials are in the Case Study tab.
         </p>
       </div>
 
-      {state.resources.length === 0 ? (
+      {byCat.length === 0 ? (
         <EmptyState title="No materials posted yet." body="Check back once the exec team adds resources." />
       ) : (
         byCat.map((group) => (

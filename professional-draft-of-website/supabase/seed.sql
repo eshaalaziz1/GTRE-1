@@ -66,6 +66,17 @@ select * from (values
 ) as v(title, description, url, category)
 where not exists (select 1 from public.resources where category = 'Case Study');
 
+-- Mentorship Program slides (Materials). Files served from /public/materials.
+-- Guarded on the URLs so re-running won't duplicate them.
+insert into public.resources (title, description, url, category)
+select * from (values
+  ('Week 1 Slides', 'Mentorship Program, Week 1.', '/materials/week-1-slides.pdf', 'Slides'),
+  ('Week 2 Slides', 'Mentorship Program, Week 2.', '/materials/week-2-slides.pdf', 'Slides')
+) as v(title, description, url, category)
+where not exists (
+  select 1 from public.resources where url in ('/materials/week-1-slides.pdf', '/materials/week-2-slides.pdf')
+);
+
 -- Ensure eaziz3 is admin if that account has already signed up.
 update public.profiles set role = 'admin', status = 'approved'
 where lower(email) = 'eaziz3@gatech.edu';
