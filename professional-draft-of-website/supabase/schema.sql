@@ -251,15 +251,21 @@ alter table public.site_images   enable row level security;
 alter table public.site_text     enable row level security;
 
 -- Helper: is the current user an approved admin?
-create or replace function public.is_admin() returns boolean language sql stable as $$
+-- SECURITY DEFINER + fixed search_path so the inner read of public.profiles runs
+-- as the function owner and does NOT re-trigger the profiles RLS policies (which
+-- reference this function) — otherwise Postgres raises infinite recursion and the
+-- profiles query fails, logging every signed-in member back out.
+create or replace function public.is_admin() returns boolean
+language sql stable security definer set search_path = public as $$
   select exists (
     select 1 from public.profiles
     where id = auth.uid() and role = 'admin' and status = 'approved'
   );
 $$;
 
--- Helper: is the current user approved (any role)?
-create or replace function public.is_approved() returns boolean language sql stable as $$
+-- Helper: is the current user approved (any role)? Same recursion-safety note.
+create or replace function public.is_approved() returns boolean
+language sql stable security definer set search_path = public as $$
   select exists (
     select 1 from public.profiles where id = auth.uid() and status = 'approved'
   );
