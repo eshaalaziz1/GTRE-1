@@ -12,6 +12,5 @@ export const MAIN_NAV: { label: string; href: string }[] = [
 
 // Top utility links (Row 1, right side).
 export const UTILITY_NAV: { label: string; href: string }[] = [
-  { label: "Companies & Recruiters", href: "/rolodex" },
   { label: "Analyst Rolodex", href: "/rolodex" },
 ];
