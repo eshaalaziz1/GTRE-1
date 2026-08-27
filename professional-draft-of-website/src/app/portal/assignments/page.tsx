@@ -23,7 +23,7 @@ export default function AssignmentsPage() {
       <div>
         <h2 className="display text-3xl text-navy">Assignments</h2>
         <p className="text-secondary mt-1">
-          Analyst Program work. Submit a link, typed response, or file reference before the due date.
+          Mentorship Program work. Submit a link, typed response, or file reference before the due date.
         </p>
       </div>
 

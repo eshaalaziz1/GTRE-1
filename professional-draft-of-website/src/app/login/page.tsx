@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useGtre } from "@/lib/store/GtreStore";
 import { Button, Field, Notice } from "@/components/ui";
+import LinkedInButton from "@/components/LinkedInButton";
 
 /**
  * Member / industry / admin sign-in. No Google sign-in (removed per direction).
- * Approved accounts only — pending or rejected accounts get a clear message.
+ * Approved accounts only, pending or rejected accounts get a clear message.
  */
 export default function LoginPage() {
   const router = useRouter();
@@ -17,10 +18,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const res = login(email, password);
+    const res = await login(email, password);
     if (!res.ok) {
       setError(res.error);
       return;
@@ -44,12 +45,12 @@ export default function LoginPage() {
           <h1 className="display text-5xl text-white">Sign in</h1>
           <p className="mt-5 text-lg text-white/80 max-w-md leading-relaxed">
             The member portal is your hub for club info, assignments, check-ins,
-            the Analyst Program, announcements, and documents.
+            the Mentorship Program, announcements, and documents.
           </p>
           <ul className="mt-8 space-y-2 text-white/70 text-sm">
             <li>• Students sign in with a Georgia Tech email.</li>
             <li>• Industry professionals sign in with their approved account.</li>
-            <li>• New here? Request access — an officer approves every account.</li>
+            <li>• New here? Request access, an officer approves every account.</li>
           </ul>
         </div>
 
@@ -79,6 +80,9 @@ export default function LoginPage() {
             </Button>
           </form>
 
+          {/* Appears only when LinkedIn auth is configured (see SETUP.md). */}
+          <LinkedInButton redirectTo="/portal" />
+
           <div className="mt-6 pt-6 border-t border-border text-center">
             <p className="text-sm text-secondary">
               Don&apos;t have an account?{" "}
@@ -88,12 +92,14 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Prototype helper — remove once Supabase auth is wired. */}
-          <div className="mt-5 rounded-lg bg-surface border border-border p-3 text-[12px] text-secondary leading-relaxed">
-            <span className="font-semibold text-navy">Demo logins:</span>{" "}
-            admin@gatech.edu / admin123 · member@gatech.edu / member123 ·
-            recruiter@firm.com / recruiter123
-          </div>
+          {/* Prototype helper, only shown while the localStorage mock is active. */}
+          {(process.env.NEXT_PUBLIC_DATA_BACKEND ?? "").toLowerCase() !== "supabase" && (
+            <div className="mt-5 rounded-lg bg-surface border border-border p-3 text-[12px] text-secondary leading-relaxed">
+              <span className="font-semibold text-navy">Demo logins:</span>{" "}
+              admin@gatech.edu / admin123 · member@gatech.edu / member123 ·
+              recruiter@firm.com / recruiter123
+            </div>
+          )}
         </div>
       </div>
     </section>

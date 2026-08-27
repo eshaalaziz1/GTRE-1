@@ -17,7 +17,7 @@ export type AccountStatus = "pending" | "approved" | "rejected";
 /**
  * A person with a login. Students must use a Georgia Tech email; industry
  * professionals must supply a LinkedIn URL. `passwordHash` is a stand-in in the
- * mock adapter (plain text, never do this in production) — Supabase Auth owns
+ * mock adapter (plain text, never do this in production), Supabase Auth owns
  * real credentials, so this field disappears once the backend is wired.
  */
 export type Account = {
@@ -46,14 +46,14 @@ export type Announcement = {
   id: string;
   title: string;
   body: string;
-  category: "General" | "Event" | "Meeting" | "Deadline" | "Analyst Program";
+  category: "General" | "Event" | "Meeting" | "Deadline" | "Mentorship Program";
   pinned: boolean;
   authorName: string;
   createdAt: string;
 };
 
 /** A calendar entry: meeting, event, or deadline. Feeds the calendar + check-in. */
-export type EventTrack = "Analyst Program" | "Industry Events" | "General";
+export type EventTrack = "Mentorship Program" | "Industry Events" | "General";
 
 export type ClubEvent = {
   id: string;
@@ -67,7 +67,7 @@ export type ClubEvent = {
   description?: string;
   // Manual display order within a track (lower = earlier). Admins reorder with
   // up/down controls; new events append to the end. The calendar grid still
-  // sorts by date — order only drives the schedule list view.
+  // sorts by date, order only drives the schedule list view.
   order: number;
   // Check-in: members enter this code during the event to record attendance.
   checkInCode?: string;
@@ -180,6 +180,13 @@ export type GtreState = {
   meetingNotes: MeetingNote[];
   resources: Resource[];
   siteInfo: SiteInfo;
+  // Admin-swappable images by slot key (see src/lib/images.ts). A slot maps to an
+  // uploaded image URL (Supabase Storage) or a data URL (mock); missing slots
+  // fall back to the bundled default.
+  siteImages: Record<string, string>;
+  // Admin-editable page copy by slot key (see src/lib/siteText.ts). Missing slots
+  // fall back to the bundled default.
+  siteText: Record<string, string>;
   // id of the currently signed-in account, or null
   currentAccountId: string | null;
 };

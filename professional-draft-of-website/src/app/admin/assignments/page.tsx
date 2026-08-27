@@ -80,8 +80,11 @@ export default function AdminAssignments() {
 function AssignmentAdminRow({ assignment: a }: { assignment: Assignment }) {
   const { state, updateAssignment, deleteAssignment } = useGtre();
   const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
   const subs = state.submissions.filter((s) => s.assignmentId === a.id);
   const ungraded = subs.filter((s) => s.grade == null).length;
+
+  if (editing) return <AssignmentEditForm assignment={a} onDone={() => setEditing(false)} />;
 
   return (
     <Card>
@@ -98,6 +101,9 @@ function AssignmentAdminRow({ assignment: a }: { assignment: Assignment }) {
           <p className="text-[14px] text-secondary mt-1">{a.description}</p>
         </div>
         <div className="flex flex-col items-end gap-2 text-[13px]">
+          <button onClick={() => setEditing(true)} className="font-semibold text-gold-hover hover:text-navy">
+            Edit
+          </button>
           <button
             onClick={() => updateAssignment(a.id, { published: !a.published })}
             className="font-semibold text-secondary hover:text-navy"
@@ -123,6 +129,55 @@ function AssignmentAdminRow({ assignment: a }: { assignment: Assignment }) {
           </div>
         )}
       </div>
+    </Card>
+  );
+}
+
+function AssignmentEditForm({ assignment: a, onDone }: { assignment: Assignment; onDone: () => void }) {
+  const { updateAssignment } = useGtre();
+  const [form, setForm] = useState({
+    title: a.title,
+    description: a.description,
+    category: a.category,
+    week: a.week != null ? String(a.week) : "",
+    dueDate: a.dueDate,
+    points: String(a.points),
+  });
+  const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
+
+  function save(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.title.trim() || !form.dueDate) return;
+    updateAssignment(a.id, {
+      title: form.title,
+      description: form.description,
+      category: form.category,
+      week: form.week ? Number(form.week) : undefined,
+      dueDate: form.dueDate,
+      points: Number(form.points) || 0,
+    });
+    onDone();
+  }
+
+  return (
+    <Card>
+      <form onSubmit={save} className="space-y-4">
+        <div className="text-[13px] font-semibold text-navy">Edit assignment</div>
+        <Field label="Title" value={form.title} onChange={(v) => set("title", v)} required />
+        <TextArea label="Description" value={form.description} onChange={(v) => set("description", v)} rows={3} />
+        <div className="grid sm:grid-cols-4 gap-3">
+          <Select label="Type" value={form.category} onChange={(v) => set("category", v as Assignment["category"])} options={CATEGORIES.map((c) => ({ value: c, label: c }))} />
+          <Field label="Week" type="number" value={form.week} onChange={(v) => set("week", v)} placeholder="1" />
+          <Field label="Due date" type="date" value={form.dueDate} onChange={(v) => set("dueDate", v)} required />
+          <Field label="Points" type="number" value={form.points} onChange={(v) => set("points", v)} />
+        </div>
+        <div className="flex gap-2">
+          <Button type="submit">Save changes</Button>
+          <button type="button" onClick={onDone} className="px-4 py-2 text-[13px] font-semibold text-secondary hover:text-navy">
+            Cancel
+          </button>
+        </div>
+      </form>
     </Card>
   );
 }

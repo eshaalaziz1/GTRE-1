@@ -6,11 +6,11 @@ import { Badge, Button, Card, ConfirmDelete, EmptyState, Field, Notice, Select, 
 import type { ClubEvent, EventTrack } from "@/lib/store/types";
 
 const TYPES: ClubEvent["type"][] = ["Meeting", "Event", "Workshop", "Deadline", "Social", "Case Study"];
-const TRACKS: EventTrack[] = ["Analyst Program", "Industry Events", "General"];
+const TRACKS: EventTrack[] = ["Mentorship Program", "Industry Events", "General"];
 
 export default function AdminEvents() {
   const { state, addEvent } = useGtre();
-  const [track, setTrack] = useState<EventTrack>("Analyst Program");
+  const [track, setTrack] = useState<EventTrack>("Mentorship Program");
   const [form, setForm] = useState({
     title: "",
     type: "Meeting" as ClubEvent["type"],
@@ -78,7 +78,7 @@ export default function AdminEvents() {
 
 function TrackedEventList() {
   const { state } = useGtre();
-  const [track, setTrack] = useState<EventTrack>("Analyst Program");
+  const [track, setTrack] = useState<EventTrack>("Mentorship Program");
 
   const counts = Object.fromEntries(TRACKS.map((t) => [t, state.events.filter((e) => e.track === t).length])) as Record<EventTrack, number>;
   const events = state.events.filter((e) => e.track === track).sort((a, b) => a.order - b.order || a.date.localeCompare(b.date));

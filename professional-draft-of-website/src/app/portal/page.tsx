@@ -5,7 +5,7 @@ import { useGtre } from "@/lib/store/GtreStore";
 import { Badge, Card } from "@/components/ui";
 
 // Portal home: a dashboard of announcements, quick stats, upcoming dates, and
-// club info — the member's at-a-glance view.
+// club info, the member's at-a-glance view.
 export default function PortalHome() {
   const { state, currentAccount } = useGtre();
   const me = currentAccount!;
@@ -50,7 +50,7 @@ export default function PortalHome() {
               </div>
               <h3 className="text-lg font-semibold text-navy">{a.title}</h3>
               <p className="text-[15px] text-secondary mt-1 leading-relaxed">{a.body}</p>
-              <div className="text-[12px] text-secondary mt-2">— {a.authorName}</div>
+              <div className="text-[12px] text-secondary mt-2">by {a.authorName}</div>
             </Card>
           ))}
         </div>
@@ -105,7 +105,7 @@ export default function PortalHome() {
             </dl>
             <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
               <Link href="/analyst-program" className="text-[13px] font-semibold text-gold-hover hover:text-navy">
-                Analyst Program →
+                Mentorship Program →
               </Link>
               <Link href="/portal/resources" className="text-[13px] font-semibold text-gold-hover hover:text-navy ml-4">
                 Documents & links →

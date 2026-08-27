@@ -54,7 +54,7 @@ export default function ResourcesPage() {
 
       <div className="pt-2">
         <Link href="/analyst-program" className="text-[14px] font-semibold text-gold-hover hover:text-navy">
-          → Analyst Program overview, curriculum &amp; syllabus
+          → Mentorship Program overview, curriculum &amp; syllabus
         </Link>
       </div>
     </div>

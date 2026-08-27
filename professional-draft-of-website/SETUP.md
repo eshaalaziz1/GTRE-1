@@ -1,10 +1,19 @@
 # GTRE Website — Portals, Auth & Backend Setup
 
-This app ships as a **fully working prototype with no backend**: accounts,
-approvals, assignments, grading, check-ins, Q&A, the calendar, and site-info
-edits all run against a browser `localStorage` store (`src/lib/store/`). That
-lets you click through every screen today. To go live, you swap that one store
-for Supabase — no page components change.
+This app runs on **two interchangeable data adapters**, selected at runtime by
+`NEXT_PUBLIC_DATA_BACKEND` (see `src/lib/store/`):
+
+- **`mock`** (default) — a browser `localStorage` store. Accounts, approvals,
+  assignments, grading, check-ins, Q&A, the calendar, and site-info edits all
+  work with no backend, so you can click through every screen. Data lives in one
+  browser and is not shared between visitors.
+- **`supabase`** — the real backend: Supabase Auth (with email verification) for
+  sign-up/sign-in, and Postgres tables (guarded by Row-Level Security) for
+  everything else. Site-info and content edits persist for **all** visitors.
+
+Both adapters implement the same `useGtre()` contract (`src/lib/store/context.tsx`),
+so **no page components change** when you flip the backend. The section below is
+everything needed to turn Supabase on.
 
 ## What's built
 
@@ -37,31 +46,115 @@ Reset demo data any time in **Admin → Site Info → Reset**.
 
 ## Going live with Supabase
 
-1. **Create a Supabase project** (free tier is fine). In
-   **Authentication → Providers**, enable **Email** and disable Google/all OAuth.
-2. **Run the schema**: paste `supabase/schema.sql` into the SQL editor. It
-   creates `profiles` (extends `auth.users`) plus all content tables and a
-   starter set of Row-Level-Security policies.
-3. **Add env vars**: copy `.env.example` → `.env.local` and fill in your
-   project URL + keys. Set `NEXT_PUBLIC_DATA_BACKEND=supabase`.
-4. **Install the client**: `npm i @supabase/supabase-js @supabase/ssr`.
-5. **Implement the Supabase adapter.** The whole app talks to the data layer
-   through `useGtre()` (`src/lib/store/GtreStore.tsx`). Create a sibling
-   implementation that fulfills the same interface against Supabase:
-   - `login` / `signUpStudent` / `signUpIndustry` → `supabase.auth` +
-     an `insert` into `profiles` (status `pending`).
-   - `approveAccount` / `rejectAccount` / `setRole` / etc. → `update profiles`
-     (admin, via a server action using the service-role key).
-   - announcements / events / assignments / submissions / questions / notes /
-     resources / site_info → straight table reads/writes.
-   Keep the mock adapter for local dev; select the adapter with
-   `NEXT_PUBLIC_DATA_BACKEND`.
-6. **Server-side gating.** `RequireAuth` is client-side (good UX, not a security
-   boundary). Rely on **RLS** so protected rows never reach an unauthorized
-   client, and put admin mutations (approvals, grading) in **server actions**
-   that check the caller is an approved admin.
-7. **Approval emails (optional).** On approve, send the "you're approved" email
-   via Supabase Edge Functions / Resend, or manually to start.
+The Supabase adapter is **already built** (`src/lib/store/SupabaseStore.tsx` +
+`src/lib/supabase/client.ts`). Turning it on is configuration, not coding:
+
+1. **Create a Supabase project** (free tier is fine).
+2. **Run the schema.** In the SQL editor, paste and run `supabase/schema.sql`.
+   It creates `profiles` (extends `auth.users`), every content table, the
+   sign-up trigger that auto-creates a pending profile, and the RLS policies.
+   The script is **idempotent** — safe to run more than once, so if an earlier
+   run half-applied, just run it again and it converges.
+3. **Enable email verification (as a 6-digit code).** In
+   **Authentication → Providers → Email**, enable **Confirm email**; disable
+   Google/all other OAuth. Then in **Authentication → Emails → Templates →
+   Confirm signup**, replace the magic-link body with the **code** token so
+   members type a code on the site instead of clicking a link — more reliable for
+   `@gatech.edu` (Outlook/Defender link-scanners can consume magic links):
+   ```html
+   <h2>Confirm your email</h2>
+   <p>Your Georgia Tech Real Estate Club verification code is:</p>
+   <p style="font-size:24px;font-weight:bold;letter-spacing:4px">{{ .Token }}</p>
+   <p>Enter it on the sign-up page to confirm your address.</p>
+   ```
+   This is what stops someone signing up with an email that isn't theirs — the
+   account can't sign in until the real owner enters the code sent to that inbox.
+4. **Set redirect URLs.** In **Authentication → URL Configuration**, set the
+   **Site URL** to your deployed origin (e.g. `https://gtre.org`) and add it
+   (plus `http://localhost:3000` for local dev) to **Redirect URLs**. Sign-up
+   confirmation links send the user to `/login`.
+5. **Add env vars.** Copy `.env.example` → `.env.local` and fill in the
+   **Project URL** and **anon key** (Project Settings → API). Set
+   `NEXT_PUBLIC_DATA_BACKEND=supabase`. On Vercel, add the same three variables
+   in Project → Settings → Environment Variables and redeploy.
+   - `@supabase/supabase-js` and `@supabase/ssr` are already installed.
+   - **No service-role key is required** for the current features — admin
+     actions run through the signed-in admin's session under the RLS policies.
+6. **Make the first admin.** Sign up normally, click the email link to confirm,
+   then in the SQL editor promote yourself (there's no admin to approve the
+   first admin):
+   ```sql
+   update public.profiles
+   set role = 'admin', status = 'approved'
+   where email = 'eaziz3@gatech.edu';
+   ```
+   From then on you can approve/manage everyone else in **Admin → Members**.
+
+## Sending verification emails (free, via Gmail SMTP)
+
+Supabase's built-in email service works but is **rate-limited to a few messages
+per hour** — fine for testing, not for a sign-up rush (it silently stops sending
+once you hit the cap). To send verification emails to **anyone**, for free,
+point Supabase at the club Gmail (`gtreclub@gmail.com`). No domain required.
+
+1. **On the Gmail account:** turn on **2-Step Verification** (Google Account →
+   Security), then create an **App Password** (Security → App passwords →
+   "Mail"). Google shows a 16-character password — copy it.
+2. **In Supabase → Authentication → Emails → SMTP Settings**, enable custom SMTP:
+
+   | Field | Value |
+   |---|---|
+   | Sender email | `gtreclub@gmail.com` |
+   | Sender name | `Georgia Tech Real Estate Club` |
+   | Host | `smtp.gmail.com` |
+   | Port | `465` |
+   | Username | `gtreclub@gmail.com` |
+   | Password | the 16-char App Password (not the Gmail login password) |
+
+3. **In Supabase → Authentication → Rate Limits**, raise **"Rate limit for
+   sending emails"** (e.g. 100–200/hr) so testing and real sign-ups don't stall.
+
+Gmail sends ~500 emails/day on a free account — plenty for the club. Later, if
+you want a branded `verify@yourdomain.org` sender and higher volume, buy a domain
+and switch to Resend/custom SMTP (the app needs no changes — it's all dashboard).
+
+### Security notes
+- **RLS is the security boundary.** `RequireAuth` is client-side (good UX only).
+  The policies in `schema.sql` ensure protected rows never reach an unauthorized
+  client. Announcements, events, and resources are intentionally **public read**
+  (the public `/news`, `/calendar`, and `/search` pages use them); assignments,
+  submissions, check-ins, questions, meeting notes, and profiles are gated.
+- **Deleting an account** removes its `profiles` row via the admin RLS policy.
+  Fully deleting the underlying `auth.users` record (rare) needs a service-role
+  server action — add the `SUPABASE_SERVICE_ROLE_KEY` env var then.
+- **Approval emails (optional).** On approve, send a "you're approved" email via
+  Supabase Edge Functions / Resend, or notify members manually to start.
+
+## LinkedIn login (optional — needs a LinkedIn app)
+
+The code is scaffolded: a **"Continue with LinkedIn"** button appears on the
+login page **only when** `NEXT_PUBLIC_LINKEDIN_AUTH=on`, so it stays hidden until
+you've wired the provider (no broken button on the live site). To enable it:
+
+1. **Create a LinkedIn app** at [linkedin.com/developers](https://www.linkedin.com/developers/)
+   → add the **"Sign In with LinkedIn using OpenID Connect"** product.
+2. In the app's **Auth** tab, add the redirect URL Supabase shows for LinkedIn
+   (Supabase → Authentication → Providers → LinkedIn (OIDC)), typically
+   `https://<your-project>.supabase.co/auth/v1/callback`. Copy the app's
+   **Client ID** and **Client Secret**.
+3. In **Supabase → Authentication → Providers → LinkedIn (OIDC)**, enable it and
+   paste the Client ID/Secret.
+4. Set `NEXT_PUBLIC_LINKEDIN_AUTH=on` (env var, like the others) and redeploy.
+
+**How it behaves / a caveat worth knowing:** LinkedIn returns whatever email the
+person uses on LinkedIn — which usually **isn't** `@gatech.edu`. So the signup
+trigger files LinkedIn sign-ups as **industry** by default (a non-GT email can't
+be a `student` — that's enforced). LinkedIn login therefore fits **industry /
+alumni** sign-in and profile auto-fill best; **students should still sign up with
+their `@gatech.edu` email** to get the student role and Rolodex placement. If you
+later want students to *link* LinkedIn to auto-populate their profile/Rolodex
+(name, headline, photo, profile URL), that's a profile-linking flow we can add on
+top — different from using LinkedIn as their primary login.
 
 ## Existing accounts (Wix / old Vercel portal)
 Password hashes can't be securely migrated. **Start fresh**: seed known members

@@ -2,13 +2,23 @@
 
 import { useMemo, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
+import RequireAuth from "@/components/RequireAuth";
+import SiteText from "@/components/SiteText";
 import { Badge } from "@/components/ui";
 import { OPPORTUNITIES, type Opportunity } from "@/lib/opportunities";
 
-// Public job & internship board. Members browse real analyst, development,
-// brokerage, and PE roles posted by career services and alumni. Sector filter
-// plus a "posted by alumni" toggle; each card expands to the full description.
+// Members-only job & internship board. Signed-in members browse real analyst,
+// development, brokerage, and PE roles posted by career services and alumni.
+// Sector filter plus a "posted by alumni" toggle; each card expands to details.
 export default function OpportunitiesPage() {
+  return (
+    <RequireAuth>
+      <OpportunitiesBoard />
+    </RequireAuth>
+  );
+}
+
+function OpportunitiesBoard() {
   const [sector, setSector] = useState("All");
   const [alumniOnly, setAlumniOnly] = useState(false);
 
@@ -31,12 +41,9 @@ export default function OpportunitiesPage() {
 
       {/* Intro */}
       <section className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-4 pb-8">
-        <h1 className="display text-4xl lg:text-5xl text-navy mb-4">Opportunities</h1>
+        <h1 className="display text-4xl lg:text-5xl text-navy mb-4"><SiteText slotKey="opportunities-title">Opportunities</SiteText></h1>
         <p className="text-[16px] text-secondary leading-relaxed max-w-3xl">
-          Internships, co-ops, and full-time analyst roles in commercial real
-          estate — posted by our career services team and by alumni across
-          acquisitions, development, capital markets, and beyond. Many of these
-          firms recruit our members directly.
+          <SiteText slotKey="opportunities-intro">Internships, co-ops, and full-time analyst roles in commercial real estate, posted by our career services team and by alumni across acquisitions, development, capital markets, and beyond. Many of these firms recruit our members directly.</SiteText>
         </p>
         <div className="border-t border-gold mt-7" />
       </section>

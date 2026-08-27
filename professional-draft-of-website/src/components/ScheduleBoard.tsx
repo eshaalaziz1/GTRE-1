@@ -5,13 +5,13 @@ import { Badge } from "@/components/ui";
 import type { ClubEvent, EventTrack } from "@/lib/store/types";
 
 /**
- * The club's schedule shown as two side-by-side tracks (Analyst Program +
+ * The club's schedule shown as two side-by-side tracks (Mentorship Program +
  * Industry Events), mirroring the exec team's planning spreadsheet. Rows are
  * ordered by each event's manual `order` (admins reorder in Admin → Events).
  * Read-only display; management lives in the admin portal.
  */
 const TRACKS: { key: EventTrack; label: string }[] = [
-  { key: "Analyst Program", label: "Analyst Program" },
+  { key: "Mentorship Program", label: "Mentorship Program" },
   { key: "Industry Events", label: "Industry Events" },
 ];
 

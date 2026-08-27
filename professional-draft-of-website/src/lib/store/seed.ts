@@ -6,10 +6,10 @@ import type { GtreState } from "./types";
 // initial migration / SQL fixtures instead of localStorage.
 //
 // Demo logins (email / password):
-//   admin@gatech.edu   / admin123     (admin — full access)
-//   member@gatech.edu  / member123    (student — approved)
-//   recruiter@firm.com / recruiter123 (industry — approved)
-//   pending@gatech.edu / pending123   (student — awaiting approval, cannot log in)
+//   admin@gatech.edu   / admin123     (admin, full access)
+//   member@gatech.edu  / member123    (student, approved)
+//   recruiter@firm.com / recruiter123 (industry, approved)
+//   pending@gatech.edu / pending123   (student, awaiting approval, cannot log in)
 // ---------------------------------------------------------------------------
 
 const now = "2026-07-01T12:00:00.000Z";
@@ -17,6 +17,19 @@ const now = "2026-07-01T12:00:00.000Z";
 export const SEED: GtreState = {
   currentAccountId: null,
   accounts: [
+    {
+      id: "acc-eaziz3",
+      role: "admin",
+      status: "approved",
+      name: "Eshaal Aziz",
+      email: "eaziz3@gatech.edu",
+      passwordHash: "gtre2026",
+      title: "Director of IT",
+      gradYear: 2028,
+      major: "Computer Science",
+      createdAt: now,
+      approvedAt: now,
+    },
     {
       id: "acc-admin",
       role: "admin",
@@ -96,17 +109,17 @@ export const SEED: GtreState = {
   announcements: [
     {
       id: "ann-1",
-      title: "Fall Analyst Program applications are open",
-      body: "Applications for the Fall 2026 Analyst Program cohort are now open. Submit your resume through the portal by August 25. The program runs weekly and covers underwriting, development, and capital markets.",
-      category: "Analyst Program",
+      title: "Fall Mentorship Program applications are open",
+      body: "Applications for the Fall 2026 Mentorship Program cohort are now open. Submit your resume through the portal by August 25. The program runs weekly and covers underwriting, development, and capital markets.",
+      category: "Mentorship Program",
       pinned: true,
       authorName: "Avery Mitchell",
       createdAt: "2026-07-01T15:00:00.000Z",
     },
     {
       id: "ann-2",
-      title: "Kickoff meeting — Thursday 6 PM",
-      body: "Our first general meeting of the semester is this Thursday at 6:00 PM in Scheller 200. Pizza provided. Check in with the meeting code to log attendance.",
+      title: "Kickoff meeting, Monday 6:30 PM",
+      body: "Our first general meeting of the semester is this Monday at 6:30 PM in Scheller 200. Pizza provided. Check in with the meeting code to log attendance.",
       category: "Meeting",
       pinned: false,
       authorName: "Maya Patel",
@@ -124,24 +137,24 @@ export const SEED: GtreState = {
   ],
 
   // The real 2026 GTRE schedule, split into the two tracks the club runs:
-  // the weekly Analyst Program and the Industry Events series. Times default to
-  // 6:00 PM for Analyst Program meetings; adjust in Admin → Events.
+  // the weekly Mentorship Program and the Industry Events series. Times default to
+  // 6:30 PM for Mentorship Program meetings; adjust in Admin → Events.
   events: [
-    // ---- Analyst Program (weekly, Caddell) --------------------------------
-    { id: "ap-1", track: "Analyst Program", order: 0, type: "Meeting", title: "Info Session", date: "2026-08-31", time: "6:00 PM", location: "Caddell", checkInCode: "INFO26", checkInOpen: false },
-    { id: "ap-2", track: "Analyst Program", order: 1, type: "Meeting", title: "Intro and CRE Overview", date: "2026-09-14", time: "6:00 PM", location: "Caddell", checkInCode: "INTRO", checkInOpen: false },
-    { id: "ap-3", track: "Analyst Program", order: 2, type: "Workshop", title: "Capital Markets & Financing", date: "2026-09-21", time: "6:00 PM", location: "Caddell", checkInCode: "CAPMKT", checkInOpen: false },
-    { id: "ap-4", track: "Analyst Program", order: 3, type: "Event", title: "Recruitment Event - Peachtree", date: "2026-09-28", time: "6:00 PM", location: "Caddell", checkInCode: "RECRUIT", checkInOpen: false },
-    { id: "ap-5", track: "Analyst Program", order: 4, type: "Social", title: "Fall Break — No Meeting", date: "2026-10-05", location: "Caddell", description: "No class this week — enjoy the break." },
-    { id: "ap-6", track: "Analyst Program", order: 5, type: "Workshop", title: "Development & Construction", date: "2026-10-12", time: "6:00 PM", location: "Caddell", checkInCode: "DEVCON", checkInOpen: false },
-    { id: "ap-7", track: "Analyst Program", order: 6, type: "Workshop", title: "Investments in CRE", date: "2026-10-19", time: "6:00 PM", location: "Caddell", checkInCode: "INVEST", checkInOpen: false },
-    { id: "ap-8", track: "Analyst Program", order: 7, type: "Case Study", title: "Case Study Overview / Submarket Research (Sandy Paul)", date: "2026-10-26", time: "6:00 PM", location: "Caddell", checkInCode: "CASE1", checkInOpen: false },
-    { id: "ap-9", track: "Analyst Program", order: 8, type: "Workshop", title: "Underwriting and Excel Modeling", date: "2026-11-02", time: "6:00 PM", location: "Caddell", checkInCode: "MODEL", checkInOpen: false },
-    { id: "ap-10", track: "Analyst Program", order: 9, type: "Case Study", title: "Case Study Example", date: "2026-11-09", time: "6:00 PM", location: "Caddell", checkInCode: "CHECKIN", checkInOpen: true },
-    { id: "ap-11", track: "Analyst Program", order: 10, type: "Case Study", title: "Case Study Practice", date: "2026-11-16", time: "6:00 PM", location: "Caddell", checkInCode: "PRACTICE", checkInOpen: false },
-    { id: "ap-12", track: "Analyst Program", order: 11, type: "Case Study", title: "Presentations Day 1", date: "2026-11-23", time: "6:00 PM", location: "Caddell", checkInCode: "PRES1", checkInOpen: false },
-    { id: "ap-13", track: "Analyst Program", order: 12, type: "Social", title: "Break", date: "2026-11-30", location: "Caddell", description: "No class this week — enjoy the break." },
-    { id: "ap-14", track: "Analyst Program", order: 13, type: "Case Study", title: "Presentations Day 2", date: "2026-12-07", time: "6:00 PM", location: "Caddell", checkInCode: "PRES2", checkInOpen: false },
+    // ---- Mentorship Program (weekly, Caddell) --------------------------------
+    { id: "ap-1", track: "Mentorship Program", order: 0, type: "Meeting", title: "Info Session", date: "2026-08-31", time: "6:30 PM", location: "Caddell", checkInCode: "INFO26", checkInOpen: false },
+    { id: "ap-2", track: "Mentorship Program", order: 1, type: "Meeting", title: "Intro and CRE Overview", date: "2026-09-14", time: "6:30 PM", location: "Caddell", checkInCode: "INTRO", checkInOpen: false },
+    { id: "ap-3", track: "Mentorship Program", order: 2, type: "Workshop", title: "Capital Markets & Financing", date: "2026-09-21", time: "6:30 PM", location: "Caddell", checkInCode: "CAPMKT", checkInOpen: false },
+    { id: "ap-4", track: "Mentorship Program", order: 3, type: "Event", title: "Recruitment Event - Peachtree", date: "2026-09-28", time: "6:30 PM", location: "Caddell", checkInCode: "RECRUIT", checkInOpen: false },
+    { id: "ap-5", track: "Mentorship Program", order: 4, type: "Social", title: "Fall Break, No Meeting", date: "2026-10-05", location: "Caddell", description: "No class this week, enjoy the break." },
+    { id: "ap-6", track: "Mentorship Program", order: 5, type: "Workshop", title: "Development & Construction", date: "2026-10-12", time: "6:30 PM", location: "Caddell", checkInCode: "DEVCON", checkInOpen: false },
+    { id: "ap-7", track: "Mentorship Program", order: 6, type: "Workshop", title: "Investments in CRE", date: "2026-10-19", time: "6:30 PM", location: "Caddell", checkInCode: "INVEST", checkInOpen: false },
+    { id: "ap-8", track: "Mentorship Program", order: 7, type: "Case Study", title: "Case Study Overview / Submarket Research (Sandy Paul)", date: "2026-10-26", time: "6:30 PM", location: "Caddell", checkInCode: "CASE1", checkInOpen: false },
+    { id: "ap-9", track: "Mentorship Program", order: 8, type: "Workshop", title: "Underwriting and Excel Modeling", date: "2026-11-02", time: "6:30 PM", location: "Caddell", checkInCode: "MODEL", checkInOpen: false },
+    { id: "ap-10", track: "Mentorship Program", order: 9, type: "Case Study", title: "Case Study Example", date: "2026-11-09", time: "6:30 PM", location: "Caddell", checkInCode: "CHECKIN", checkInOpen: true },
+    { id: "ap-11", track: "Mentorship Program", order: 10, type: "Case Study", title: "Case Study Practice", date: "2026-11-16", time: "6:30 PM", location: "Caddell", checkInCode: "PRACTICE", checkInOpen: false },
+    { id: "ap-12", track: "Mentorship Program", order: 11, type: "Case Study", title: "Presentations Day 1", date: "2026-11-23", time: "6:30 PM", location: "Caddell", checkInCode: "PRES1", checkInOpen: false },
+    { id: "ap-13", track: "Mentorship Program", order: 12, type: "Social", title: "Break", date: "2026-11-30", location: "Caddell", description: "No class this week, enjoy the break." },
+    { id: "ap-14", track: "Mentorship Program", order: 13, type: "Case Study", title: "Presentations Day 2", date: "2026-12-07", time: "6:30 PM", location: "Caddell", checkInCode: "PRES2", checkInOpen: false },
 
     // ---- Industry Events --------------------------------------------------
     { id: "ie-1", track: "Industry Events", order: 0, type: "Event", title: "Kickoff Event", date: "2026-09-10", location: "Scheller Tower" },
@@ -192,7 +205,7 @@ export const SEED: GtreState = {
     },
     {
       id: "asg-3",
-      title: "Case Study — Adaptive Reuse Underwriting",
+      title: "Case Study, Adaptive Reuse Underwriting",
       description: "As a team, produce a full underwriting package and recommendation for the Savannah hotel-to-multifamily conversion.",
       week: 4,
       dueDate: "2026-10-01",
@@ -228,7 +241,7 @@ export const SEED: GtreState = {
       subject: "Which template should we use for the underwriting model?",
       body: "Is there a standard club template for the multifamily model, or can we build our own?",
       status: "answered",
-      answer: "Use your own structure — we grade on logic and clarity, not a fixed template. A starter is in the Materials tab if you want one.",
+      answer: "Use your own structure, we grade on logic and clarity, not a fixed template. A starter is in the Materials tab if you want one.",
       answeredBy: "Jordan Ellis",
       createdAt: "2026-08-30T18:00:00.000Z",
       answeredAt: "2026-08-31T14:00:00.000Z",
@@ -238,7 +251,7 @@ export const SEED: GtreState = {
   meetingNotes: [
     {
       id: "note-1",
-      title: "Exec sync — semester planning",
+      title: "Exec sync, semester planning",
       date: "2026-07-01",
       body: "Set the Fall calendar, confirmed CoStar renewal, assigned case study leads. Action items: Maya to book rooms, Chris to finalize sponsor outreach.",
       authorName: "Avery Mitchell",
@@ -249,7 +262,7 @@ export const SEED: GtreState = {
   resources: [
     {
       id: "res-1",
-      title: "Real Estate Finance — Week 1 Slides",
+      title: "Real Estate Finance, Week 1 Slides",
       description: "Cap rates, NOI, valuation basics.",
       url: "https://docs.google.com/presentation/d/example/edit",
       category: "Slides",
@@ -271,22 +284,72 @@ export const SEED: GtreState = {
       category: "Document",
       createdAt: now,
     },
+    // Case Study materials (grouped in the portal by title: Examples,
+    // Models & Templates, Prompts & Rubric). Files live in /public/case-study.
     {
-      id: "res-4",
-      title: "Fall Case Study Packet",
-      description: "Savannah adaptive-reuse deal materials.",
-      url: "https://drive.google.com/file/d/example/view",
+      id: "cs-example-rustin",
+      title: "Case Study Example — Rustin Jalali",
+      description: "A full, worked case study submission to model your own after.",
+      url: "/case-study/case-study-example-rustin-jalali.pdf",
+      category: "Case Study",
+      createdAt: now,
+    },
+    {
+      id: "cs-model-multifamily",
+      title: "Multifamily Development Model",
+      description: "Excel template for a ground-up multifamily development.",
+      url: "/case-study/multifamily-development-model.xlsx",
+      category: "Case Study",
+      createdAt: now,
+    },
+    {
+      id: "cs-model-office",
+      title: "Office Development Model",
+      description: "Excel template for an office development underwriting.",
+      url: "/case-study/office-development-model.xlsx",
+      category: "Case Study",
+      createdAt: now,
+    },
+    {
+      id: "cs-model-hotel",
+      title: "Hotel Development Model",
+      description: "Excel template for a hotel development underwriting.",
+      url: "/case-study/hotel-development-model.xlsx",
+      category: "Case Study",
+      createdAt: now,
+    },
+    {
+      id: "cs-model-industrial",
+      title: "Industrial Underwriting Model",
+      description: "Excel template for an industrial deal underwriting.",
+      url: "/case-study/industrial-underwriting-model.xlsx",
+      category: "Case Study",
+      createdAt: now,
+    },
+    {
+      id: "cs-model-asset-mgmt",
+      title: "Asset Management Portfolio Model",
+      description: "Excel template for portfolio-level asset management.",
+      url: "/case-study/asset-management-portfolio-model.xlsx",
+      category: "Case Study",
+      createdAt: now,
+    },
+    {
+      id: "cs-prompts-rubric",
+      title: "Case Study Prompts & Rubric",
+      description: "The current case study prompts and the grading rubric.",
+      url: "/case-study/case-study-prompts-and-rubric.docx",
       category: "Case Study",
       createdAt: now,
     },
   ],
 
   siteInfo: {
-    meetingTime: "Thursdays at 6:00 PM",
+    meetingTime: "Mondays at 6:30 PM",
     meetingLocation: "Scheller College of Business, Room 200",
-    contactEmail: "realestate@gatech.edu",
+    contactEmail: "rjalali6@gatech.edu",
     analystProgramIntro:
-      "The Analyst Program is a semester-long, hands-on curriculum that takes members from real estate fundamentals to a full underwriting case study. Members build models, present to alumni judges, and earn a place in the vetted Analyst Rolodex.",
+      "The Mentorship Program is a semester-long, hands-on curriculum that takes members from real estate fundamentals to a full underwriting case study. Members build models, present to alumni judges, and earn a place in the vetted Analyst Rolodex.",
     // Live-embedded syllabus (SharePoint/Word). `action=embedview` renders a
     // read-only, scrollable viewer that reflects edits to the source document.
     // Update this URL any time in Admin → Site Info.
@@ -294,4 +357,6 @@ export const SEED: GtreState = {
       "https://gtvault-my.sharepoint.com/:w:/g/personal/jjohnson709_gatech_edu/IQAG5DhZ_CAYQ7Q0i30SEXYpARL_4OXuRyBX9ByaarWpyJ8?e=AKhQmr&action=embedview",
     googleCalendarEmbedUrl: "",
   },
+  siteImages: {},
+  siteText: {},
 };

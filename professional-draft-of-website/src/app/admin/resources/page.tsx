@@ -6,9 +6,10 @@ import { Badge, Button, Card, ConfirmDelete, EmptyState, Field, Notice, Select }
 import type { Resource } from "@/lib/store/types";
 
 const CATEGORIES: Resource["category"][] = ["Slides", "Tool", "Document", "Case Study", "Link"];
+const CAT_OPTIONS = CATEGORIES.map((c) => ({ value: c, label: c }));
 
 export default function AdminResources() {
-  const { state, addResource, deleteResource } = useGtre();
+  const { state, addResource } = useGtre();
   const [form, setForm] = useState({ title: "", description: "", url: "", category: "Slides" as Resource["category"] });
   const [added, setAdded] = useState(false);
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -27,7 +28,7 @@ export default function AdminResources() {
     <div className="space-y-8">
       <div>
         <h2 className="display text-3xl text-navy">Materials &amp; Documents</h2>
-        <p className="text-secondary mt-1">Post slides, tools, templates, case-study packets, and links for members.</p>
+        <p className="text-secondary mt-1">Post slides, tools, templates, case-study packets, and links for members. Edit a material to rename it or change its file link.</p>
       </div>
 
       <Card>
@@ -38,7 +39,7 @@ export default function AdminResources() {
           <Field label="Description" value={form.description} onChange={(v) => set("description", v)} />
           <div className="grid sm:grid-cols-[1fr_200px] gap-3">
             <Field label="URL" type="url" value={form.url} onChange={(v) => set("url", v)} placeholder="https://..." required />
-            <Select label="Category" value={form.category} onChange={(v) => set("category", v)} options={CATEGORIES.map((c) => ({ value: c, label: c }))} />
+            <Select label="Category" value={form.category} onChange={(v) => set("category", v)} options={CAT_OPTIONS} />
           </div>
           <Button type="submit">Add material</Button>
         </form>
@@ -51,25 +52,84 @@ export default function AdminResources() {
         ) : (
           <div className="space-y-3">
             {list.map((r) => (
-              <Card key={r.id}>
-                <div className="flex items-start gap-3">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Badge tone="gold">{r.category}</Badge>
-                    </div>
-                    <div className="font-semibold text-navy">{r.title}</div>
-                    {r.description && <p className="text-[13px] text-secondary mt-0.5">{r.description}</p>}
-                    <a href={r.url} target="_blank" rel="noreferrer" className="text-[13px] text-gold-hover hover:text-navy break-all">
-                      {r.url}
-                    </a>
-                  </div>
-                  <ConfirmDelete onConfirm={() => deleteResource(r.id)} />
-                </div>
-              </Card>
+              <ResourceRow key={r.id} r={r} />
             ))}
           </div>
         )}
       </section>
     </div>
+  );
+}
+
+function ResourceRow({ r }: { r: Resource }) {
+  const { updateResource, deleteResource } = useGtre();
+  const [editing, setEditing] = useState(false);
+
+  if (editing) return <ResourceEditForm r={r} onDone={() => setEditing(false)} />;
+
+  return (
+    <Card>
+      <div className="flex items-start gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <Badge tone="gold">{r.category}</Badge>
+          </div>
+          <div className="font-semibold text-navy">{r.title}</div>
+          {r.description && <p className="text-[13px] text-secondary mt-0.5">{r.description}</p>}
+          <a href={r.url} target="_blank" rel="noreferrer" className="text-[13px] text-gold-hover hover:text-navy break-all">
+            {r.url}
+          </a>
+        </div>
+        <div className="flex items-center gap-3 shrink-0">
+          <button onClick={() => setEditing(true)} className="text-[13px] font-semibold text-gold-hover hover:text-navy">
+            Edit
+          </button>
+          <ConfirmDelete onConfirm={() => deleteResource(r.id)} />
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function ResourceEditForm({ r, onDone }: { r: Resource; onDone: () => void }) {
+  const { updateResource } = useGtre();
+  const [form, setForm] = useState({
+    title: r.title,
+    description: r.description ?? "",
+    url: r.url,
+    category: r.category,
+  });
+  const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
+
+  function save(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.title.trim() || !form.url.trim()) return;
+    updateResource(r.id, {
+      title: form.title,
+      description: form.description || undefined,
+      url: form.url,
+      category: form.category,
+    });
+    onDone();
+  }
+
+  return (
+    <Card>
+      <form onSubmit={save} className="space-y-4">
+        <div className="text-[13px] font-semibold text-navy">Edit material</div>
+        <Field label="Title (file name)" value={form.title} onChange={(v) => set("title", v)} required />
+        <Field label="Description" value={form.description} onChange={(v) => set("description", v)} />
+        <div className="grid sm:grid-cols-[1fr_200px] gap-3">
+          <Field label="URL (file link)" type="url" value={form.url} onChange={(v) => set("url", v)} placeholder="https://..." required />
+          <Select label="Category" value={form.category} onChange={(v) => set("category", v as Resource["category"])} options={CAT_OPTIONS} />
+        </div>
+        <div className="flex gap-2">
+          <Button type="submit">Save changes</Button>
+          <button type="button" onClick={onDone} className="px-4 py-2 text-[13px] font-semibold text-secondary hover:text-navy">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </Card>
   );
 }

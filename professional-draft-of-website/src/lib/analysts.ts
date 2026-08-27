@@ -1,7 +1,7 @@
 /**
  * Analyst Rolodex data.
  *
- * The roster is intentionally empty for now — profiles are populated once the
+ * The roster is intentionally empty for now, profiles are populated once the
  * Fall 2026 cohort is enrolled and the club has tracked a semester of metrics
  * (attendance, assignment submissions, graded case-study work) and collected
  * resumes. Each profile's shape is defined below so the directory, search, and

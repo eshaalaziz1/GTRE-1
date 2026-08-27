@@ -5,7 +5,7 @@ import { useGtre } from "@/lib/store/GtreStore";
 import { Badge, Button, Card, ConfirmDelete, EmptyState, Field, Notice, Select, TextArea } from "@/components/ui";
 import type { Announcement } from "@/lib/store/types";
 
-const CATEGORIES: Announcement["category"][] = ["General", "Event", "Meeting", "Deadline", "Analyst Program"];
+const CATEGORIES: Announcement["category"][] = ["General", "Event", "Meeting", "Deadline", "Mentorship Program"];
 
 export default function AdminAnnouncements() {
   const { state, addAnnouncement, deleteAnnouncement, updateAnnouncement } = useGtre();

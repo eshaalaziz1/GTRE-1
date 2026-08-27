@@ -4,6 +4,28 @@ import Link from "next/link";
 import { useState } from "react";
 import { useGtre } from "@/lib/store/GtreStore";
 import { Button, Field, Notice } from "@/components/ui";
+import { MEMBER_FORM_URL } from "@/lib/content";
+
+/** Prompt to complete the club's Microsoft new-member form after signing up. */
+function MemberFormCallout() {
+  return (
+    <div className="mt-5 rounded-xl border border-gold/50 bg-gold-soft/50 p-4 text-left">
+      <div className="font-semibold text-navy text-sm">One more step: the new member form</div>
+      <p className="text-[13px] text-secondary mt-1">
+        Complete the club&apos;s new member form so we can set up your profile,
+        resume, and Analyst Rolodex entry. This is your first assignment.
+      </p>
+      <a
+        href={MEMBER_FORM_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block mt-3 px-4 py-2 rounded-md bg-navy text-white text-[13px] font-semibold hover:bg-navy-deep transition-colors"
+      >
+        Open the new member form →
+      </a>
+    </div>
+  );
+}
 
 /**
  * Account request. Two paths:
@@ -32,7 +54,7 @@ export default function SignupPage() {
               <div className="font-semibold text-white">Students &amp; members</div>
               <p className="text-sm text-white/70 mt-1">
                 Sign up with your <strong>@gatech.edu</strong> email to join the
-                club, the Analyst Program, and the member portal.
+                club, the Mentorship Program, and the member portal.
               </p>
             </div>
             <div className="rounded-xl border border-white/15 p-4">
@@ -81,6 +103,84 @@ export default function SignupPage() {
   );
 }
 
+/**
+ * Email-verification step: the member enters the 6-digit code sent to their
+ * inbox. Verifying proves they own the address (a code, not a link, more
+ * reliable for @gatech.edu / Outlook, where link scanners can consume magic
+ * links). After verifying, the account is still pending officer approval.
+ */
+function ConfirmCodeStep({ email, firstName, memberForm = false }: { email: string; firstName: string; memberForm?: boolean }) {
+  const { confirmSignup, resendCode } = useGtre();
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [verified, setVerified] = useState(false);
+  const [resent, setResent] = useState(false);
+
+  if (verified) {
+    return (
+      <div className="text-center py-6">
+        <div className="text-2xl display text-navy">Email verified.</div>
+        <p className="text-sm text-secondary mt-3">
+          Thanks, {firstName}. Your email is confirmed. A club officer now reviews
+          your account, you&apos;ll be able to sign in once you&apos;re approved.
+        </p>
+        {memberForm && <MemberFormCallout />}
+      </div>
+    );
+  }
+
+  async function onVerify(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setBusy(true);
+    const res = await confirmSignup(email, code);
+    setBusy(false);
+    if (!res.ok) return setError(res.error || "That code didn't work.");
+    setVerified(true);
+  }
+
+  async function onResend() {
+    setError("");
+    setResent(false);
+    const res = await resendCode(email);
+    if (!res.ok) return setError(res.error || "Couldn't resend the code.");
+    setResent(true);
+  }
+
+  return (
+    <form onSubmit={onVerify} className="space-y-4 text-center">
+      <div className="text-2xl display text-navy">Enter your code</div>
+      <p className="text-sm text-secondary">
+        We emailed a 6-digit verification code to <strong>{email}</strong>. Enter it
+        to confirm you own this inbox.
+      </p>
+      {error && <Notice tone="error">{error}</Notice>}
+      {resent && <Notice tone="success">A new code is on its way.</Notice>}
+      <input
+        inputMode="numeric"
+        autoComplete="one-time-code"
+        value={code}
+        onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+        placeholder="••••••"
+        aria-label="6-digit verification code"
+        className="w-full text-center tracking-[0.5em] text-2xl px-3 py-3 border border-border rounded-md outline-none focus:border-navy"
+        required
+      />
+      <Button type="submit" className="w-full" disabled={busy || code.length < 6}>
+        {busy ? "Verifying…" : "Verify email"}
+      </Button>
+      <p className="text-[13px] text-secondary">
+        Didn&apos;t get it? Check spam, or{" "}
+        <button type="button" onClick={onResend} className="font-semibold text-gold-hover hover:text-navy">
+          resend the code
+        </button>
+        .
+      </p>
+    </form>
+  );
+}
+
 function StudentForm() {
   const { signUpStudent } = useGtre();
   const [name, setName] = useState("");
@@ -89,24 +189,28 @@ function StudentForm() {
   const [major, setMajor] = useState("");
   const [gradYear, setGradYear] = useState("");
   const [error, setError] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+
+  if (confirmEmail) return <ConfirmCodeStep email={confirmEmail} firstName={name.split(" ")[0] || "there"} memberForm />;
 
   if (done) {
     return (
       <div className="text-center py-6">
         <div className="text-2xl display text-navy">Request received.</div>
         <p className="text-sm text-secondary mt-3">
-          Thanks, {name.split(" ")[0]}. A club officer will approve your account
-          shortly. You&apos;ll be able to sign in once you&apos;re approved.
+          Thanks, {name.split(" ")[0]}. A club officer will review your account and
+          you&apos;ll be able to sign in once you&apos;re approved.
         </p>
+        <MemberFormCallout />
       </div>
     );
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const res = signUpStudent({
+    const res = await signUpStudent({
       name,
       email,
       password,
@@ -114,6 +218,7 @@ function StudentForm() {
       gradYear: gradYear ? Number(gradYear) : undefined,
     });
     if (!res.ok) return setError(res.error);
+    if (res.needsConfirmation) return setConfirmEmail(email.trim());
     setDone(true);
   }
 
@@ -161,25 +266,28 @@ function IndustryForm() {
   const [title, setTitle] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [error, setError] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+
+  if (confirmEmail) return <ConfirmCodeStep email={confirmEmail} firstName={name.split(" ")[0] || "there"} />;
 
   if (done) {
     return (
       <div className="text-center py-6">
         <div className="text-2xl display text-navy">Request received.</div>
         <p className="text-sm text-secondary mt-3">
-          Thanks, {name.split(" ")[0]}. We verify every industry account by hand.
-          Once an officer approves you, you&apos;ll be able to sign in and view
-          the Analyst Rolodex.
+          Thanks, {name.split(" ")[0]}. We verify every industry account by hand;
+          once an officer approves you, you&apos;ll be able to sign in and view the
+          Analyst Rolodex.
         </p>
       </div>
     );
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const res = signUpIndustry({
+    const res = await signUpIndustry({
       name,
       email,
       password,
@@ -188,6 +296,7 @@ function IndustryForm() {
       title: title || undefined,
     });
     if (!res.ok) return setError(res.error);
+    if (res.needsConfirmation) return setConfirmEmail(email.trim());
     setDone(true);
   }
 

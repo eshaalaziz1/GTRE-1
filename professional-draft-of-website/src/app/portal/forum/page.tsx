@@ -31,7 +31,7 @@ export default function ForumPage() {
       <div>
         <h2 className="display text-3xl text-navy">Questions &amp; Answers</h2>
         <p className="text-secondary mt-1">
-          Ask the exec team anything about the club or the Analyst Program. Answered questions are shared here.
+          Ask the exec team anything about the club or the Mentorship Program. Answered questions are shared here.
         </p>
       </div>
 
@@ -64,7 +64,7 @@ export default function ForumPage() {
                 {q.answer && (
                   <div className="mt-3 pt-3 border-t border-border">
                     <div className="text-[12px] font-semibold text-navy uppercase tracking-wide">
-                      Answer{q.answeredBy ? ` — ${q.answeredBy}` : ""}
+                      Answer{q.answeredBy ? `, ${q.answeredBy}` : ""}
                     </div>
                     <p className="text-[15px] text-text mt-1 leading-relaxed">{q.answer}</p>
                   </div>

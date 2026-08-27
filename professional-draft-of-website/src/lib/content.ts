@@ -1,6 +1,15 @@
 // Site content for the prototype.
 
-// The club's three values, with copy pulled from the live GTRE Analyst Program
+// Join the club's Outlook group to get announcement emails + the shared calendar.
+export const OUTLOOK_GROUP_JOIN_URL =
+  "https://outlook.office365.com/groups/groupsubscription?action=join&smtp=gtrementorshipfall2026%40groups.gatech.edu&bO=true";
+
+// New-member intake form (Microsoft Forms). Students complete this after signing
+// up with their GT email; it feeds their profile, Rolodex, and resume.
+export const MEMBER_FORM_URL =
+  "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=u5ghSHuuJUuLem1_MvqggxmAnKRdWYNOjjFXygw-JrhURVlQTUxZNklDNVVRMjlQMUFOUDM0WU5RVyQlQCN0PWcu";
+
+// The club's three values, with copy pulled from the live GTRE Mentorship Program
 // page (reatgt.org/commercial-real-estate-workshop). Resources lists the
 // industry-standard tools as text rather than logos, per direction.
 export const VALUES = [
@@ -11,7 +20,7 @@ export const VALUES = [
       "Professional and career guidance.",
       "Excel and financial modeling practice.",
     ],
-    href: "/events",
+    href: "/analyst-program",
     cta: "See the program",
   },
   {
@@ -45,7 +54,7 @@ export const ENGAGEMENT: EngagementCard[] = [
   },
   {
     title: "Advisory Board",
-    body: "Senior industry leaders who shape our programming, judge case studies, and open doors for members.",
+    body: "Senior industry leaders who shape our programming, judge case studies, and help members get in front of firms.",
     href: "/advisory-board",
     image: "/photos/kepano-center.jpg",
   },

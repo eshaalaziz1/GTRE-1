@@ -12,8 +12,6 @@ export default function LeadershipView({ terms }: { terms: ExecTerm[] }) {
   const term = terms.find((t) => t.term === active) ?? terms[0];
   if (!term) return null;
 
-  const [president, ...rest] = term.members;
-
   return (
     <>
       {terms.length > 1 && (
@@ -45,32 +43,14 @@ export default function LeadershipView({ terms }: { terms: ExecTerm[] }) {
           </span>
         </div>
 
-        {/* President — featured wide card */}
-        {president && <PresidentCard member={president} />}
-
-        {/* The rest of the board */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {rest.map((m) => (
+        {/* Every officer in the same uniform card, president included. */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {term.members.map((m) => (
             <ExecCard key={m.slug} member={m} />
           ))}
         </div>
       </section>
     </>
-  );
-}
-
-function PresidentCard({ member }: { member: ExecMember }) {
-  return (
-    <div className="bg-white border border-border border-t-4 border-t-navy rounded-b-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] p-7 flex flex-col sm:flex-row items-center sm:items-start gap-7">
-      <ExecAvatar src={member.photo} name={member.name} size={168} focus={member.focus} zoom={member.zoom} />
-      <div className="text-center sm:text-left">
-        <div className="text-[12px] font-semibold uppercase tracking-[0.2em] text-gold-hover mb-1">
-          {member.role}
-        </div>
-        <h3 className="text-2xl font-bold text-navy">{member.name}</h3>
-        <p className="text-[15px] text-secondary leading-relaxed mt-3 max-w-2xl">{member.bio}</p>
-      </div>
-    </div>
   );
 }
 

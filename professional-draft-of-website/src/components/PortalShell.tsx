@@ -9,7 +9,7 @@ import Avatar from "@/components/Avatar";
  * Shared chrome for the member portal: a left rail of tabs on desktop, a
  * horizontally scrolling strip on mobile, plus a header that greets the member.
  * The tab set mirrors the original Vercel portal (Home, Assignments, Grades,
- * Check-In, Resources, Analyst Program, Q&A, Profile), re-skinned to the site.
+ * Check-In, Resources, Mentorship Program, Q&A, Profile), re-skinned to the site.
  */
 
 const TABS = [
@@ -19,6 +19,8 @@ const TABS = [
   { href: "/portal/grades", label: "Grades" },
   { href: "/portal/check-in", label: "Check-In" },
   { href: "/portal/resources", label: "Materials" },
+  { href: "/portal/case-study", label: "Case Study" },
+  { href: "/opportunities", label: "Opportunities" },
   { href: "/portal/forum", label: "Q&A" },
   { href: "/portal/profile", label: "Profile" },
 ];

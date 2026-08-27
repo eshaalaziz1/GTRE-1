@@ -10,7 +10,7 @@ import type { Role } from "@/lib/store/types";
  *
  * This is prototype-grade gating (state lives in the browser). With Supabase,
  * pair this with server-side checks / RLS so protected data is never sent to
- * an unauthorized client — see SETUP.md.
+ * an unauthorized client, see SETUP.md.
  */
 export default function RequireAuth({
   roles,
@@ -19,7 +19,18 @@ export default function RequireAuth({
   roles?: Role[];
   children: React.ReactNode;
 }) {
-  const { currentAccount } = useGtre();
+  const { currentAccount, ready } = useGtre();
+
+  // While the adapter is still loading (Supabase: fetching the session; mock:
+  // hydrating from localStorage), don't flash the sign-in gate at a user who is
+  // actually logged in.
+  if (!ready) {
+    return (
+      <section className="mx-auto max-w-[640px] px-6 py-24 text-center">
+        <div className="text-secondary text-sm">Loading…</div>
+      </section>
+    );
+  }
 
   if (!currentAccount) {
     return (
