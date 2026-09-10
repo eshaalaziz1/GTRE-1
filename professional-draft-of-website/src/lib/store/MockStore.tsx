@@ -174,6 +174,25 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
         return { ok: true };
       },
 
+      // The prototype has no email service; these satisfy the contract so the
+      // forgot-password screens work in the demo without actually sending mail.
+      async requestPasswordReset() {
+        return { ok: true };
+      },
+      async setNewPassword(newPassword) {
+        if (newPassword.length < 8) {
+          return { ok: false, error: "New password must be at least 8 characters." };
+        }
+        const acct = me();
+        if (acct) {
+          setState((s) => ({
+            ...s,
+            accounts: s.accounts.map((a) => (a.id === acct.id ? { ...a, passwordHash: newPassword } : a)),
+          }));
+        }
+        return { ok: true };
+      },
+
       // Prototype has no email service, so sign-up completes without a code and
       // these are no-ops that satisfy the shared contract.
       async confirmSignup() {

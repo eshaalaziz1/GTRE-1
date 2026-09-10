@@ -80,16 +80,25 @@ export default function LoginPage() {
             </Button>
           </form>
 
+          <div className="mt-3 text-center">
+            <Link href="/forgot-password" className="text-[13px] text-secondary hover:text-navy">
+              Forgot your password?
+            </Link>
+          </div>
+
           {/* Appears only when LinkedIn auth is configured (see SETUP.md). */}
           <LinkedInButton redirectTo="/portal" />
 
-          <div className="mt-6 pt-6 border-t border-border text-center">
-            <p className="text-sm text-secondary">
-              Don&apos;t have an account?{" "}
-              <Link href="/signup" className="font-semibold text-gold-hover hover:text-navy">
-                Request access
-              </Link>
+          <div className="mt-6 pt-6 border-t border-border">
+            <p className="text-sm text-secondary text-center mb-3">
+              New to the club? Every account is approved by an officer.
             </p>
+            <Link
+              href="/signup"
+              className="block w-full text-center px-6 py-3 rounded-md border-2 border-navy text-navy text-sm font-bold hover:bg-navy hover:text-white transition-colors"
+            >
+              Request access →
+            </Link>
           </div>
 
           {/* Prototype helper, only shown while the localStorage mock is active. */}
