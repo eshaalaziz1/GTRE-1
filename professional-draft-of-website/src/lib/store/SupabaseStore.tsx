@@ -394,6 +394,31 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
         })();
       },
 
+      async changePassword(currentPassword, newPassword) {
+        if (newPassword.length < 8) {
+          return { ok: false, error: "New password must be at least 8 characters." };
+        }
+        const { data: sessionData } = await supabase.auth.getSession();
+        const email = sessionData.session?.user.email;
+        if (!email) return { ok: false, error: "You need to be signed in." };
+        // Verify the current password by re-authenticating before changing it.
+        const { error: verifyError } = await supabase.auth.signInWithPassword({
+          email,
+          password: currentPassword,
+        });
+        if (verifyError) return { ok: false, error: "Your current password is incorrect." };
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) {
+          return {
+            ok: false,
+            error: /different from the old/i.test(error.message)
+              ? "New password must be different from your current one."
+              : "Couldn't update your password. Please try again.",
+          };
+        }
+        return { ok: true };
+      },
+
       async confirmSignup(email, token) {
         // Verify the 6-digit signup code the member received by email. Success
         // proves they own the inbox and marks the email confirmed.

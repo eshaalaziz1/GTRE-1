@@ -158,6 +158,22 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
         setState((s) => ({ ...s, currentAccountId: null }));
       },
 
+      async changePassword(currentPassword, newPassword) {
+        const acct = me();
+        if (!acct) return { ok: false, error: "You need to be signed in." };
+        if (acct.passwordHash !== currentPassword) {
+          return { ok: false, error: "Your current password is incorrect." };
+        }
+        if (newPassword.length < 8) {
+          return { ok: false, error: "New password must be at least 8 characters." };
+        }
+        setState((s) => ({
+          ...s,
+          accounts: s.accounts.map((a) => (a.id === acct.id ? { ...a, passwordHash: newPassword } : a)),
+        }));
+        return { ok: true };
+      },
+
       // Prototype has no email service, so sign-up completes without a code and
       // these are no-ops that satisfy the shared contract.
       async confirmSignup() {
