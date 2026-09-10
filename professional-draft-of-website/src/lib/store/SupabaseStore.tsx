@@ -419,6 +419,27 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
         return { ok: true };
       },
 
+      async requestPasswordReset(email) {
+        const redirectTo =
+          typeof window !== "undefined" ? `${window.location.origin}/reset-password` : undefined;
+        // Don't reveal whether an email exists — always report success.
+        await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo });
+        return { ok: true };
+      },
+
+      async setNewPassword(newPassword) {
+        if (newPassword.length < 8) {
+          return { ok: false, error: "New password must be at least 8 characters." };
+        }
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData.session) {
+          return { ok: false, error: "This reset link has expired. Request a new one." };
+        }
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) return { ok: false, error: "Couldn't set your new password. Please try again." };
+        return { ok: true };
+      },
+
       async confirmSignup(email, token) {
         // Verify the 6-digit signup code the member received by email. Success
         // proves they own the inbox and marks the email confirmed.

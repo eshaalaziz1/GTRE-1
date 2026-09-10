@@ -67,6 +67,10 @@ export type GtreContextValue = {
   logout: () => void;
   // Change the signed-in user's own password (verifies the current one first).
   changePassword: (currentPassword: string, newPassword: string) => Promise<{ ok: boolean; error?: string }>;
+  // Forgot-password: email a reset link, then set a new password from the
+  // recovery session the link establishes.
+  requestPasswordReset: (email: string) => Promise<{ ok: boolean; error?: string }>;
+  setNewPassword: (newPassword: string) => Promise<{ ok: boolean; error?: string }>;
   // Email verification (OTP code). After a sign-up that needs confirmation, the
   // member enters the 6-digit code emailed to them to prove they own the inbox.
   confirmSignup: (email: string, token: string) => Promise<{ ok: boolean; error?: string }>;
