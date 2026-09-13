@@ -2,7 +2,8 @@ import Link from "next/link";
 import SiteImage from "@/components/SiteImage";
 import SiteText from "@/components/SiteText";
 import Reveal from "@/components/Reveal";
-import { VALUES, ENGAGEMENT, EVENTS } from "@/lib/content";
+import UpcomingEvents from "@/components/UpcomingEvents";
+import { VALUES, ENGAGEMENT } from "@/lib/content";
 import { LINKEDIN_URL } from "@/lib/linkedin";
 
 export const metadata = { title: "Georgia Tech Real Estate Club" };
@@ -159,20 +160,7 @@ export default function AboutPage() {
             <h2 className="display text-3xl text-navy"><SiteText slotKey="home-events-title">Upcoming Events</SiteText></h2>
             <Link href="/calendar" className="text-sm font-semibold text-gold-hover hover:text-navy">Full calendar →</Link>
           </div>
-          <div className="space-y-3">
-            {EVENTS.slice(0, 4).map((e) => (
-              <div key={e.title} className="bg-white border border-border rounded-lg p-4 flex gap-4 items-center">
-                <div className="text-center shrink-0 w-14">
-                  <div className="text-[11px] uppercase text-gold-hover font-semibold">{e.date.split(" ")[0]}</div>
-                  <div className="text-2xl text-navy font-semibold leading-none">{e.date.split(" ")[1].replace(",", "")}</div>
-                </div>
-                <div className="border-l border-border pl-4">
-                  <div className="font-semibold text-navy text-[15px]">{e.title}</div>
-                  <div className="text-[13px] text-secondary">{[e.time, e.location].filter(Boolean).join(" · ")}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <UpcomingEvents />
         </div>
         <div>
           <div className="flex items-end justify-between mb-7">
