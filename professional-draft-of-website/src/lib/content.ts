@@ -69,25 +69,7 @@ export const ENGAGEMENT: EngagementCard[] = [
 
 // News now lives on the News page as live LinkedIn embeds (see src/lib/linkedin.ts).
 
-export type EventItem = {
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  type: string;
-};
-
-// The club's real 2026 Industry Events series (from the program schedule).
-// Times are set per-event closer to the date; location is fixed here.
-export const EVENTS: EventItem[] = [
-  { title: "Kickoff Event", date: "Sep 10, 2026", time: "", location: "Scheller Tower", type: "Kickoff" },
-  { title: "Careers in RE", date: "Sep 17, 2026", time: "", location: "Caddell", type: "Panel" },
-  { title: "JOINT Private Equity Panel", date: "Sep 24, 2026", time: "", location: "Biltmore", type: "Panel" },
-  { title: "Development Panel", date: "Oct 15, 2026", time: "", location: "Caddell", type: "Panel" },
-  { title: "Capital Markets Panel", date: "Oct 22, 2026", time: "", location: "Caddell", type: "Panel" },
-  { title: "Site Tour", date: "Oct 29, 2026", time: "", location: "Caddell", type: "Site Tour" },
-  { title: "Affordable Housing Panel", date: "Nov 5, 2026", time: "", location: "Caddell", type: "Panel" },
-  { title: "Site Tour", date: "Nov 12, 2026", time: "", location: "Caddell", type: "Site Tour" },
-  { title: "Entrepreneurship Panel", date: "Nov 19, 2026", time: "", location: "Caddell", type: "Panel" },
-];
+// Upcoming events on the home page are read live from the admin-managed schedule
+// in the store (see src/components/UpcomingEvents.tsx), the same source as the
+// Calendar page — so there is no separate hardcoded event list to drift.
 
