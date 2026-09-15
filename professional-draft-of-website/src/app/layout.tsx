@@ -24,10 +24,41 @@ const sourceSerif = Source_Serif_4({
   display: "swap",
 });
 
+const SITE_URL = "https://gtrealestate.org";
+const SITE_DESCRIPTION =
+  "The Georgia Tech Real Estate Club connects students, alumni, and industry through education, events, and a vetted analyst network.";
+
 export const metadata: Metadata = {
-  title: "Georgia Tech Real Estate Club",
-  description:
-    "The Georgia Tech Real Estate Club connects students, alumni, and industry through education, events, and a vetted analyst network.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Georgia Tech Real Estate Club",
+    template: "%s | Georgia Tech Real Estate Club",
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "Georgia Tech Real Estate Club",
+    "GT Real Estate",
+    "GTRE",
+    "Georgia Tech real estate",
+    "real estate analyst program",
+  ],
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Georgia Tech Real Estate Club",
+    title: "Georgia Tech Real Estate Club",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Georgia Tech Real Estate Club",
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
