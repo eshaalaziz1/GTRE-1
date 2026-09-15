@@ -3,9 +3,44 @@
 import { useState } from "react";
 import { useGtre } from "@/lib/store/GtreStore";
 import { Badge, Button, Card, ConfirmDelete, EmptyState, Field, Notice, Select, TextArea } from "@/components/ui";
-import type { Assignment, Submission } from "@/lib/store/types";
+import { ALL_SUBMISSION_FORMATS, SUBMISSION_FORMAT_LABELS, type Assignment, type Submission, type SubmissionFormat } from "@/lib/store/types";
 
 const CATEGORIES: Assignment["category"][] = ["Assignment", "Quiz", "Case Study"];
+
+function FormatPicker({
+  value,
+  onChange,
+}: {
+  value: SubmissionFormat[];
+  onChange: (v: SubmissionFormat[]) => void;
+}) {
+  function toggle(f: SubmissionFormat) {
+    onChange(value.includes(f) ? value.filter((x) => x !== f) : [...value, f]);
+  }
+  return (
+    <div>
+      <span className="text-[12px] font-semibold text-navy uppercase tracking-wide">
+        Accepted submission formats
+      </span>
+      <p className="text-[12px] text-secondary mt-0.5 mb-2">Leave all unchecked to accept any format.</p>
+      <div className="flex flex-wrap gap-2">
+        {ALL_SUBMISSION_FORMATS.map((f) => (
+          <label
+            key={f}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[13px] font-semibold border cursor-pointer transition-colors ${
+              value.includes(f)
+                ? "bg-navy text-white border-navy"
+                : "border-border text-secondary hover:border-navy hover:text-navy"
+            }`}
+          >
+            <input type="checkbox" checked={value.includes(f)} onChange={() => toggle(f)} className="hidden" />
+            {SUBMISSION_FORMAT_LABELS[f]}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function AdminAssignments() {
   const { state, addAssignment } = useGtre();
@@ -17,6 +52,7 @@ export default function AdminAssignments() {
     dueDate: "",
     points: "50",
   });
+  const [formats, setFormats] = useState<SubmissionFormat[]>([]);
   const [added, setAdded] = useState(false);
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -33,8 +69,10 @@ export default function AdminAssignments() {
       dueDate: form.dueDate,
       points: Number(form.points) || 0,
       published: true,
+      allowedFormats: formats,
     });
     setForm({ title: "", description: "", category: "Assignment", week: "", dueDate: "", points: "50" });
+    setFormats([]);
     setAdded(true);
   }
 
@@ -57,6 +95,7 @@ export default function AdminAssignments() {
             <Field label="Due date" type="date" value={form.dueDate} onChange={(v) => set("dueDate", v)} required />
             <Field label="Points" type="number" value={form.points} onChange={(v) => set("points", v)} />
           </div>
+          <FormatPicker value={formats} onChange={setFormats} />
           <Button type="submit">Create assignment</Button>
         </form>
       </Card>
@@ -99,6 +138,9 @@ function AssignmentAdminRow({ assignment: a }: { assignment: Assignment }) {
           </div>
           <h4 className="font-semibold text-navy">{a.title}</h4>
           <p className="text-[14px] text-secondary mt-1">{a.description}</p>
+          <p className="text-[12px] text-secondary mt-1">
+            Accepts: {a.allowedFormats?.length ? a.allowedFormats.map((f) => SUBMISSION_FORMAT_LABELS[f]).join(", ") : "any format"}
+          </p>
         </div>
         <div className="flex flex-col items-end gap-2 text-[13px]">
           <button onClick={() => setEditing(true)} className="font-semibold text-gold-hover hover:text-navy">
@@ -143,6 +185,7 @@ function AssignmentEditForm({ assignment: a, onDone }: { assignment: Assignment;
     dueDate: a.dueDate,
     points: String(a.points),
   });
+  const [formats, setFormats] = useState<SubmissionFormat[]>(a.allowedFormats ?? []);
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
   function save(e: React.FormEvent) {
@@ -155,6 +198,7 @@ function AssignmentEditForm({ assignment: a, onDone }: { assignment: Assignment;
       week: form.week ? Number(form.week) : undefined,
       dueDate: form.dueDate,
       points: Number(form.points) || 0,
+      allowedFormats: formats,
     });
     onDone();
   }
@@ -171,6 +215,7 @@ function AssignmentEditForm({ assignment: a, onDone }: { assignment: Assignment;
           <Field label="Due date" type="date" value={form.dueDate} onChange={(v) => set("dueDate", v)} required />
           <Field label="Points" type="number" value={form.points} onChange={(v) => set("points", v)} />
         </div>
+        <FormatPicker value={formats} onChange={setFormats} />
         <div className="flex gap-2">
           <Button type="submit">Save changes</Button>
           <button type="button" onClick={onDone} className="px-4 py-2 text-[13px] font-semibold text-secondary hover:text-navy">
@@ -202,8 +247,12 @@ function GradeRow({ submission: s, maxPoints }: { submission: Submission; maxPoi
         {s.grade != null && <Badge tone="green">Graded {s.grade}/{maxPoints}</Badge>}
       </div>
       <div className="text-[13px] text-text break-words mb-3">
-        <span className="font-semibold">{s.type}:</span>{" "}
-        {s.type === "link" ? (
+        <span className="font-semibold">{SUBMISSION_FORMAT_LABELS[s.type]}:</span>{" "}
+        {s.fileUrl ? (
+          <a href={s.fileUrl} target="_blank" rel="noreferrer" className="text-gold-hover hover:text-navy underline">
+            {s.content}
+          </a>
+        ) : s.type === "link" ? (
           <a href={s.content} target="_blank" rel="noreferrer" className="text-gold-hover hover:text-navy underline">
             {s.content}
           </a>

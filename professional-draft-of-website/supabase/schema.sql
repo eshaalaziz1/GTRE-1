@@ -102,8 +102,13 @@ create table if not exists public.assignments (
   points      int not null default 0,
   category    text not null default 'Assignment',
   published   boolean not null default true,
+  -- Which submission formats members may use ('link','text','pdf','doc','docx').
+  -- Null/empty means all formats are accepted.
+  allowed_formats text[],
   created_at  timestamptz not null default now()
 );
+-- Add allowed_formats if the assignments table already existed from an older schema.
+alter table public.assignments add column if not exists allowed_formats text[];
 
 create table if not exists public.submissions (
   id            uuid primary key default gen_random_uuid(),
@@ -113,6 +118,9 @@ create table if not exists public.submissions (
   member_email  text,
   type          text not null,
   content       text not null,
+  -- Set when type is pdf/doc/docx: the uploaded file's URL in the
+  -- 'submissions' storage bucket. Null for link/text submissions.
+  file_url      text,
   comments      text,
   submitted_at  timestamptz not null default now(),
   grade         int,
@@ -121,6 +129,8 @@ create table if not exists public.submissions (
   graded_by     text,
   unique (assignment_id, account_id)
 );
+-- Add file_url if the submissions table already existed from an older schema.
+alter table public.submissions add column if not exists file_url text;
 
 create table if not exists public.questions (
   id          uuid primary key default gen_random_uuid(),
@@ -392,3 +402,32 @@ create policy "admin write site-images" on storage.objects
   for all
   using (bucket_id = 'site-images' and public.is_admin())
   with check (bucket_id = 'site-images' and public.is_admin());
+
+-- ===========================================================================
+-- Storage: assignment submission files (pdf/doc/docx). Public bucket, same
+-- trust level as site-images/resources above (readable by anyone with the
+-- URL, not listable); members upload their own work, admins manage all of it.
+-- ===========================================================================
+insert into storage.buckets (id, name, public)
+  values ('submissions', 'submissions', true)
+  on conflict (id) do update set public = true;
+
+drop policy if exists "public read submissions" on storage.objects;
+create policy "public read submissions" on storage.objects
+  for select using (bucket_id = 'submissions');
+
+drop policy if exists "members upload submissions" on storage.objects;
+create policy "members upload submissions" on storage.objects
+  for insert
+  with check (bucket_id = 'submissions' and public.is_approved());
+
+drop policy if exists "members manage own submissions" on storage.objects;
+create policy "members manage own submissions" on storage.objects
+  for update using (bucket_id = 'submissions' and owner = auth.uid())
+  with check (bucket_id = 'submissions' and owner = auth.uid());
+
+drop policy if exists "admin manage submissions files" on storage.objects;
+create policy "admin manage submissions files" on storage.objects
+  for all
+  using (bucket_id = 'submissions' and public.is_admin())
+  with check (bucket_id = 'submissions' and public.is_admin());

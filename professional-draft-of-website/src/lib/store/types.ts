@@ -85,6 +85,17 @@ export type CheckIn = {
   checkedInAt: string;
 };
 
+/** The format a member may submit an assignment in. */
+export type SubmissionFormat = "link" | "text" | "pdf" | "doc" | "docx";
+export const SUBMISSION_FORMAT_LABELS: Record<SubmissionFormat, string> = {
+  link: "Link (Google Drive, etc.)",
+  text: "Typed response",
+  pdf: "PDF file",
+  doc: "Word file (.doc)",
+  docx: "Word file (.docx)",
+};
+export const ALL_SUBMISSION_FORMATS: SubmissionFormat[] = ["link", "text", "pdf", "doc", "docx"];
+
 /** An assignment definition created by an admin. */
 export type Assignment = {
   id: string;
@@ -95,6 +106,10 @@ export type Assignment = {
   points: number;
   category: "Assignment" | "Quiz" | "Case Study";
   published: boolean;
+  // Which submission formats members may use for this assignment. Empty/undefined
+  // means all formats are accepted (keeps assignments created before this field
+  // existed working unchanged).
+  allowedFormats?: SubmissionFormat[];
   createdAt: string;
 };
 
@@ -105,8 +120,11 @@ export type Submission = {
   accountId: string;
   memberName: string;
   memberEmail: string;
-  type: "link" | "text" | "file";
-  content: string; // URL, text, or file name
+  type: SubmissionFormat;
+  // For "link"/"text": the URL or typed text. For pdf/doc/docx: the uploaded
+  // file's original name (the file itself lives at fileUrl).
+  content: string;
+  fileUrl?: string;
   comments?: string;
   submittedAt: string;
   // Grading (set by admin)

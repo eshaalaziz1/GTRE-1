@@ -61,6 +61,7 @@ const EMPTY_STATE: GtreState = {
 };
 
 const IMAGE_BUCKET = "site-images";
+const SUBMISSIONS_BUCKET = "submissions";
 
 /* ----------------------------- row mappers ------------------------------- */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -126,6 +127,7 @@ const mapAssignment = (r: any): Assignment => ({
   points: r.points ?? 0,
   category: r.category,
   published: r.published,
+  allowedFormats: r.allowed_formats ?? undefined,
   createdAt: r.created_at,
 });
 
@@ -137,6 +139,7 @@ const mapSubmission = (r: any): Submission => ({
   memberEmail: r.member_email ?? "",
   type: r.type,
   content: r.content,
+  fileUrl: r.file_url ?? undefined,
   comments: r.comments ?? undefined,
   submittedAt: r.submitted_at,
   grade: r.grade ?? undefined,
@@ -662,6 +665,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
             points: a.points,
             category: a.category,
             published: a.published,
+            allowed_formats: a.allowedFormats?.length ? a.allowedFormats : null,
           });
           await loadAll();
         })();
@@ -676,6 +680,9 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           if (patch.points !== undefined) row.points = patch.points;
           if (patch.category !== undefined) row.category = patch.category;
           if (patch.published !== undefined) row.published = patch.published;
+          if (patch.allowedFormats !== undefined) {
+            row.allowed_formats = patch.allowedFormats.length ? patch.allowedFormats : null;
+          }
           await supabase.from("assignments").update(row).eq("id", id);
           await loadAll();
         })();
@@ -687,30 +694,47 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           await loadAll();
         })();
       },
-      submitAssignment(input) {
-        void (async () => {
-          const acct = me();
-          if (!acct) return;
-          await supabase.from("submissions").upsert(
-            {
-              assignment_id: input.assignmentId,
-              account_id: acct.id,
-              member_name: acct.name,
-              member_email: acct.email,
-              type: input.type,
-              content: input.content,
-              comments: input.comments ?? null,
-              submitted_at: new Date().toISOString(),
-              // Clear any prior grade on resubmission.
-              grade: null,
-              feedback: null,
-              graded_at: null,
-              graded_by: null,
-            },
-            { onConflict: "assignment_id,account_id" },
-          );
-          await loadAll();
-        })();
+      async submitAssignment(input) {
+        const acct = me();
+        if (!acct) return { ok: false, error: "You need to be signed in." };
+
+        let fileUrl: string | null = null;
+        let content = input.content;
+        if (input.type === "pdf" || input.type === "doc" || input.type === "docx") {
+          if (!input.file) return { ok: false, error: "Choose a file to upload." };
+          const ext = input.file.name.includes(".") ? input.file.name.split(".").pop() : input.type;
+          const path = `${input.assignmentId}/${acct.id}-${Date.now()}.${ext}`;
+          const up = await supabase.storage
+            .from(SUBMISSIONS_BUCKET)
+            .upload(path, input.file, { upsert: true, contentType: input.file.type || undefined });
+          if (up.error) return { ok: false, error: up.error.message };
+          const { data: pub } = supabase.storage.from(SUBMISSIONS_BUCKET).getPublicUrl(path);
+          fileUrl = pub.publicUrl;
+          content = input.file.name;
+        }
+
+        const { error } = await supabase.from("submissions").upsert(
+          {
+            assignment_id: input.assignmentId,
+            account_id: acct.id,
+            member_name: acct.name,
+            member_email: acct.email,
+            type: input.type,
+            content,
+            file_url: fileUrl,
+            comments: input.comments ?? null,
+            submitted_at: new Date().toISOString(),
+            // Clear any prior grade on resubmission.
+            grade: null,
+            feedback: null,
+            graded_at: null,
+            graded_by: null,
+          },
+          { onConflict: "assignment_id,account_id" },
+        );
+        if (error) return { ok: false, error: "Couldn't submit. Please try again." };
+        await loadAll();
+        return { ok: true };
       },
       gradeSubmission(id, grade, feedback) {
         void (async () => {
