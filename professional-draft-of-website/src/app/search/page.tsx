@@ -47,8 +47,15 @@ function SearchInner() {
         category: "Material",
         keywords: r.category,
       })),
+      ...state.opportunities.map((o) => ({
+        title: o.title,
+        description: `${o.company} · ${o.location}`,
+        href: "/portal/opportunities",
+        category: "Opportunity",
+        keywords: `${o.jobType} ${o.sector} jobs internships careers ${o.company}`,
+      })),
     ],
-    [state.events, state.announcements, state.resources],
+    [state.events, state.announcements, state.resources, state.opportunities],
   );
 
   const q = query.trim().toLowerCase();

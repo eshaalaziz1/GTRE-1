@@ -24,6 +24,7 @@ import type {
   ClubEvent,
   GtreState,
   MeetingNote,
+  Opportunity,
   Question,
   Resource,
   Role,
@@ -122,6 +123,11 @@ export type GtreContextValue = {
   addResource: (r: Omit<Resource, "id" | "createdAt">) => void;
   updateResource: (id: string, patch: Partial<Omit<Resource, "id" | "createdAt">>) => void;
   deleteResource: (id: string) => void;
+
+  // Opportunities (job/internship board)
+  addOpportunity: (o: Omit<Opportunity, "id" | "createdAt">) => void;
+  updateOpportunity: (id: string, patch: Partial<Omit<Opportunity, "id" | "createdAt">>) => void;
+  deleteOpportunity: (id: string) => void;
 
   // Site info
   updateSiteInfo: (patch: Partial<SiteInfo>) => void;

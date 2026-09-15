@@ -32,6 +32,7 @@ import type {
   ClubEvent,
   GtreState,
   MeetingNote,
+  Opportunity,
   Question,
   Resource,
   Role,
@@ -52,6 +53,7 @@ const EMPTY_STATE: GtreState = {
   questions: [],
   meetingNotes: [],
   resources: [],
+  opportunities: [],
   siteInfo: SEED.siteInfo,
   siteImages: {},
   siteText: {},
@@ -174,6 +176,22 @@ const mapResource = (r: any): Resource => ({
   createdAt: r.created_at,
 });
 
+const mapOpportunity = (r: any): Opportunity => ({
+  id: r.id,
+  title: r.title,
+  company: r.company,
+  location: r.location ?? "",
+  jobType: r.job_type,
+  sector: r.sector ?? "",
+  compensation: r.compensation ?? "",
+  deadline: r.deadline ?? "",
+  applicationLink: r.application_link,
+  postedBy: r.posted_by ?? "",
+  isAlumPosted: r.is_alum_posted ?? false,
+  description: r.description ?? "",
+  createdAt: r.created_at,
+});
+
 const mapSiteInfo = (r: any): SiteInfo => ({
   meetingTime: r.meeting_time ?? "",
   meetingLocation: r.meeting_location ?? "",
@@ -207,6 +225,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       questions,
       notes,
       resources,
+      opportunities,
       siteInfo,
       siteImages,
       siteText,
@@ -220,6 +239,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       supabase.from("questions").select("*").order("created_at", { ascending: false }),
       supabase.from("meeting_notes").select("*").order("date", { ascending: false }),
       supabase.from("resources").select("*").order("created_at", { ascending: false }),
+      supabase.from("opportunities").select("*").order("created_at", { ascending: false }),
       supabase.from("site_info").select("*").eq("id", 1).maybeSingle(),
       supabase.from("site_images").select("*"),
       supabase.from("site_text").select("*"),
@@ -250,6 +270,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       questions: (questions.data ?? []).map(mapQuestion),
       meetingNotes: (notes.data ?? []).map(mapNote),
       resources: (resources.data ?? []).map(mapResource),
+      opportunities: (opportunities.data ?? []).map(mapOpportunity),
       siteInfo: siteInfo.data ? mapSiteInfo(siteInfo.data) : SEED.siteInfo,
       siteImages: siteImagesMap,
       siteText: siteTextMap,
@@ -777,6 +798,50 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       deleteResource(id) {
         void (async () => {
           await supabase.from("resources").delete().eq("id", id);
+          await loadAll();
+        })();
+      },
+
+      // ---- Opportunities --------------------------------------------------
+      addOpportunity(o) {
+        void (async () => {
+          await supabase.from("opportunities").insert({
+            title: o.title,
+            company: o.company,
+            location: o.location || null,
+            job_type: o.jobType,
+            sector: o.sector || null,
+            compensation: o.compensation || null,
+            deadline: o.deadline || null,
+            application_link: o.applicationLink,
+            posted_by: o.postedBy || null,
+            is_alum_posted: o.isAlumPosted,
+            description: o.description || null,
+          });
+          await loadAll();
+        })();
+      },
+      updateOpportunity(id, patch) {
+        void (async () => {
+          const row: Record<string, unknown> = {};
+          if (patch.title !== undefined) row.title = patch.title;
+          if (patch.company !== undefined) row.company = patch.company;
+          if (patch.location !== undefined) row.location = patch.location || null;
+          if (patch.jobType !== undefined) row.job_type = patch.jobType;
+          if (patch.sector !== undefined) row.sector = patch.sector || null;
+          if (patch.compensation !== undefined) row.compensation = patch.compensation || null;
+          if (patch.deadline !== undefined) row.deadline = patch.deadline || null;
+          if (patch.applicationLink !== undefined) row.application_link = patch.applicationLink;
+          if (patch.postedBy !== undefined) row.posted_by = patch.postedBy || null;
+          if (patch.isAlumPosted !== undefined) row.is_alum_posted = patch.isAlumPosted;
+          if (patch.description !== undefined) row.description = patch.description || null;
+          await supabase.from("opportunities").update(row).eq("id", id);
+          await loadAll();
+        })();
+      },
+      deleteOpportunity(id) {
+        void (async () => {
+          await supabase.from("opportunities").delete().eq("id", id);
           await loadAll();
         })();
       },

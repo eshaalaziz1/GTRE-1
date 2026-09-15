@@ -153,6 +153,24 @@ create table if not exists public.resources (
   created_at  timestamptz not null default now()
 );
 
+-- Job/internship board postings, managed by admins in Admin -> Opportunities
+-- and shown to members on the portal's Opportunities page.
+create table if not exists public.opportunities (
+  id               uuid primary key default gen_random_uuid(),
+  title            text not null,
+  company          text not null,
+  location         text,
+  job_type         text not null default 'Internship', -- 'Internship' | 'Full-Time' | 'Co-op'
+  sector           text,
+  compensation     text,
+  deadline         date,
+  application_link text not null,
+  posted_by        text,
+  is_alum_posted   boolean not null default false,
+  description      text,
+  created_at       timestamptz not null default now()
+);
+
 -- Single-row editable site info.
 create table if not exists public.site_info (
   id                       int primary key default 1,
@@ -246,6 +264,7 @@ alter table public.submissions   enable row level security;
 alter table public.questions     enable row level security;
 alter table public.meeting_notes enable row level security;
 alter table public.resources     enable row level security;
+alter table public.opportunities enable row level security;
 alter table public.site_info     enable row level security;
 alter table public.site_images   enable row level security;
 alter table public.site_text     enable row level security;
@@ -304,6 +323,13 @@ drop policy if exists "members read assignments" on public.assignments;
 drop policy if exists "admin write assignments"  on public.assignments;
 create policy "members read assignments" on public.assignments for select using (public.is_approved());
 create policy "admin write assignments"  on public.assignments for all using (public.is_admin()) with check (public.is_admin());
+
+-- Opportunities: members-only board (matches the portal page, which is behind
+-- RequireAuth), admins manage postings.
+drop policy if exists "members read opportunities" on public.opportunities;
+drop policy if exists "admin write opportunities"  on public.opportunities;
+create policy "members read opportunities" on public.opportunities for select using (public.is_approved());
+create policy "admin write opportunities"  on public.opportunities for all using (public.is_admin()) with check (public.is_admin());
 
 -- Submissions: a member manages their own; admins read/grade all.
 drop policy if exists "own submissions"        on public.submissions;

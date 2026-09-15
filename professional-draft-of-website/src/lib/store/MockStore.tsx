@@ -440,6 +440,23 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
         setState((s) => ({ ...s, resources: s.resources.filter((r) => r.id !== id) }));
       },
 
+      // ---- Opportunities --------------------------------------------------
+      addOpportunity(o) {
+        setState((s) => ({
+          ...s,
+          opportunities: [{ ...o, id: uid("opp"), createdAt: nowIso() }, ...s.opportunities],
+        }));
+      },
+      updateOpportunity(id, patch) {
+        setState((s) => ({
+          ...s,
+          opportunities: s.opportunities.map((o) => (o.id === id ? { ...o, ...patch } : o)),
+        }));
+      },
+      deleteOpportunity(id) {
+        setState((s) => ({ ...s, opportunities: s.opportunities.filter((o) => o.id !== id) }));
+      },
+
       // ---- Site info ----------------------------------------------------
       updateSiteInfo(patch) {
         setState((s) => ({ ...s, siteInfo: { ...s.siteInfo, ...patch } }));

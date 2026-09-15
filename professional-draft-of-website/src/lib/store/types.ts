@@ -150,6 +150,23 @@ export type Resource = {
   createdAt: string;
 };
 
+/** A job/internship board posting, managed by admins and shown to members. */
+export type Opportunity = {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  jobType: "Internship" | "Full-Time" | "Co-op";
+  sector: string;
+  compensation: string;
+  deadline: string; // ISO yyyy-mm-dd
+  applicationLink: string;
+  postedBy: string;
+  isAlumPosted: boolean;
+  description: string;
+  createdAt: string;
+};
+
 /**
  * Editable site information so future exec teams change copy without code.
  * Extend this object with any field a page reads; the admin "Site Info" editor
@@ -179,6 +196,7 @@ export type GtreState = {
   questions: Question[];
   meetingNotes: MeetingNote[];
   resources: Resource[];
+  opportunities: Opportunity[];
   siteInfo: SiteInfo;
   // Admin-swappable images by slot key (see src/lib/images.ts). A slot maps to an
   // uploaded image URL (Supabase Storage) or a data URL (mock); missing slots

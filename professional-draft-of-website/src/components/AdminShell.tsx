@@ -18,6 +18,7 @@ const NAV = [
   { href: "/admin/assignments", label: "Assignments & Grading" },
   { href: "/admin/questions", label: "Questions" },
   { href: "/admin/resources", label: "Materials & Documents" },
+  { href: "/admin/opportunities", label: "Opportunities" },
   { href: "/admin/site-info", label: "Site Info" },
   { href: "/admin/content", label: "Content" },
   { href: "/admin/images", label: "Images" },
