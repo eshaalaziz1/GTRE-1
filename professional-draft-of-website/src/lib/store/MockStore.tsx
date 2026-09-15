@@ -344,9 +344,27 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
           submissions: s.submissions.filter((sub) => sub.assignmentId !== id),
         }));
       },
-      submitAssignment(input) {
+      async submitAssignment(input) {
         const acct = me();
-        if (!acct) return;
+        if (!acct) return { ok: false, error: "You need to be signed in." };
+
+        let fileUrl: string | undefined;
+        let content = input.content;
+        if (input.type === "pdf" || input.type === "doc" || input.type === "docx") {
+          if (!input.file) return { ok: false, error: "Choose a file to upload." };
+          try {
+            fileUrl = await new Promise<string>((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result as string);
+              reader.onerror = () => reject(new Error("Could not read the file."));
+              reader.readAsDataURL(input.file as File);
+            });
+          } catch (e) {
+            return { ok: false, error: e instanceof Error ? e.message : "Upload failed." };
+          }
+          content = input.file.name;
+        }
+
         const rec: Submission = {
           id: uid("sub"),
           assignmentId: input.assignmentId,
@@ -354,7 +372,8 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
           memberName: acct.name,
           memberEmail: acct.email,
           type: input.type,
-          content: input.content,
+          content,
+          fileUrl,
           comments: input.comments,
           submittedAt: nowIso(),
         };
@@ -368,6 +387,7 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
             ),
           ],
         }));
+        return { ok: true };
       },
       gradeSubmission(id, grade, feedback) {
         setState((s) => ({
@@ -438,6 +458,23 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
       },
       deleteResource(id) {
         setState((s) => ({ ...s, resources: s.resources.filter((r) => r.id !== id) }));
+      },
+
+      // ---- Opportunities --------------------------------------------------
+      addOpportunity(o) {
+        setState((s) => ({
+          ...s,
+          opportunities: [{ ...o, id: uid("opp"), createdAt: nowIso() }, ...s.opportunities],
+        }));
+      },
+      updateOpportunity(id, patch) {
+        setState((s) => ({
+          ...s,
+          opportunities: s.opportunities.map((o) => (o.id === id ? { ...o, ...patch } : o)),
+        }));
+      },
+      deleteOpportunity(id) {
+        setState((s) => ({ ...s, opportunities: s.opportunities.filter((o) => o.id !== id) }));
       },
 
       // ---- Site info ----------------------------------------------------

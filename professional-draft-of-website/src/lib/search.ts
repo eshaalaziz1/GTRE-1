@@ -6,7 +6,6 @@
 import { BOARD } from "./board";
 import { ANALYSTS } from "./analysts";
 import { EXEC_TERMS } from "./leadership";
-import { OPPORTUNITIES } from "./opportunities";
 
 export type SearchItem = {
   title: string;
@@ -57,13 +56,6 @@ export const STATIC_INDEX: SearchItem[] = [
       keywords: `${m.role} exec board ${t.term}`,
     })),
   ),
-  ...OPPORTUNITIES.map((o) => ({
-    title: o.title,
-    description: `${o.company} · ${o.location}`,
-    href: "/portal/opportunities",
-    category: "Opportunity",
-    keywords: `${o.jobType} ${o.sector} jobs internships careers ${o.company}`,
-  })),
 ];
 
 export function scoreMatch(item: SearchItem, q: string): number {

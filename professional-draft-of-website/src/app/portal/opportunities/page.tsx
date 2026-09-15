@@ -2,25 +2,33 @@
 
 import { useMemo, useState } from "react";
 import { Badge, EmptyState } from "@/components/ui";
-import { OPPORTUNITIES, type Opportunity } from "@/lib/opportunities";
+import { useGtre } from "@/lib/store/GtreStore";
+import type { Opportunity } from "@/lib/store/types";
 
-// Members-only job & internship board, shown inside the member portal. Roles are
-// managed in @/lib/opportunities (empty until the exec team adds the real ones).
+const JOB_TYPES: Opportunity["jobType"][] = ["Internship", "Full-Time", "Co-op"];
+
+// Members-only job & internship board, shown inside the member portal. Roles
+// are posted by admins in Admin -> Opportunities and read live from the store.
 export default function PortalOpportunities() {
+  const { state } = useGtre();
+  const { opportunities } = state;
+  const [jobType, setJobType] = useState<"All" | Opportunity["jobType"]>("All");
   const [sector, setSector] = useState("All");
   const [alumniOnly, setAlumniOnly] = useState(false);
 
   const sectors = useMemo(
-    () => ["All", ...Array.from(new Set(OPPORTUNITIES.map((o) => o.sector))).sort()],
-    []
+    () => ["All", ...Array.from(new Set(opportunities.map((o) => o.sector).filter(Boolean))).sort()],
+    [opportunities]
   );
 
   const roles = useMemo(
     () =>
-      OPPORTUNITIES.filter((o) => sector === "All" || o.sector === sector)
+      opportunities
+        .filter((o) => jobType === "All" || o.jobType === jobType)
+        .filter((o) => sector === "All" || o.sector === sector)
         .filter((o) => !alumniOnly || o.isAlumPosted)
         .sort((a, b) => a.deadline.localeCompare(b.deadline)),
-    [sector, alumniOnly]
+    [opportunities, jobType, sector, alumniOnly]
   );
 
   return (
@@ -32,13 +40,28 @@ export default function PortalOpportunities() {
         </p>
       </div>
 
-      {OPPORTUNITIES.length === 0 ? (
+      {opportunities.length === 0 ? (
         <EmptyState
           title="No open roles right now."
           body="The exec team will post internships, co-ops, and full-time analyst roles here as they come in. Check back soon."
         />
       ) : (
         <>
+          <div className="flex flex-wrap gap-2">
+            {(["All", ...JOB_TYPES] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setJobType(t)}
+                className={`px-3.5 py-1.5 rounded-full text-[13px] font-semibold border transition-colors ${
+                  jobType === t
+                    ? "bg-navy text-white border-navy"
+                    : "border-border text-secondary hover:border-navy hover:text-navy"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
           <div className="flex flex-wrap items-center gap-3 justify-between">
             <div className="flex flex-wrap gap-2">
               {sectors.map((s) => (
@@ -68,11 +91,15 @@ export default function PortalOpportunities() {
           <p className="text-[13px] text-secondary">
             {roles.length} {roles.length === 1 ? "role" : "roles"}
           </p>
-          <div className="space-y-4">
-            {roles.map((o) => (
-              <OpportunityCard key={o.id} o={o} />
-            ))}
-          </div>
+          {roles.length === 0 ? (
+            <EmptyState title="No roles match these filters." />
+          ) : (
+            <div className="space-y-4">
+              {roles.map((o) => (
+                <OpportunityCard key={o.id} o={o} />
+              ))}
+            </div>
+          )}
         </>
       )}
     </div>

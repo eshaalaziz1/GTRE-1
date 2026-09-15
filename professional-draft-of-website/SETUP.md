@@ -70,9 +70,16 @@ The Supabase adapter is **already built** (`src/lib/store/SupabaseStore.tsx` +
    This is what stops someone signing up with an email that isn't theirs — the
    account can't sign in until the real owner enters the code sent to that inbox.
 4. **Set redirect URLs.** In **Authentication → URL Configuration**, set the
-   **Site URL** to your deployed origin (e.g. `https://gtre.org`) and add it
-   (plus `http://localhost:3000` for local dev) to **Redirect URLs**. Sign-up
-   confirmation links send the user to `/login`.
+   **Site URL** to your deployed origin (e.g. `https://gtrealestate.org`).
+   Then, in **Redirect URLs**, add a wildcard for that origin, e.g.
+   `https://gtrealestate.org/**` (plus `http://localhost:3000/**` for local
+   dev) — **not just the bare origin**. Supabase only follows a redirect
+   whose exact URL matches an entry on this allowlist; the app sends users to
+   specific paths (`/login` after sign-up confirmation, `/reset-password`
+   after a password-reset email), so if only the bare origin is listed, those
+   links fail to match and Supabase silently falls back to the Site URL
+   (dropping the user on the homepage instead of, e.g., the reset-password
+   form with their recovery token).
 5. **Add env vars.** Copy `.env.example` → `.env.local` and fill in the
    **Project URL** and **anon key** (Project Settings → API). Set
    `NEXT_PUBLIC_DATA_BACKEND=supabase`. On Vercel, add the same three variables

@@ -102,8 +102,13 @@ create table if not exists public.assignments (
   points      int not null default 0,
   category    text not null default 'Assignment',
   published   boolean not null default true,
+  -- Which submission formats members may use ('link','text','pdf','doc','docx').
+  -- Null/empty means all formats are accepted.
+  allowed_formats text[],
   created_at  timestamptz not null default now()
 );
+-- Add allowed_formats if the assignments table already existed from an older schema.
+alter table public.assignments add column if not exists allowed_formats text[];
 
 create table if not exists public.submissions (
   id            uuid primary key default gen_random_uuid(),
@@ -113,6 +118,9 @@ create table if not exists public.submissions (
   member_email  text,
   type          text not null,
   content       text not null,
+  -- Set when type is pdf/doc/docx: the uploaded file's URL in the
+  -- 'submissions' storage bucket. Null for link/text submissions.
+  file_url      text,
   comments      text,
   submitted_at  timestamptz not null default now(),
   grade         int,
@@ -121,6 +129,8 @@ create table if not exists public.submissions (
   graded_by     text,
   unique (assignment_id, account_id)
 );
+-- Add file_url if the submissions table already existed from an older schema.
+alter table public.submissions add column if not exists file_url text;
 
 create table if not exists public.questions (
   id          uuid primary key default gen_random_uuid(),
@@ -151,6 +161,24 @@ create table if not exists public.resources (
   url         text not null,
   category    text not null default 'Link',
   created_at  timestamptz not null default now()
+);
+
+-- Job/internship board postings, managed by admins in Admin -> Opportunities
+-- and shown to members on the portal's Opportunities page.
+create table if not exists public.opportunities (
+  id               uuid primary key default gen_random_uuid(),
+  title            text not null,
+  company          text not null,
+  location         text,
+  job_type         text not null default 'Internship', -- 'Internship' | 'Full-Time' | 'Co-op'
+  sector           text,
+  compensation     text,
+  deadline         date,
+  application_link text not null,
+  posted_by        text,
+  is_alum_posted   boolean not null default false,
+  description      text,
+  created_at       timestamptz not null default now()
 );
 
 -- Single-row editable site info.
@@ -246,6 +274,7 @@ alter table public.submissions   enable row level security;
 alter table public.questions     enable row level security;
 alter table public.meeting_notes enable row level security;
 alter table public.resources     enable row level security;
+alter table public.opportunities enable row level security;
 alter table public.site_info     enable row level security;
 alter table public.site_images   enable row level security;
 alter table public.site_text     enable row level security;
@@ -304,6 +333,13 @@ drop policy if exists "members read assignments" on public.assignments;
 drop policy if exists "admin write assignments"  on public.assignments;
 create policy "members read assignments" on public.assignments for select using (public.is_approved());
 create policy "admin write assignments"  on public.assignments for all using (public.is_admin()) with check (public.is_admin());
+
+-- Opportunities: members-only board (matches the portal page, which is behind
+-- RequireAuth), admins manage postings.
+drop policy if exists "members read opportunities" on public.opportunities;
+drop policy if exists "admin write opportunities"  on public.opportunities;
+create policy "members read opportunities" on public.opportunities for select using (public.is_approved());
+create policy "admin write opportunities"  on public.opportunities for all using (public.is_admin()) with check (public.is_admin());
 
 -- Submissions: a member manages their own; admins read/grade all.
 drop policy if exists "own submissions"        on public.submissions;
@@ -366,3 +402,32 @@ create policy "admin write site-images" on storage.objects
   for all
   using (bucket_id = 'site-images' and public.is_admin())
   with check (bucket_id = 'site-images' and public.is_admin());
+
+-- ===========================================================================
+-- Storage: assignment submission files (pdf/doc/docx). Public bucket, same
+-- trust level as site-images/resources above (readable by anyone with the
+-- URL, not listable); members upload their own work, admins manage all of it.
+-- ===========================================================================
+insert into storage.buckets (id, name, public)
+  values ('submissions', 'submissions', true)
+  on conflict (id) do update set public = true;
+
+drop policy if exists "public read submissions" on storage.objects;
+create policy "public read submissions" on storage.objects
+  for select using (bucket_id = 'submissions');
+
+drop policy if exists "members upload submissions" on storage.objects;
+create policy "members upload submissions" on storage.objects
+  for insert
+  with check (bucket_id = 'submissions' and public.is_approved());
+
+drop policy if exists "members manage own submissions" on storage.objects;
+create policy "members manage own submissions" on storage.objects
+  for update using (bucket_id = 'submissions' and owner = auth.uid())
+  with check (bucket_id = 'submissions' and owner = auth.uid());
+
+drop policy if exists "admin manage submissions files" on storage.objects;
+create policy "admin manage submissions files" on storage.objects
+  for all
+  using (bucket_id = 'submissions' and public.is_admin())
+  with check (bucket_id = 'submissions' and public.is_admin());

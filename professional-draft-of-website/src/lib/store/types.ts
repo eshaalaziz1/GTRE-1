@@ -85,6 +85,17 @@ export type CheckIn = {
   checkedInAt: string;
 };
 
+/** The format a member may submit an assignment in. */
+export type SubmissionFormat = "link" | "text" | "pdf" | "doc" | "docx";
+export const SUBMISSION_FORMAT_LABELS: Record<SubmissionFormat, string> = {
+  link: "Link (Google Drive, etc.)",
+  text: "Typed response",
+  pdf: "PDF file",
+  doc: "Word file (.doc)",
+  docx: "Word file (.docx)",
+};
+export const ALL_SUBMISSION_FORMATS: SubmissionFormat[] = ["link", "text", "pdf", "doc", "docx"];
+
 /** An assignment definition created by an admin. */
 export type Assignment = {
   id: string;
@@ -95,6 +106,10 @@ export type Assignment = {
   points: number;
   category: "Assignment" | "Quiz" | "Case Study";
   published: boolean;
+  // Which submission formats members may use for this assignment. Empty/undefined
+  // means all formats are accepted (keeps assignments created before this field
+  // existed working unchanged).
+  allowedFormats?: SubmissionFormat[];
   createdAt: string;
 };
 
@@ -105,8 +120,11 @@ export type Submission = {
   accountId: string;
   memberName: string;
   memberEmail: string;
-  type: "link" | "text" | "file";
-  content: string; // URL, text, or file name
+  type: SubmissionFormat;
+  // For "link"/"text": the URL or typed text. For pdf/doc/docx: the uploaded
+  // file's original name (the file itself lives at fileUrl).
+  content: string;
+  fileUrl?: string;
   comments?: string;
   submittedAt: string;
   // Grading (set by admin)
@@ -150,6 +168,23 @@ export type Resource = {
   createdAt: string;
 };
 
+/** A job/internship board posting, managed by admins and shown to members. */
+export type Opportunity = {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  jobType: "Internship" | "Full-Time" | "Co-op";
+  sector: string;
+  compensation: string;
+  deadline: string; // ISO yyyy-mm-dd
+  applicationLink: string;
+  postedBy: string;
+  isAlumPosted: boolean;
+  description: string;
+  createdAt: string;
+};
+
 /**
  * Editable site information so future exec teams change copy without code.
  * Extend this object with any field a page reads; the admin "Site Info" editor
@@ -179,6 +214,7 @@ export type GtreState = {
   questions: Question[];
   meetingNotes: MeetingNote[];
   resources: Resource[];
+  opportunities: Opportunity[];
   siteInfo: SiteInfo;
   // Admin-swappable images by slot key (see src/lib/images.ts). A slot maps to an
   // uploaded image URL (Supabase Storage) or a data URL (mock); missing slots

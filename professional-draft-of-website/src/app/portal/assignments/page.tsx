@@ -1,9 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGtre } from "@/lib/store/GtreStore";
 import { Badge, Button, Card, EmptyState, Notice, Select, TextArea } from "@/components/ui";
-import type { Assignment, Submission } from "@/lib/store/types";
+import {
+  ALL_SUBMISSION_FORMATS,
+  SUBMISSION_FORMAT_LABELS,
+  type Assignment,
+  type Submission,
+  type SubmissionFormat,
+} from "@/lib/store/types";
+
+const ACCEPT_BY_FORMAT: Record<SubmissionFormat, string> = {
+  link: "",
+  text: "",
+  pdf: ".pdf",
+  doc: ".doc",
+  docx: ".docx",
+};
 
 export default function AssignmentsPage() {
   const { state, currentAccount } = useGtre();
@@ -69,20 +83,33 @@ function AssignmentRow({
 }) {
   const { submitAssignment } = useGtre();
   const [open, setOpen] = useState(false);
-  const [type, setType] = useState<Submission["type"]>("link");
+  const allowedFormats = useMemo(
+    () => (assignment.allowedFormats?.length ? assignment.allowedFormats : ALL_SUBMISSION_FORMATS),
+    [assignment.allowedFormats],
+  );
+  const [type, setType] = useState<SubmissionFormat>(allowedFormats[0]);
   const [content, setContent] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [comments, setComments] = useState("");
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const isFileType = type === "pdf" || type === "doc" || type === "docx";
 
   const overdue = !submission && assignment.dueDate < "2026-07-05";
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!content.trim()) return;
-    submitAssignment({ assignmentId: assignment.id, type, content, comments });
+    setError("");
+    if (isFileType ? !file : !content.trim()) return;
+    setBusy(true);
+    const res = await submitAssignment({ assignmentId: assignment.id, type, content, file: file ?? undefined, comments });
+    setBusy(false);
+    if (!res.ok) return setError(res.error || "Couldn't submit. Please try again.");
     setSaved(true);
     setOpen(false);
     setContent("");
+    setFile(null);
     setComments("");
   }
 
@@ -116,8 +143,12 @@ function AssignmentRow({
             </span>
           </div>
           <div className="text-[14px] text-text mt-2 break-words">
-            <span className="font-semibold text-navy">{submission.type}:</span>{" "}
-            {submission.type === "link" ? (
+            <span className="font-semibold text-navy">{SUBMISSION_FORMAT_LABELS[submission.type]}:</span>{" "}
+            {submission.fileUrl ? (
+              <a href={submission.fileUrl} className="text-gold-hover hover:text-navy underline" target="_blank" rel="noreferrer">
+                {submission.content}
+              </a>
+            ) : submission.type === "link" ? (
               <a href={submission.content} className="text-gold-hover hover:text-navy underline" target="_blank" rel="noreferrer">
                 {submission.content}
               </a>
@@ -143,29 +174,45 @@ function AssignmentRow({
 
       {open && !submission && (
         <form onSubmit={onSubmit} className="mt-4 pt-4 border-t border-border space-y-4">
+          {error && <Notice tone="error">{error}</Notice>}
           <div className="grid sm:grid-cols-2 gap-3">
             <Select
               label="Submission type"
               value={type}
-              onChange={(v) => setType(v as Submission["type"])}
-              options={[
-                { value: "link", label: "Link (Google Drive, etc.)" },
-                { value: "text", label: "Typed response" },
-                { value: "file", label: "File name / reference" },
-              ]}
+              onChange={(v) => {
+                setType(v as SubmissionFormat);
+                setContent("");
+                setFile(null);
+              }}
+              options={allowedFormats.map((f) => ({ value: f, label: SUBMISSION_FORMAT_LABELS[f] }))}
             />
           </div>
-          <TextArea
-            label={type === "link" ? "Paste your link" : type === "file" ? "File name" : "Your response"}
-            value={content}
-            onChange={setContent}
-            placeholder={type === "link" ? "https://..." : ""}
-            rows={type === "text" ? 5 : 2}
-            required
-          />
+          {isFileType ? (
+            <label className="block">
+              <span className="text-[12px] font-semibold text-navy uppercase tracking-wide">
+                {SUBMISSION_FORMAT_LABELS[type]}
+              </span>
+              <input
+                type="file"
+                accept={ACCEPT_BY_FORMAT[type]}
+                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                required
+                className="mt-1.5 w-full text-sm file:mr-3 file:px-3.5 file:py-2 file:rounded-lg file:border-0 file:bg-navy file:text-white file:text-sm file:font-semibold file:cursor-pointer"
+              />
+            </label>
+          ) : (
+            <TextArea
+              label={type === "link" ? "Paste your link" : "Your response"}
+              value={content}
+              onChange={setContent}
+              placeholder={type === "link" ? "https://..." : ""}
+              rows={type === "text" ? 5 : 2}
+              required
+            />
+          )}
           <TextArea label="Comments (optional)" value={comments} onChange={setComments} rows={2} />
-          <Button type="submit" variant="gold">
-            Submit assignment
+          <Button type="submit" variant="gold" disabled={busy}>
+            {busy ? "Submitting…" : "Submit assignment"}
           </Button>
         </form>
       )}
