@@ -21,6 +21,7 @@ const TABS = [
   { href: "/portal/resources", label: "Materials" },
   { href: "/portal/case-study", label: "Case Study" },
   { href: "/portal/opportunities", label: "Opportunities" },
+  { href: "/portal/rolodex-profile", label: "Rolodex Profile" },
   { href: "/portal/forum", label: "Q&A" },
   { href: "/portal/profile", label: "Profile" },
 ];

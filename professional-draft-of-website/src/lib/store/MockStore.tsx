@@ -16,6 +16,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { SEED } from "./seed";
 import { GtreContext, isGeorgiaTechEmail, type GtreContextValue } from "./context";
+import { slugify } from "@/lib/slug";
 import type {
   Account,
   Announcement,
@@ -26,6 +27,7 @@ import type {
   MeetingNote,
   Question,
   Resource,
+  RolodexProfile,
   Submission,
 } from "./types";
 
@@ -177,6 +179,18 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
       // The prototype has no email service; these satisfy the contract so the
       // forgot-password screens work in the demo without actually sending mail.
       async requestPasswordReset() {
+        return { ok: true };
+      },
+      async confirmPasswordReset(email, _token, newPassword) {
+        if (newPassword.length < 8) {
+          return { ok: false, error: "New password must be at least 8 characters." };
+        }
+        setState((s) => ({
+          ...s,
+          accounts: s.accounts.map((a) =>
+            a.email.toLowerCase() === email.trim().toLowerCase() ? { ...a, passwordHash: newPassword } : a,
+          ),
+        }));
         return { ok: true };
       },
       async setNewPassword(newPassword) {
@@ -475,6 +489,65 @@ export function MockGtreProvider({ children }: { children: ReactNode }) {
       },
       deleteOpportunity(id) {
         setState((s) => ({ ...s, opportunities: s.opportunities.filter((o) => o.id !== id) }));
+      },
+
+      // ---- Rolodex profiles ----------------------------------------------
+      addRolodexProfile(p) {
+        setState((s) => {
+          const base = slugify(p.name);
+          let slug = base;
+          let n = 2;
+          while (s.rolodexProfiles.some((r) => r.slug === slug)) slug = `${base}-${n++}`;
+          const rec: RolodexProfile = {
+            id: uid("rolo"),
+            accountId: p.accountId,
+            slug,
+            name: p.name,
+            major: p.major ?? "",
+            concentration: "",
+            year: "",
+            gradYear: p.gradYear,
+            hometown: "",
+            status: "Available",
+            disciplines: [],
+            skills: [],
+            summary: "",
+            bio: "",
+            experience: "",
+            experiences: [],
+            coursework: [],
+            linkedin: "",
+            published: false,
+            createdAt: nowIso(),
+          };
+          return { ...s, rolodexProfiles: [rec, ...s.rolodexProfiles] };
+        });
+      },
+      updateRolodexProfile(id, patch) {
+        setState((s) => ({
+          ...s,
+          rolodexProfiles: s.rolodexProfiles.map((r) => (r.id === id ? { ...r, ...patch } : r)),
+        }));
+      },
+      deleteRolodexProfile(id) {
+        setState((s) => ({ ...s, rolodexProfiles: s.rolodexProfiles.filter((r) => r.id !== id) }));
+      },
+      async setRolodexResume(id, file) {
+        try {
+          const dataUrl = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = () => reject(new Error("Could not read the file."));
+            reader.readAsDataURL(file);
+          });
+          setState((s) => ({
+            ...s,
+            rolodexProfiles: s.rolodexProfiles.map((r) => (r.id === id ? { ...r, resumeUrl: dataUrl } : r)),
+          }));
+          return { ok: true };
+        } catch (e) {
+          return { ok: false, error: e instanceof Error ? e.message : "Upload failed." };
+        }
       },
 
       // ---- Site info ----------------------------------------------------

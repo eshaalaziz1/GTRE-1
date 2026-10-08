@@ -28,6 +28,7 @@ import type {
   Opportunity,
   Question,
   Resource,
+  RolodexProfile,
   Role,
   SiteInfo,
   Submission,
@@ -69,9 +70,16 @@ export type GtreContextValue = {
   logout: () => void;
   // Change the signed-in user's own password (verifies the current one first).
   changePassword: (currentPassword: string, newPassword: string) => Promise<{ ok: boolean; error?: string }>;
-  // Forgot-password: email a reset link, then set a new password from the
-  // recovery session the link establishes.
+  // Forgot-password: email a 6-digit reset code (a code, not a link, more
+  // reliable for @gatech.edu / Outlook, where link scanners can consume and
+  // invalidate magic links before the member ever clicks them, see
+  // confirmSignup below for the same issue on sign-up). The member enters the
+  // code + new password together via confirmPasswordReset.
   requestPasswordReset: (email: string) => Promise<{ ok: boolean; error?: string }>;
+  confirmPasswordReset: (email: string, token: string, newPassword: string) => Promise<{ ok: boolean; error?: string }>;
+  // Legacy path: sets a new password from an existing recovery session (one
+  // established by clicking a magic-link reset email, if the Supabase project
+  // still uses the link-based template instead of the code one above).
   setNewPassword: (newPassword: string) => Promise<{ ok: boolean; error?: string }>;
   // Email verification (OTP code). After a sign-up that needs confirmation, the
   // member enters the 6-digit code emailed to them to prove they own the inbox.
@@ -132,6 +140,16 @@ export type GtreContextValue = {
   addOpportunity: (o: Omit<Opportunity, "id" | "createdAt">) => void;
   updateOpportunity: (id: string, patch: Partial<Omit<Opportunity, "id" | "createdAt">>) => void;
   deleteOpportunity: (id: string) => void;
+
+  // Analyst Rolodex profiles. Admin links a profile to a member account;
+  // admin and the owning member can both edit/publish it.
+  addRolodexProfile: (p: { accountId: string; name: string; major?: string; gradYear?: number }) => void;
+  updateRolodexProfile: (
+    id: string,
+    patch: Partial<Omit<RolodexProfile, "id" | "accountId" | "slug" | "createdAt">>,
+  ) => void;
+  deleteRolodexProfile: (id: string) => void;
+  setRolodexResume: (id: string, file: File) => Promise<{ ok: boolean; error?: string }>;
 
   // Site info
   updateSiteInfo: (patch: Partial<SiteInfo>) => void;

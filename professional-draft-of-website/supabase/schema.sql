@@ -181,6 +181,34 @@ create table if not exists public.opportunities (
   created_at       timestamptz not null default now()
 );
 
+-- Analyst Rolodex profiles. An admin creates one linked to a member account
+-- (Admin -> Rolodex); the member can then edit their own entry (Portal ->
+-- Rolodex Profile). Only `published` profiles show on the public-facing
+-- directory, giving the member consent control over whether they're listed.
+create table if not exists public.rolodex_profiles (
+  id            uuid primary key default gen_random_uuid(),
+  account_id    uuid not null unique references public.profiles on delete cascade,
+  slug          text not null unique,
+  name          text not null,
+  major         text,
+  concentration text,
+  year          text,
+  grad_year     int,
+  hometown      text,
+  status        text not null default 'Available', -- 'Available' | 'Looking for opportunities' | 'Interning'
+  disciplines   text[] not null default '{}',
+  skills        text[] not null default '{}',
+  summary       text,
+  bio           text,
+  experience    text,
+  experiences   jsonb not null default '[]'::jsonb, -- [{company, role, period}]
+  coursework    jsonb not null default '[]'::jsonb, -- [{course, grade}]
+  linkedin      text,
+  resume_url    text,
+  published     boolean not null default false,
+  created_at    timestamptz not null default now()
+);
+
 -- Single-row editable site info.
 create table if not exists public.site_info (
   id                       int primary key default 1,
@@ -275,6 +303,7 @@ alter table public.questions     enable row level security;
 alter table public.meeting_notes enable row level security;
 alter table public.resources     enable row level security;
 alter table public.opportunities enable row level security;
+alter table public.rolodex_profiles enable row level security;
 alter table public.site_info     enable row level security;
 alter table public.site_images   enable row level security;
 alter table public.site_text     enable row level security;
@@ -340,6 +369,20 @@ drop policy if exists "members read opportunities" on public.opportunities;
 drop policy if exists "admin write opportunities"  on public.opportunities;
 create policy "members read opportunities" on public.opportunities for select using (public.is_approved());
 create policy "admin write opportunities"  on public.opportunities for all using (public.is_admin()) with check (public.is_admin());
+
+-- Rolodex: any approved member can see a PUBLISHED profile (matches the
+-- directory's RequireAuth gate) or their own profile either way; admins see
+-- and manage everything. The owning member can edit (but not delete/create)
+-- their own row, so they control their own info and publish consent.
+drop policy if exists "members read rolodex"        on public.rolodex_profiles;
+drop policy if exists "member update own rolodex"    on public.rolodex_profiles;
+drop policy if exists "admin manage rolodex"         on public.rolodex_profiles;
+create policy "members read rolodex" on public.rolodex_profiles
+  for select using (public.is_approved() and (published = true or account_id = auth.uid() or public.is_admin()));
+create policy "member update own rolodex" on public.rolodex_profiles
+  for update using (account_id = auth.uid()) with check (account_id = auth.uid());
+create policy "admin manage rolodex" on public.rolodex_profiles
+  for all using (public.is_admin()) with check (public.is_admin());
 
 -- Submissions: a member manages their own; admins read/grade all.
 drop policy if exists "own submissions"        on public.submissions;
@@ -431,3 +474,31 @@ create policy "admin manage submissions files" on storage.objects
   for all
   using (bucket_id = 'submissions' and public.is_admin())
   with check (bucket_id = 'submissions' and public.is_admin());
+
+-- ===========================================================================
+-- Storage: Analyst Rolodex resumes. Same public-bucket trust level as above;
+-- members upload/replace their own resume, admins manage all of it.
+-- ===========================================================================
+insert into storage.buckets (id, name, public)
+  values ('rolodex-resumes', 'rolodex-resumes', true)
+  on conflict (id) do update set public = true;
+
+drop policy if exists "public read rolodex-resumes" on storage.objects;
+create policy "public read rolodex-resumes" on storage.objects
+  for select using (bucket_id = 'rolodex-resumes');
+
+drop policy if exists "members upload rolodex-resumes" on storage.objects;
+create policy "members upload rolodex-resumes" on storage.objects
+  for insert
+  with check (bucket_id = 'rolodex-resumes' and public.is_approved());
+
+drop policy if exists "members manage own rolodex-resumes" on storage.objects;
+create policy "members manage own rolodex-resumes" on storage.objects
+  for update using (bucket_id = 'rolodex-resumes' and owner = auth.uid())
+  with check (bucket_id = 'rolodex-resumes' and owner = auth.uid());
+
+drop policy if exists "admin manage rolodex-resumes" on storage.objects;
+create policy "admin manage rolodex-resumes" on storage.objects
+  for all
+  using (bucket_id = 'rolodex-resumes' and public.is_admin())
+  with check (bucket_id = 'rolodex-resumes' and public.is_admin());

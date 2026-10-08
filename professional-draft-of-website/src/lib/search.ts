@@ -4,7 +4,6 @@
 // time by the search page since it lives in the client store.
 
 import { BOARD } from "./board";
-import { ANALYSTS } from "./analysts";
 import { EXEC_TERMS } from "./leadership";
 
 export type SearchItem = {
@@ -39,13 +38,6 @@ export const STATIC_INDEX: SearchItem[] = [
     href: "/advisory-board",
     category: "Advisory Board",
     keywords: `advisory board advisor ${m.role}`,
-  })),
-  ...ANALYSTS.map((a) => ({
-    title: a.name,
-    description: `${a.major} · Class of ${a.gradYear}`,
-    href: `/rolodex/directory/${a.slug}`,
-    category: "Analyst",
-    keywords: `${a.skills.join(" ")} ${a.interests.join(" ")}`,
   })),
   ...EXEC_TERMS.flatMap((t) =>
     t.members.map((m) => ({
