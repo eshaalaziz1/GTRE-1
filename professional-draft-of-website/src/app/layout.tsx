@@ -42,10 +42,15 @@ export const metadata: Metadata = {
     "Georgia Tech real estate",
     "real estate analyst program",
   ],
-  alternates: { canonical: SITE_URL },
+  // No `alternates.canonical` / `openGraph.url` here: every page on the site
+  // shares this root metadata (all pages are client components with no
+  // per-route metadata of their own), so a hardcoded URL here would claim
+  // EVERY page's canonical is the homepage — which is exactly the kind of
+  // thing that produces Search Console's "duplicate without user-selected
+  // canonical" warning. Omitting them lets Google infer each page's own URL
+  // as its canonical instead of being told the wrong one.
   openGraph: {
     type: "website",
-    url: SITE_URL,
     siteName: "Georgia Tech Real Estate Club",
     title: "Georgia Tech Real Estate Club",
     description: SITE_DESCRIPTION,
