@@ -185,6 +185,42 @@ export type Opportunity = {
   createdAt: string;
 };
 
+/** Work/internship line shown on a Rolodex profile. */
+export type RolodexExperience = { company: string; role: string; period: string };
+/** Coursework line shown on a Rolodex profile. */
+export type RolodexCoursework = { course: string; grade: string };
+
+/**
+ * An Analyst Rolodex profile. Created by an admin and linked to a specific
+ * member account (accountId); that member can then edit their own entry
+ * (bio, skills, experience, resume...). Only `published` profiles are visible
+ * on the public-facing directory — gives the member control over whether
+ * their info is shown (consent), while an admin can also publish/unpublish.
+ */
+export type RolodexProfile = {
+  id: string;
+  accountId: string;
+  slug: string;
+  name: string;
+  major: string;
+  concentration: string;
+  year: string; // e.g. "Sophomore", "Junior"
+  gradYear?: number;
+  hometown: string;
+  status: "Available" | "Looking for opportunities" | "Interning";
+  disciplines: string[];
+  skills: string[];
+  summary: string; // short directory-card blurb
+  bio: string; // full profile bio
+  experience: string; // short directory-card experience line
+  experiences: RolodexExperience[];
+  coursework: RolodexCoursework[];
+  linkedin: string;
+  resumeUrl?: string;
+  published: boolean;
+  createdAt: string;
+};
+
 /**
  * Editable site information so future exec teams change copy without code.
  * Extend this object with any field a page reads; the admin "Site Info" editor
@@ -215,6 +251,7 @@ export type GtreState = {
   meetingNotes: MeetingNote[];
   resources: Resource[];
   opportunities: Opportunity[];
+  rolodexProfiles: RolodexProfile[];
   siteInfo: SiteInfo;
   // Admin-swappable images by slot key (see src/lib/images.ts). A slot maps to an
   // uploaded image URL (Supabase Storage) or a data URL (mock); missing slots

@@ -336,6 +336,8 @@ export const SEED: GtreState = {
 
   opportunities: [],
 
+  rolodexProfiles: [],
+
   siteInfo: {
     meetingTime: "Mondays at 6:30 PM",
     meetingLocation: "George Tower 0232",

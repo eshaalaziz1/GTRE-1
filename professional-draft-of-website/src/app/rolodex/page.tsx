@@ -27,7 +27,7 @@ const STEPS = [
   {
     n: "02",
     title: "Browse vetted analysts",
-    body: "See each member's academics, attendance, graded case-study work, experience, and resume in one profile.",
+    body: "See each member's focus areas, skills, coursework, experience, and resume in one profile.",
   },
   {
     n: "03",
@@ -62,8 +62,8 @@ export default function RolodexGateway() {
             </div>
             <h1 className="display text-5xl text-white"><SiteText slotKey="rolodex-hero-title">The Analyst Rolodex</SiteText></h1>
             <p className="mt-5 text-lg text-white/80 max-w-xl leading-relaxed">
-              <SiteText slotKey="rolodex-hero-paragraph">A private, vetted directory of Georgia Tech&apos;s strongest real estate students, backed by what the club
-              tracks all semester: academics, attendance, graded case-study work, and experience. Built so you can find
+              <SiteText slotKey="rolodex-hero-paragraph">A private, vetted directory of Georgia Tech&apos;s strongest real estate students, each profile covering
+              their focus areas, skills, coursework, and experience. Built so you can find
               and hire the next analyst before anyone else.</SiteText>
             </p>
             <div className="mt-8 flex flex-wrap gap-6 text-sm text-white/70">

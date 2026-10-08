@@ -249,7 +249,17 @@ function CaseStudy({ resources, isMember }: { resources: Resource[]; isMember: b
   );
 }
 
+// Appends a cache-busting query param so the iframe always re-fetches the
+// embedded document instead of the browser (or OneDrive/Word Online's own
+// embed CDN) serving a stale cached snapshot that doesn't reflect live edits.
+function withCacheBust(url: string, bust: number): string {
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}_cb=${bust}`;
+}
+
 function Syllabus({ url }: { url: string }) {
+  const [bust, setBust] = useState(() => Date.now());
+
   return (
     <div>
       <div className="flex flex-wrap items-end justify-between gap-3 mb-6">
@@ -257,15 +267,29 @@ function Syllabus({ url }: { url: string }) {
           <h2 className="display text-3xl text-navy"><SiteText slotKey="mp-syllabus-title">Syllabus</SiteText></h2>
           <p className="text-secondary mt-1"><SiteText slotKey="mp-syllabus-subtitle">The full program syllabus, view-only.</SiteText></p>
         </div>
-        {url && <Badge tone="green"><SiteText slotKey="mp-syllabus-published">Published</SiteText></Badge>}
+        <div className="flex items-center gap-3">
+          {url && (
+            <button
+              type="button"
+              onClick={() => setBust(Date.now())}
+              className="text-[13px] font-semibold text-gold-hover hover:text-navy"
+              title="Reload the embedded document if recent edits aren't showing"
+            >
+              ↻ Refresh document
+            </button>
+          )}
+          {url && <Badge tone="green"><SiteText slotKey="mp-syllabus-published">Published</SiteText></Badge>}
+        </div>
       </div>
 
       {url ? (
         // View-only embed (no download button surfaced). Use a Google Docs/Drive
-        // /preview URL so the document renders read-only inside the iframe.
+        // or OneDrive/Word Online /preview URL so the document renders
+        // read-only inside the iframe.
         <div className="rounded-2xl overflow-hidden border border-border shadow-sm bg-white">
           <iframe
-            src={url}
+            key={bust}
+            src={withCacheBust(url, bust)}
             title="Mentorship Program Syllabus"
             className="w-full"
             style={{ height: "80vh" }}

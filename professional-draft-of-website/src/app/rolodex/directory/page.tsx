@@ -2,18 +2,29 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import {
-  MEMBERS,
-  MEMBER_DISCIPLINES,
-  MEMBER_GRAD_YEARS,
-  memberInitials,
-  type RolodexMember,
-} from "@/lib/members";
+import { useGtre } from "@/lib/store/GtreStore";
+import type { RolodexProfile } from "@/lib/store/types";
+
+export function memberInitials(name: string): string {
+  return name.split(" ").filter(Boolean).map((p) => p[0]).slice(0, 2).join("").toUpperCase();
+}
 
 export default function AnalystDirectory() {
+  const { state } = useGtre();
   const [query, setQuery] = useState("");
   const [gradYear, setGradYear] = useState("All");
   const [discipline, setDiscipline] = useState("All");
+
+  // Only published profiles (the member's consent to appear) are shown.
+  const MEMBERS = useMemo(() => state.rolodexProfiles.filter((r) => r.published), [state.rolodexProfiles]);
+  const MEMBER_DISCIPLINES = useMemo(
+    () => Array.from(new Set(MEMBERS.flatMap((m) => m.disciplines))).sort(),
+    [MEMBERS],
+  );
+  const MEMBER_GRAD_YEARS = useMemo(
+    () => Array.from(new Set(MEMBERS.map((m) => m.gradYear).filter((y): y is number => !!y))).sort(),
+    [MEMBERS],
+  );
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -26,7 +37,7 @@ export default function AnalystDirectory() {
       const matchesDiscipline = discipline === "All" || m.disciplines.includes(discipline);
       return matchesQuery && matchesYear && matchesDiscipline;
     });
-  }, [query, gradYear, discipline]);
+  }, [MEMBERS, query, gradYear, discipline]);
 
   return (
     <div className="mx-auto max-w-[1280px] px-6 lg:px-10">
@@ -90,7 +101,7 @@ export default function AnalystDirectory() {
   );
 }
 
-function MemberCard({ m }: { m: RolodexMember }) {
+function MemberCard({ m }: { m: RolodexProfile }) {
   return (
     <div className="flex flex-col bg-white border border-border rounded-xl p-6 hover:shadow-md transition-shadow">
       <div className="flex items-center gap-4">
@@ -102,7 +113,7 @@ function MemberCard({ m }: { m: RolodexMember }) {
           <div className="text-[17px] font-bold text-navy leading-tight">{m.name}</div>
           <div className="text-[13px] text-secondary mt-0.5">
             {m.year}
-            {m.grad ? ` · ${m.grad}` : ""}
+            {m.gradYear ? ` · Class of ${m.gradYear}` : ""}
           </div>
         </div>
       </div>

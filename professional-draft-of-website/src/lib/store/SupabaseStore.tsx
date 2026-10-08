@@ -24,6 +24,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import { SEED } from "./seed";
 import { GtreContext, isGeorgiaTechEmail, type GtreContextValue } from "./context";
+import { slugify } from "@/lib/slug";
 import type {
   Account,
   Announcement,
@@ -35,6 +36,7 @@ import type {
   Opportunity,
   Question,
   Resource,
+  RolodexProfile,
   Role,
   SiteInfo,
   Submission,
@@ -54,6 +56,7 @@ const EMPTY_STATE: GtreState = {
   meetingNotes: [],
   resources: [],
   opportunities: [],
+  rolodexProfiles: [],
   siteInfo: SEED.siteInfo,
   siteImages: {},
   siteText: {},
@@ -62,6 +65,7 @@ const EMPTY_STATE: GtreState = {
 
 const IMAGE_BUCKET = "site-images";
 const SUBMISSIONS_BUCKET = "submissions";
+const RESUMES_BUCKET = "rolodex-resumes";
 
 /* ----------------------------- row mappers ------------------------------- */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -195,6 +199,30 @@ const mapOpportunity = (r: any): Opportunity => ({
   createdAt: r.created_at,
 });
 
+const mapRolodexProfile = (r: any): RolodexProfile => ({
+  id: r.id,
+  accountId: r.account_id,
+  slug: r.slug,
+  name: r.name,
+  major: r.major ?? "",
+  concentration: r.concentration ?? "",
+  year: r.year ?? "",
+  gradYear: r.grad_year ?? undefined,
+  hometown: r.hometown ?? "",
+  status: r.status ?? "Available",
+  disciplines: r.disciplines ?? [],
+  skills: r.skills ?? [],
+  summary: r.summary ?? "",
+  bio: r.bio ?? "",
+  experience: r.experience ?? "",
+  experiences: r.experiences ?? [],
+  coursework: r.coursework ?? [],
+  linkedin: r.linkedin ?? "",
+  resumeUrl: r.resume_url ?? undefined,
+  published: r.published ?? false,
+  createdAt: r.created_at,
+});
+
 const mapSiteInfo = (r: any): SiteInfo => ({
   meetingTime: r.meeting_time ?? "",
   meetingLocation: r.meeting_location ?? "",
@@ -229,6 +257,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       notes,
       resources,
       opportunities,
+      rolodexProfiles,
       siteInfo,
       siteImages,
       siteText,
@@ -243,6 +272,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       supabase.from("meeting_notes").select("*").order("date", { ascending: false }),
       supabase.from("resources").select("*").order("created_at", { ascending: false }),
       supabase.from("opportunities").select("*").order("created_at", { ascending: false }),
+      supabase.from("rolodex_profiles").select("*").order("created_at", { ascending: false }),
       supabase.from("site_info").select("*").eq("id", 1).maybeSingle(),
       supabase.from("site_images").select("*"),
       supabase.from("site_text").select("*"),
@@ -274,6 +304,7 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       meetingNotes: (notes.data ?? []).map(mapNote),
       resources: (resources.data ?? []).map(mapResource),
       opportunities: (opportunities.data ?? []).map(mapOpportunity),
+      rolodexProfiles: (rolodexProfiles.data ?? []).map(mapRolodexProfile),
       siteInfo: siteInfo.data ? mapSiteInfo(siteInfo.data) : SEED.siteInfo,
       siteImages: siteImagesMap,
       siteText: siteTextMap,
@@ -446,8 +477,33 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
       async requestPasswordReset(email) {
         const redirectTo =
           typeof window !== "undefined" ? `${window.location.origin}/reset-password` : undefined;
-        // Don't reveal whether an email exists — always report success.
+        // Don't reveal whether an email exists — always report success. Supabase
+        // sends whatever the "Reset Password" email template is configured with:
+        // a 6-digit {{ .Token }} (what confirmPasswordReset below expects, and
+        // what SETUP.md has you configure) or, if the template still uses
+        // {{ .ConfirmationURL }}, a magic link to redirectTo (/reset-password)
+        // that setNewPassword below handles instead.
         await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo });
+        return { ok: true };
+      },
+
+      async confirmPasswordReset(email, token, newPassword) {
+        if (newPassword.length < 8) {
+          return { ok: false, error: "New password must be at least 8 characters." };
+        }
+        const { error: verifyError } = await supabase.auth.verifyOtp({
+          email: email.trim(),
+          token: token.trim(),
+          type: "recovery",
+        });
+        if (verifyError) {
+          if (/expired/i.test(verifyError.message)) {
+            return { ok: false, error: "That code has expired. Request a new one." };
+          }
+          return { ok: false, error: "That code isn't right. Double-check and try again." };
+        }
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) return { ok: false, error: "Couldn't set your new password. Please try again." };
         return { ok: true };
       },
 
@@ -868,6 +924,71 @@ export function SupabaseGtreProvider({ children }: { children: ReactNode }) {
           await supabase.from("opportunities").delete().eq("id", id);
           await loadAll();
         })();
+      },
+
+      // ---- Rolodex profiles ----------------------------------------------
+      addRolodexProfile(p) {
+        void (async () => {
+          const base = slugify(p.name);
+          let slug = base;
+          let n = 2;
+          while (state.rolodexProfiles.some((r) => r.slug === slug)) slug = `${base}-${n++}`;
+          await supabase.from("rolodex_profiles").insert({
+            account_id: p.accountId,
+            slug,
+            name: p.name,
+            major: p.major || null,
+            grad_year: p.gradYear ?? null,
+            status: "Available",
+            published: false,
+          });
+          await loadAll();
+        })();
+      },
+      updateRolodexProfile(id, patch) {
+        void (async () => {
+          const row: Record<string, unknown> = {};
+          if (patch.name !== undefined) row.name = patch.name;
+          if (patch.major !== undefined) row.major = patch.major || null;
+          if (patch.concentration !== undefined) row.concentration = patch.concentration || null;
+          if (patch.year !== undefined) row.year = patch.year || null;
+          if (patch.gradYear !== undefined) row.grad_year = patch.gradYear ?? null;
+          if (patch.hometown !== undefined) row.hometown = patch.hometown || null;
+          if (patch.status !== undefined) row.status = patch.status;
+          if (patch.disciplines !== undefined) row.disciplines = patch.disciplines;
+          if (patch.skills !== undefined) row.skills = patch.skills;
+          if (patch.summary !== undefined) row.summary = patch.summary || null;
+          if (patch.bio !== undefined) row.bio = patch.bio || null;
+          if (patch.experience !== undefined) row.experience = patch.experience || null;
+          if (patch.experiences !== undefined) row.experiences = patch.experiences;
+          if (patch.coursework !== undefined) row.coursework = patch.coursework;
+          if (patch.linkedin !== undefined) row.linkedin = patch.linkedin || null;
+          if (patch.published !== undefined) row.published = patch.published;
+          await supabase.from("rolodex_profiles").update(row).eq("id", id);
+          await loadAll();
+        })();
+      },
+      deleteRolodexProfile(id) {
+        void (async () => {
+          await supabase.from("rolodex_profiles").delete().eq("id", id);
+          await loadAll();
+        })();
+      },
+      async setRolodexResume(id, file) {
+        const ext = file.name.includes(".") ? file.name.split(".").pop() : "pdf";
+        const path = `${id}-${Date.now()}.${ext}`;
+        const up = await supabase.storage
+          .from(RESUMES_BUCKET)
+          .upload(path, file, { upsert: true, contentType: file.type || undefined });
+        if (up.error) return { ok: false, error: up.error.message };
+        const { data: pub } = supabase.storage.from(RESUMES_BUCKET).getPublicUrl(path);
+        const { error } = await supabase
+          .from("rolodex_profiles")
+          .update({ resume_url: pub.publicUrl })
+          .eq("id", id);
+        if (error) return { ok: false, error: error.message };
+        await loadAll();
+        return { ok: true };
       },
 
       // ---- Site info ----------------------------------------------------

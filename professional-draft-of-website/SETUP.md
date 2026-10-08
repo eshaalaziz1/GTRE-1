@@ -69,7 +69,25 @@ The Supabase adapter is **already built** (`src/lib/store/SupabaseStore.tsx` +
    ```
    This is what stops someone signing up with an email that isn't theirs — the
    account can't sign in until the real owner enters the code sent to that inbox.
-4. **Set redirect URLs.** In **Authentication → URL Configuration**, set the
+4. **Do the same for password reset.** In **Authentication → Emails →
+   Templates → Reset Password**, replace the magic-link body with a code the
+   same way:
+   ```html
+   <h2>Reset your password</h2>
+   <p>Your Georgia Tech Real Estate Club password reset code is:</p>
+   <p style="font-size:24px;font-weight:bold;letter-spacing:4px">{{ .Token }}</p>
+   <p>Enter it on the reset-password page along with your new password.</p>
+   ```
+   **This one matters even more than sign-up's.** A reset link is a magic
+   *sign-in* link — if Defender/Outlook's link-scanner prefetches it (which it
+   does automatically for `@gatech.edu` mail), the one-time token gets
+   consumed before the member ever clicks it, and their real click then fails
+   silently and drops them on the homepage with no error shown. That exact
+   symptom ("the reset link just takes me back to the homepage") is almost
+   always this, not a redirect URL misconfiguration. The app's
+   `/forgot-password` page already expects the code (not a link) once you
+   make this change — no other setup needed.
+5. **Set redirect URLs.** In **Authentication → URL Configuration**, set the
    **Site URL** to your deployed origin (e.g. `https://gtrealestate.org`).
    Then, in **Redirect URLs**, add a wildcard for that origin, e.g.
    `https://gtrealestate.org/**` (plus `http://localhost:3000/**` for local
@@ -80,14 +98,14 @@ The Supabase adapter is **already built** (`src/lib/store/SupabaseStore.tsx` +
    links fail to match and Supabase silently falls back to the Site URL
    (dropping the user on the homepage instead of, e.g., the reset-password
    form with their recovery token).
-5. **Add env vars.** Copy `.env.example` → `.env.local` and fill in the
+6. **Add env vars.** Copy `.env.example` → `.env.local` and fill in the
    **Project URL** and **anon key** (Project Settings → API). Set
    `NEXT_PUBLIC_DATA_BACKEND=supabase`. On Vercel, add the same three variables
    in Project → Settings → Environment Variables and redeploy.
    - `@supabase/supabase-js` and `@supabase/ssr` are already installed.
    - **No service-role key is required** for the current features — admin
      actions run through the signed-in admin's session under the RLS policies.
-6. **Make the first admin.** Sign up normally, click the email link to confirm,
+7. **Make the first admin.** Sign up normally, enter the emailed code to confirm,
    then in the SQL editor promote yourself (there's no admin to approve the
    first admin):
    ```sql
