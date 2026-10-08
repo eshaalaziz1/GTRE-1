@@ -249,14 +249,6 @@ function CaseStudy({ resources, isMember }: { resources: Resource[]; isMember: b
   );
 }
 
-// Appends a cache-busting query param so the iframe always re-fetches the
-// embedded document instead of the browser (or OneDrive/Word Online's own
-// embed CDN) serving a stale cached snapshot that doesn't reflect live edits.
-function withCacheBust(url: string, bust: number): string {
-  const sep = url.includes("?") ? "&" : "?";
-  return `${url}${sep}_cb=${bust}`;
-}
-
 function Syllabus({ url }: { url: string }) {
   const [bust, setBust] = useState(() => Date.now());
 
@@ -287,9 +279,14 @@ function Syllabus({ url }: { url: string }) {
         // or OneDrive/Word Online /preview URL so the document renders
         // read-only inside the iframe.
         <div className="rounded-2xl overflow-hidden border border-border shadow-sm bg-white">
+          {/* Remounting (via key) forces the browser to re-request the embed
+              instead of serving a cached snapshot, WITHOUT touching the URL
+              itself — OneDrive/Word Online embed links are often signed, and
+              appending our own query param to them invalidates the signature
+              and breaks the embed ("the link has expired"). */}
           <iframe
             key={bust}
-            src={withCacheBust(url, bust)}
+            src={url}
             title="Mentorship Program Syllabus"
             className="w-full"
             style={{ height: "80vh" }}
