@@ -24,10 +24,46 @@ const sourceSerif = Source_Serif_4({
   display: "swap",
 });
 
+const SITE_URL = "https://gtrealestate.org";
+const SITE_DESCRIPTION =
+  "The Georgia Tech Real Estate Club connects students, alumni, and industry through education, events, and a vetted analyst network.";
+
 export const metadata: Metadata = {
-  title: "Georgia Tech Real Estate Club",
-  description:
-    "The Georgia Tech Real Estate Club connects students, alumni, and industry through education, events, and a vetted analyst network.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Georgia Tech Real Estate Club",
+    template: "%s | Georgia Tech Real Estate Club",
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "Georgia Tech Real Estate Club",
+    "GT Real Estate",
+    "GTRE",
+    "Georgia Tech real estate",
+    "real estate analyst program",
+  ],
+  // No `alternates.canonical` / `openGraph.url` here: every page on the site
+  // shares this root metadata (all pages are client components with no
+  // per-route metadata of their own), so a hardcoded URL here would claim
+  // EVERY page's canonical is the homepage — which is exactly the kind of
+  // thing that produces Search Console's "duplicate without user-selected
+  // canonical" warning. Omitting them lets Google infer each page's own URL
+  // as its canonical instead of being told the wrong one.
+  openGraph: {
+    type: "website",
+    siteName: "Georgia Tech Real Estate Club",
+    title: "Georgia Tech Real Estate Club",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Georgia Tech Real Estate Club",
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
