@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useGtre } from "@/lib/store/GtreStore";
 import { Button, Field, Notice } from "@/components/ui";
 
-// Forgot-password: enter your email and we send a 6-digit reset code (a code,
+// Forgot-password: enter your email and we send a reset code (a code,
 // not a link — @gatech.edu mail runs through Outlook/Defender, whose link
 // scanners can open and consume a one-time magic link before the member ever
 // clicks it, which is exactly what was causing reset links to land people on
@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
 
         <div className="mt-8 bg-white rounded-2xl shadow-xl p-7 text-text">
           <p className="text-sm text-secondary mb-5">
-            Enter your account email and we&apos;ll send you a 6-digit code to set a new password.
+            Enter your account email and we&apos;ll send you a code to set a new password.
           </p>
           <form onSubmit={onSubmit} className="space-y-4">
             <Field
@@ -121,22 +121,26 @@ function ResetCodeStep({ email }: { email: string }) {
               {error && <Notice tone="error">{error}</Notice>}
               {resent && <Notice tone="success">A new code is on its way.</Notice>}
               <p className="text-sm text-secondary">
-                We emailed a 6-digit code to <strong>{email}</strong>. Enter it along with your new
+                We emailed a code to <strong>{email}</strong>. Enter it along with your new
                 password below.
               </p>
               <input
                 inputMode="numeric"
                 autoComplete="one-time-code"
                 value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                placeholder="••••••"
-                aria-label="6-digit reset code"
+                // Don't assume a fixed code length here — it's whatever Supabase's
+                // project-level OTP length setting is configured to (not
+                // necessarily 6), so just strip non-digits and let the server
+                // validate the code itself.
+                onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+                placeholder="code"
+                aria-label="Reset code"
                 className="w-full text-center tracking-[0.5em] text-2xl px-3 py-3 border border-border rounded-md outline-none focus:border-navy"
                 required
               />
               <Field label="New password" type="password" value={next} onChange={setNext} placeholder="At least 8 characters" required autoComplete="new-password" />
               <Field label="Confirm new password" type="password" value={confirm} onChange={setConfirm} required autoComplete="new-password" />
-              <Button type="submit" className="w-full" disabled={busy || code.length < 6}>
+              <Button type="submit" className="w-full" disabled={busy || code.length === 0}>
                 {busy ? "Saving…" : "Set new password"}
               </Button>
               <p className="text-[13px] text-secondary text-center">
