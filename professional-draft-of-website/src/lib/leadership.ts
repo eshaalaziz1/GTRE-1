@@ -112,7 +112,7 @@ const fall2026: ExecMember[] = [
     focus: "48% 40%",
     zoom: 1.08,
     email: "sgumadavalli3@gatech.edu",
-    phone: "(732) 923-7000",
+    phone: "(732) 823-7000",
   },
   {
     slug: "emmie-adams",
