@@ -61,6 +61,24 @@ function ExecCard({ member }: { member: ExecMember }) {
       <h3 className="mt-4 text-[17px] font-bold text-navy">{member.name}</h3>
       <div className="text-[14px] italic text-gold-hover mt-0.5">{member.role}</div>
       <p className="text-[14px] text-secondary leading-relaxed mt-3">{member.bio}</p>
+      {(member.email || member.phone) && (
+        <div className="mt-3 pt-3 border-t border-border w-full text-[13px] text-secondary space-y-0.5">
+          {member.email && (
+            <div>
+              <a href={`mailto:${member.email}`} className="hover:text-navy">
+                {member.email}
+              </a>
+            </div>
+          )}
+          {member.phone && (
+            <div>
+              <a href={`tel:${member.phone.replace(/[^\d+]/g, "")}`} className="hover:text-navy">
+                {member.phone}
+              </a>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

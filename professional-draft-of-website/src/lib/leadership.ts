@@ -16,6 +16,8 @@ export type ExecMember = {
   photo: string;
   focus?: string; // object-position / transform-origin, e.g. "50% 30%"
   zoom?: number; // >1 tightens the crop on the face
+  email?: string;
+  phone?: string;
 };
 
 export type ExecTerm = {
@@ -32,6 +34,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/rustin-jalali.jpg",
     focus: "50% 25%",
     zoom: 1.5,
+    email: "rjalali6@gatech.edu",
+    phone: "(678) 858-3849",
   },
   {
     slug: "adam-stadelmeier",
@@ -41,6 +45,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/adam-stadelmeier.jpg",
     focus: "50% 33%",
     zoom: 1.08,
+    email: "astadelmeier3@gatech.edu",
+    phone: "(770) 905-4633",
   },
   {
     slug: "neal-shah",
@@ -50,6 +56,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/neal-shah.jpg",
     focus: "50% 32%",
     zoom: 1.22,
+    email: "nshah468@gatech.edu",
+    phone: "(847) 345-4673",
   },
   {
     slug: "sree-hariharan",
@@ -59,6 +67,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/sree-hariharan.jpg",
     focus: "50% 28%",
     zoom: 1.05,
+    email: "nhariharan7@gatech.edu",
+    phone: "(770) 456-5598",
   },
   {
     slug: "tanish-patel",
@@ -68,6 +78,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/tanish-patel.png",
     focus: "54% 34%",
     zoom: 1.32,
+    email: "tpatel342@gatech.edu",
+    phone: "(706) 978-1162",
   },
   {
     slug: "josh-craig",
@@ -77,6 +89,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/josh-craig.png",
     focus: "50% 30%",
     zoom: 1.18,
+    email: "jcraig48@gatech.edu",
+    phone: "(470) 902-9311",
   },
   {
     slug: "evan-mamun",
@@ -86,6 +100,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/evan-mamun.jpg",
     focus: "50% 36%",
     zoom: 1.08,
+    email: "emamun6@gatech.edu",
+    phone: "(470) 272-9927",
   },
   {
     slug: "suvan-gumadavalli",
@@ -95,6 +111,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/suvan-gumadavalli.jpg",
     focus: "48% 40%",
     zoom: 1.08,
+    email: "sgumadavalli3@gatech.edu",
+    phone: "(732) 823-7000",
   },
   {
     slug: "emmie-adams",
@@ -104,6 +122,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/emmie-adams.jpg",
     focus: "46% 34%",
     zoom: 1.12,
+    email: "eadams80@gatech.edu",
+    phone: "(770) 530-1098",
   },
   {
     slug: "olivia-brown",
@@ -113,6 +133,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/olivia-brown.jpg",
     focus: "48% 33%",
     zoom: 1.06,
+    email: "obrown45@gatech.edu",
+    phone: "(917) 751-4636",
   },
   {
     slug: "eshaal-aziz",
@@ -122,6 +144,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/eshaal-aziz.jpg",
     focus: "56% 56%",
     zoom: 1.18,
+    email: "eaziz3@gatech.edu",
+    phone: "(470) 990-2610",
   },
   {
     slug: "leonid-shteynblik",
@@ -131,6 +155,8 @@ const fall2026: ExecMember[] = [
     photo: "/exec/leonid-shteynblik.png",
     focus: "50% 38%",
     zoom: 1.08,
+    email: "lshteynblik3@gatech.edu",
+    phone: "(201) 926-9454",
   },
 ];
 
