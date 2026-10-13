@@ -122,7 +122,7 @@ const fall2026: ExecMember[] = [
     photo: "/exec/emmie-adams.jpg",
     focus: "46% 34%",
     zoom: 1.12,
-    email: "emuyres3@gatech.edu",
+    email: "eadams80@gatech.edu",
     phone: "(770) 530-1098",
   },
   {
@@ -133,7 +133,7 @@ const fall2026: ExecMember[] = [
     photo: "/exec/olivia-brown.jpg",
     focus: "48% 33%",
     zoom: 1.06,
-    email: "vpatel441@gatech.edu",
+    email: "obrown45@gatech.edu",
     phone: "(917) 751-4636",
   },
   {
