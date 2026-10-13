@@ -152,7 +152,7 @@ function ConfirmCodeStep({ email, firstName, memberForm = false }: { email: stri
     <form onSubmit={onVerify} className="space-y-4 text-center">
       <div className="text-2xl display text-navy">Enter your code</div>
       <p className="text-sm text-secondary">
-        We emailed a 6-digit verification code to <strong>{email}</strong>. Enter it
+        We emailed a verification code to <strong>{email}</strong>. Enter it
         to confirm you own this inbox.
       </p>
       {error && <Notice tone="error">{error}</Notice>}
@@ -161,13 +161,15 @@ function ConfirmCodeStep({ email, firstName, memberForm = false }: { email: stri
         inputMode="numeric"
         autoComplete="one-time-code"
         value={code}
-        onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-        placeholder="••••••"
-        aria-label="6-digit verification code"
+        // Don't assume a fixed code length — it's whatever Supabase's
+        // project-level OTP length setting is configured to.
+        onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+        placeholder="code"
+        aria-label="Verification code"
         className="w-full text-center tracking-[0.5em] text-2xl px-3 py-3 border border-border rounded-md outline-none focus:border-navy"
         required
       />
-      <Button type="submit" className="w-full" disabled={busy || code.length < 6}>
+      <Button type="submit" className="w-full" disabled={busy || code.length === 0}>
         {busy ? "Verifying…" : "Verify email"}
       </Button>
       <p className="text-[13px] text-secondary">
